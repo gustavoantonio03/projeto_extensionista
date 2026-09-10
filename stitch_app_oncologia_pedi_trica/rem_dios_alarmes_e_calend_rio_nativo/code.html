@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><title>OncoVida</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "surface-container-high": "#e9e8e6", "on-tertiary": "#ffffff", "surface-container-low": "#f4f3f1", "on-primary": "#ffffff", "surface-bright": "#faf9f7", "outline-variant": "#bfc8c9", "surface-container": "#efeeec", "surface-tint": "#30666c", "surface": "#faf9f7", "on-surface-variant": "#404849", "on-tertiary-container": "#7bc3af", "on-primary-fixed": "#001f23", "inverse-on-surface": "#f1f1ef", "primary-fixed": "#b6ecf3", "on-primary-fixed-variant": "#134e54", "outline": "#70797a", "background": "#faf9f7", "secondary": "#5a5d71", "on-tertiary-fixed-variant": "#005142", "on-secondary-container": "#5e6275", "error": "#ba1a1a", "primary-container": "#134e54", "inverse-primary": "#9ad0d6", "inverse-surface": "#2f3130", "surface-variant": "#e3e2e0", "on-surface": "#1a1c1b", "on-tertiary-fixed": "#002019", "secondary-container": "#dcdef5", "tertiary-fixed": "#a8f1db", "on-background": "#1a1c1b", "primary": "#00363b", "on-primary-container": "#89bec5", "on-secondary-fixed": "#171b2b", "on-error-container": "#93000a", "primary-fixed-dim": "#9ad0d6", "on-secondary-fixed-variant": "#434658", "surface-container-highest": "#e3e2e0", "tertiary": "#00382d", "secondary-fixed-dim": "#c3c5dc", "surface-container-lowest": "#ffffff", "tertiary-fixed-dim": "#8cd4c0", "secondary-fixed": "#dfe1f8", "error-container": "#ffdad6", "on-error": "#ffffff", "tertiary-container": "#005142", "surface-dim": "#dadad8", "on-secondary": "#ffffff" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "inset-sm": "8px", "inset-md": "16px", "inset-xl": "32px", "touch-min": "48px", "gutter-mobile": "16px", "stack-md": "16px", "gutter-tablet": "24px", "inset-lg": "24px", "stack-sm": "8px", "stack-lg": "24px", "inset-xs": "4px", "margin-screen": "20px", "touch-expanded": "56px" }, fontFamily: { "body-md": ["Plus Jakarta Sans"], "headline-md": ["Plus Jakarta Sans"], "label-lg": ["Plus Jakarta Sans"], "display-lg": ["Plus Jakarta Sans"], "display-lg-mobile": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "label-md": ["Plus Jakarta Sans"], "label-sm": ["Plus Jakarta Sans"], "body-lg": ["Plus Jakarta Sans"], "body-sm": ["Plus Jakarta Sans"], "headline-sm": ["Plus Jakarta Sans"] }, fontSize: { "body-md": ["15px", { "lineHeight": "22px", "fontWeight": "400" }], "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }], "label-lg": ["15px", { "lineHeight": "20px", "fontWeight": "600" }], "display-lg": ["36px", { "lineHeight": "44px", "fontWeight": "700" }], "display-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }], "headline-lg": ["24px", { "lineHeight": "32px", "fontWeight": "600" }], "label-md": ["13px", { "lineHeight": "18px", "fontWeight": "500" }], "label-sm": ["11px", { "lineHeight": "16px", "fontWeight": "600" }], "body-lg": ["17px", { "lineHeight": "26px", "fontWeight": "400" }], "body-sm": ["13px", { "lineHeight": "18px", "fontWeight": "400" }], "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }] } } } };</script></head><body class="bg-surface font-body-md text-on-surface antialiased flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(19,78,84,0.06)]"><div class="h-20 px-margin-screen flex items-center justify-between gap-inset-sm"><div class="flex items-center gap-inset-sm"><img alt="Logo minimalista e elegante em vetor para aplicativo oncológico adulto 'OncoVida', combinando um laço de esperança estilizado harmoniosamente integrado com uma folha suave de vida e renovação, cores petróleo e menta suave, fundo neutro limpo, design médico premium e acolhedor.. Design context: - Primary color: #134e54
+- Font: plusJakartaSans
+- Mode: light
+- Roundness: rounded-md
+. The logo should be visually consistent with these brand tokens." class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1WPfZgOvxntCrX5_9LmXgZZw3c8_Gzc56RPxOIIOzTojWZ02o23WS09W6V5NUe5LM_dnHj0bw0l8jChJIVBEnny4lpm6i2T8s1l0wIL3uCyqALnRdTDv5hIxLbA0HLpXmg6SwiPjWXC88eb1jJ8tYr60Y9RaTTUBATArM9rSQ0fMO3Gks7ydqQ3vr-dve_IK4c8U2Sb5ckGHZxEBiO-fCBoENY-YUoZkAiXVdENNLtc446hMZXv5vzdcc8"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-primary leading-tight tracking-tight">OncoVida</span><span class="font-label-sm text-label-sm text-on-surface-variant line-clamp-1">Remédios E Rotina</span></div></div><div class="flex items-center gap-inset-xs"><button aria-label="Seletor de Perfil e Acessibilidade" class="h-touch-min min-w-touch-min px-inset-xs rounded-xl flex items-center justify-center gap-inset-xs text-on-surface-variant hover:bg-surface-container-low transition-colors"><span class="material-symbols-outlined text-primary-container">hearing</span><span class="font-label-md text-label-md font-semibold text-primary-container hidden sm:inline">Paciente</span><span class="material-symbols-outlined text-outline">arrow_drop_down</span></button><a aria-label="Emergência SOS Onco" class="h-touch-min px-3 rounded-xl bg-error text-on-error flex items-center justify-center gap-1.5 shadow-[0_2px_8px_rgba(186,26,26,0.25)] hover:bg-error/90 active:scale-95 transition-all" data-path="sos-emergencia" href="#"><span class="material-symbols-outlined text-xl">emergency</span><span class="font-label-md text-label-md font-bold uppercase tracking-wide">SOS</span></a><div class="flex items-center pl-inset-xs"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1VWEqVytYek6tayEIECGIgNCgzKkxjQu4Pc7p3zorhvB0Elx-AMOxiB_j4RYYhqTtc-97p8GTJuH9qIO0doV8CKk5T5-pgYtuD8VLmIzNsnWbzzAYWAnzQHRSMepdHk95zkYHSQt2KU5lViIhDuTWK5r7rmHYPuWBPrRCL6ZF791xSskJgQOcYIbUCoYC15lq1tkpTCntc6M1N8tSiCy3DO_TwoUd0sm0JAADM8PsXcOiXv5dLAExD4hUc"/></div></div></div></header><main class="flex-1 flex flex-col relative w-full pt-20 pb-28 px-margin-screen bg-surface"><div class="flex flex-col w-full space-y-6">
+<!-- Status Bar: Alarme Automático Ativo -->
+<div class="bg-surface-container-low rounded-2xl p-4 shadow-sm flex items-center justify-between">
+<div class="flex items-center space-x-3">
+<div class="relative flex items-center justify-center w-10 h-10 rounded-full bg-tertiary-fixed text-on-tertiary-fixed">
+<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">notifications_active</span>
+<span class="absolute -top-0.5 -right-0.5 w-3 h-3 bg-tertiary rounded-full border-2 border-surface-container-low animate-ping"></span>
+<span class="absolute -top-0.5 -right-0.5 w-3 h-3 bg-tertiary rounded-full"></span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Alarmes Automáticos Ativos</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Sons nítidos e avisos simultâneos para o cuidador</p>
+</div>
+</div>
+<span class="font-label-sm text-label-sm bg-surface-container-highest px-3 py-1 rounded-full text-primary font-semibold">100% Sincronizado</span>
+</div>
+<!-- Cartão de Destaque: Medicamento do Momento -->
+<div class="bg-surface-container-lowest rounded-3xl p-5 shadow-md flex flex-col space-y-4" id="card-remedio-atual">
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-2">
+<span class="flex h-3 w-3 relative">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-error opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-error"></span>
+</span>
+<span class="font-label-md text-label-md text-error uppercase tracking-wider font-bold">Dose Próxima • 14:00</span>
+</div>
+<span class="font-label-sm text-label-sm px-2.5 py-1 bg-surface-container-high rounded-full text-on-surface-variant font-medium">Tarde</span>
+</div>
+<!-- Representação Visual do Remédio -->
+<div class="flex items-center space-x-4 bg-surface-container-low p-3.5 rounded-2xl">
+<div class="relative w-20 h-20 rounded-xl overflow-hidden shadow-inner flex-shrink-0 bg-primary-container flex items-center justify-center">
+<img class="w-full h-full object-cover" data-alt="Close-up clean studio photography of an elegant medical blister pack with teal branding, beside a single smooth oval white pill on a warm stone linen surface, soft diffuse daylight, gentle hospital grade design, soothing teal and neutral tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvBcRNQA62ZBIgmIGoauL1m1JfRCU-z7CxUNfFysSoyYOFKBVfUu8kTjeDWNMKAAc6S2p5fI1V25KAJk3YszGiyuL_Zb6WjBAzqc94nULJly1HBp9MOI70eCKZPf7X0EFXPSzC1xCZWXgxZYGyjqYwRZ9O8MBgHAD4OTy4aC_rWtL0LqUN-XRzG3K7gdrMkHqKrmEALdT4FpGW12k1VphkhVXPVS7WM9azo4hCW9PJ43Nd70Az0A7C"/>
+<div class="absolute bottom-1 right-1 bg-surface-container-lowest/90 px-1.5 py-0.5 rounded text-[10px] font-bold text-primary">1 cp</div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center space-x-1.5">
+<h3 class="font-headline-md text-headline-md text-on-surface truncate">Ondansetrona</h3>
+</div>
+<p class="font-label-md text-label-md text-primary font-medium">8 mg • Para prevenir enjoo</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5 flex items-center">
+<span class="material-symbols-outlined text-[16px] mr-1 text-outline">schedule</span>
+          Faltam 12 minutos
+        </p>
+</div>
+</div>
+<!-- Botão de Instrução em Áudio -->
+<button class="w-full h-touch-min bg-surface-container-high hover:bg-surface-container-highest active:scale-[0.99] transition-all rounded-xl px-4 flex items-center justify-between text-on-surface" id="btn-audio-guia" onclick="tocarVozGuia()">
+<div class="flex items-center space-x-3">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]" id="audio-icon">volume_up</span>
+</div>
+<span class="font-label-lg text-label-lg text-primary text-left">Ouvir como tomar este remédio</span>
+</div>
+<span class="font-label-sm text-label-sm text-outline">0:14</span>
+</button>
+<!-- Transcrição Clara da Instrução -->
+<div class="bg-surface-container-lowest p-3 rounded-xl flex items-start space-x-2.5" id="box-transcricao">
+<span class="material-symbols-outlined text-surface-tint text-[20px] flex-shrink-0 mt-0.5">info</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+<strong>Modo simples:</strong> "Tomar com 1 copo de água cheinho logo após o almoço para proteger o estômago."
+      </p>
+</div>
+<!-- Botões de Ação Principal -->
+<div class="space-y-2 pt-1">
+<button class="w-full h-touch-expanded bg-primary hover:bg-primary-container text-on-primary rounded-2xl font-label-lg text-label-lg flex items-center justify-center space-x-2 shadow-lg active:scale-[0.98] transition-all" id="btn-confirmar-dose" onclick="confirmarMedicamento()">
+<span class="material-symbols-outlined text-[24px]">check_circle</span>
+<span>✓ JÁ TOMEI ESTE REMÉDIO!</span>
+</button>
+<div class="flex items-center space-x-2">
+<button class="flex-1 h-touch-min bg-surface-container hover:bg-surface-container-high text-on-surface-variant rounded-xl font-label-md text-label-md flex items-center justify-center space-x-1 active:scale-95 transition-all" onclick="adiarMedicamento(15)">
+<span class="material-symbols-outlined text-[18px]">snooze</span>
+<span>Lembrar em 15 min</span>
+</button>
+<button class="px-4 h-touch-min bg-surface-container hover:bg-surface-container-high text-on-surface-variant rounded-xl font-label-md text-label-md flex items-center justify-center space-x-1 active:scale-95 transition-all" onclick="notificarCuidadorManual()" title="Avisar a família">
+<span class="material-symbols-outlined text-[18px] text-tertiary">share</span>
+<span>Avisar Família</span>
+</button>
+</div>
+</div>
+<!-- Aviso Sutil de Notificação à Família -->
+<p class="font-label-sm text-label-sm text-center text-outline">
+<span class="material-symbols-outlined text-[14px] align-text-bottom text-tertiary">verified_user</span>
+      Ao confirmar, sua família recebe confirmação em tempo real no app deles.
+    </p>
+</div>
+<!-- Outros Medicamentos do Dia -->
+<div class="space-y-3">
+<div class="flex items-center justify-between px-1">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Outros Medicamentos de Hoje</h3>
+<span class="font-label-sm text-label-sm text-on-surface-variant">2 programados</span>
+</div>
+<!-- Manhã - Concluído -->
+<div class="bg-surface-container-lowest rounded-2xl p-4 shadow-sm flex items-center justify-between opacity-80">
+<div class="flex items-center space-x-3.5">
+<div class="w-10 h-10 rounded-full bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[22px]">check</span>
+</div>
+<div>
+<div class="flex items-center space-x-2">
+<h4 class="font-label-lg text-label-lg text-on-surface line-through">Dexametasona 4mg</h4>
+<span class="font-label-sm text-label-sm bg-tertiary-container text-on-tertiary-container px-2 py-0.5 rounded">Tomado</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Manhã • 08:00 (Confirmado às 08:05)</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline">task_alt</span>
+</div>
+<!-- Noite - Pendente com Alerta Especial -->
+<div class="bg-surface-container-lowest rounded-2xl p-4 shadow-sm flex items-center justify-between">
+<div class="flex items-center space-x-3.5">
+<div class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[22px]">medication</span>
+</div>
+<div>
+<div class="flex items-center space-x-2">
+<h4 class="font-label-lg text-label-lg text-on-surface">Capecitabina 500mg</h4>
+<span class="font-label-sm text-label-sm bg-primary-fixed text-on-primary-fixed px-2 py-0.5 rounded font-semibold">Quimioterapia Oral</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Hoje à Noite • 20:00 (Tomar 30 min após o jantar)</p>
+</div>
+</div>
+<div class="text-right flex flex-col items-end">
+<span class="material-symbols-outlined text-surface-tint">alarm</span>
+<span class="font-label-sm text-label-sm text-outline">Em 6h</span>
+</div>
+</div>
+</div>
+<!-- Sincronização de Calendário, Consultas e Exames -->
+<div class="bg-surface-container-low rounded-3xl p-5 space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-primary text-[22px]">event</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Próximo Compromisso</h3>
+</div>
+<div class="flex items-center space-x-1 bg-surface-container-lowest px-2.5 py-1 rounded-full text-on-tertiary-fixed-variant shadow-sm">
+<span class="material-symbols-outlined text-[14px]">sync</span>
+<span class="font-label-sm text-label-sm font-semibold">Google / Apple Sync</span>
+</div>
+</div>
+<!-- Card de Consulta Médica -->
+<div class="bg-surface-container-lowest rounded-2xl p-4 shadow-sm space-y-3">
+<div class="flex items-start justify-between">
+<div class="space-y-1">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-primary font-bold">Consulta Médica Presencial</span>
+<h4 class="font-headline-sm text-headline-sm text-on-surface">Dr. Carlos Mendes</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Oncologista Clínico • Retorno pós-ciclo</p>
+</div>
+<div class="w-12 h-12 rounded-xl bg-surface-container flex flex-col items-center justify-center flex-shrink-0 text-primary">
+<span class="font-label-sm text-label-sm uppercase font-bold leading-none">Qui</span>
+<span class="font-headline-md text-headline-md font-bold leading-none mt-0.5">24</span>
+</div>
+</div>
+<div class="bg-surface-container-low rounded-xl p-3 flex flex-col space-y-1 text-on-surface">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-[18px] text-outline">schedule</span>
+<span class="font-label-md text-label-md font-semibold">Quinta-feira, 09:30</span>
+</div>
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-[18px] text-outline">location_on</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Centro Oncológico Integrado - Sala 304</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1">
+<button class="font-label-md text-label-md text-primary font-semibold flex items-center space-x-1 hover:underline" onclick="abrirLembreteCalendario()">
+<span class="material-symbols-outlined text-[18px]">open_in_new</span>
+<span>Abrir na Agenda do Celular</span>
+</button>
+<span class="font-label-sm text-label-sm text-outline">Lembrete ativado 24h antes</span>
+</div>
+</div>
+</div>
+<!-- Tabela de Hábitos Diários de Suporte e Cuidado -->
+<div class="space-y-4">
+<div class="flex items-center justify-between px-1">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Hábitos e Conforto Diário</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Pequenas conquistas que fortalecem seu corpo</p>
+</div>
+</div>
+<!-- Hábito 1: Hidratação com Copos Interativos -->
+<div class="bg-surface-container-lowest rounded-3xl p-5 shadow-sm space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-2.5">
+<div class="w-9 h-9 rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">water_drop</span>
+</div>
+<div>
+<h4 class="font-label-lg text-label-lg text-on-surface">Hidratação Cuidadosa</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant" id="water-progress-text">5 de 8 copos preenchidos (1.250 ml)</p>
+</div>
+</div>
+<span class="font-label-md text-label-md font-bold text-primary" id="water-percentage">62%</span>
+</div>
+<!-- Copos Clicáveis Interativos -->
+<div class="grid grid-cols-8 gap-1.5 py-1" id="water-cups-grid">
+<button aria-label="Copo 1" class="h-10 rounded-lg flex items-center justify-center transition-all bg-primary text-on-primary" onclick="toggleWaterCup(0)">
+<span class="material-symbols-outlined text-[20px]">local_drink</span>
+</button>
+<button aria-label="Copo 2" class="h-10 rounded-lg flex items-center justify-center transition-all bg-primary text-on-primary" onclick="toggleWaterCup(1)">
+<span class="material-symbols-outlined text-[20px]">local_drink</span>
+</button>
+<button aria-label="Copo 3" class="h-10 rounded-lg flex items-center justify-center transition-all bg-primary text-on-primary" onclick="toggleWaterCup(2)">
+<span class="material-symbols-outlined text-[20px]">local_drink</span>
+</button>
+<button aria-label="Copo 4" class="h-10 rounded-lg flex items-center justify-center transition-all bg-primary text-on-primary" onclick="toggleWaterCup(3)">
+<span class="material-symbols-outlined text-[20px]">local_drink</span>
+</button>
+<button aria-label="Copo 5" class="h-10 rounded-lg flex items-center justify-center transition-all bg-primary text-on-primary" onclick="toggleWaterCup(4)">
+<span class="material-symbols-outlined text-[20px]">local_drink</span>
+</button>
+<button aria-label="Copo 6" class="h-10 rounded-lg flex items-center justify-center transition-all bg-surface-container text-outline" onclick="toggleWaterCup(5)">
+<span class="material-symbols-outlined text-[20px]">local_drink</span>
+</button>
+<button aria-label="Copo 7" class="h-10 rounded-lg flex items-center justify-center transition-all bg-surface-container text-outline" onclick="toggleWaterCup(6)">
+<span class="material-symbols-outlined text-[20px]">local_drink</span>
+</button>
+<button aria-label="Copo 8" class="h-10 rounded-lg flex items-center justify-center transition-all bg-surface-container text-outline" onclick="toggleWaterCup(7)">
+<span class="material-symbols-outlined text-[20px]">local_drink</span>
+</button>
+</div>
+<button class="w-full h-touch-min bg-surface-container-low hover:bg-surface-container text-primary font-label-md text-label-md rounded-xl flex items-center justify-center space-x-2 active:scale-95 transition-all" onclick="adicionarCopoRapido()">
+<span class="material-symbols-outlined text-[18px]">add_circle</span>
+<span>+ Beber 1 copo agora (250 ml)</span>
+</button>
+</div>
+<!-- Hábito 2: Atividade Física Leve -->
+<div class="bg-surface-container-lowest rounded-3xl p-5 shadow-sm flex items-center justify-between">
+<div class="flex items-center space-x-3.5 pr-2">
+<div class="w-10 h-10 rounded-full bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[22px]">directions_walk</span>
+</div>
+<div>
+<h4 class="font-label-lg text-label-lg text-on-surface">Caminhada leve no quintal</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">15 minutinhos ao ar livre no ritmo que puder</p>
+</div>
+</div>
+<button class="h-touch-min min-w-[100px] px-3 bg-surface-container-low text-primary hover:bg-surface-container rounded-xl font-label-md text-label-md flex items-center justify-center space-x-1 active:scale-95 transition-all" id="btn-caminhada" onclick="alternarCaminhada()">
+<span class="material-symbols-outlined text-[20px]">radio_button_unchecked</span>
+<span>Marcar</span>
+</button>
+</div>
+<!-- Hábito 3: Descanso e Sono -->
+<div class="bg-surface-container-lowest rounded-3xl p-5 shadow-sm space-y-3">
+<div class="flex items-center space-x-3.5">
+<div class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[22px]">bedtime</span>
+</div>
+<div>
+<h4 class="font-label-lg text-label-lg text-on-surface">Dormiu bem ontem à noite?</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Ajuda o médico a dosar os remédios de apoio</p>
+</div>
+</div>
+<!-- Seleção Tátil de Qualidade de Sono -->
+<div class="grid grid-cols-3 gap-2 pt-1" id="sleep-options">
+<button class="h-touch-min bg-surface-container-low hover:bg-surface-container text-on-surface rounded-xl flex flex-col items-center justify-center py-1 transition-all" onclick="selecionarSono(this, 'Bem e descansado')">
+<span class="text-xl">😴</span>
+<span class="font-label-sm text-label-sm font-medium mt-0.5">Dormi Bem</span>
+</button>
+<button class="h-touch-min bg-surface-container-low hover:bg-surface-container text-on-surface rounded-xl flex flex-col items-center justify-center py-1 transition-all" onclick="selecionarSono(this, 'Sono picado')">
+<span class="text-xl">🥱</span>
+<span class="font-label-sm text-label-sm font-medium mt-0.5">Sono Picado</span>
+</button>
+<button class="h-touch-min bg-surface-container-low hover:bg-surface-container text-on-surface rounded-xl flex flex-col items-center justify-center py-1 transition-all" onclick="selecionarSono(this, 'Insônia ou dor')">
+<span class="text-xl">🌧️</span>
+<span class="font-label-sm text-label-sm font-medium mt-0.5">Tive Dificuldade</span>
+</button>
+</div>
+<p class="font-label-sm text-label-sm text-primary text-center hidden font-medium pt-1" id="feedback-sono">
+        ✓ Informação salva para o diário da equipe de enfermagem.
+      </p>
+</div>
+</div>
+<!-- Espaçador de segurança final -->
+<div class="h-6"></div>
+</div>
+<script>
+  let waterCount = 5;
+  const totalWaterCups = 8;
+  let audioPlaying = false;
+  let sintetizadorVoz = null;
+
+  function atualizarVisualCopos() {
+    const grid = document.getElementById('water-cups-grid');
+    const buttons = grid.querySelectorAll('button');
+    buttons.forEach((btn, index) => {
+      if (index < waterCount) {
+        btn.className = "h-10 rounded-lg flex items-center justify-center transition-all bg-primary text-on-primary";
+      } else {
+        btn.className = "h-10 rounded-lg flex items-center justify-center transition-all bg-surface-container text-outline";
+      }
+    });
+
+    const ml = waterCount * 250;
+    document.getElementById('water-progress-text').innerText = `${waterCount} de ${totalWaterCups} copos preenchidos (${ml.toLocaleString('pt-BR')} ml)`;
+    const percent = Math.round((waterCount / totalWaterCups) * 100);
+    document.getElementById('water-percentage').innerText = `${percent}%`;
+  }
+
+  function toggleWaterCup(index) {
+    if (waterCount === index + 1) {
+      waterCount = index;
+    } else {
+      waterCount = index + 1;
+    }
+    atualizarVisualCopos();
+  }
+
+  function adicionarCopoRapido() {
+    if (waterCount < totalWaterCups) {
+      waterCount++;
+      atualizarVisualCopos();
+    }
+  }
+
+  function tocarVozGuia() {
+    const btnIcon = document.getElementById('audio-icon');
+    if ('speechSynthesis' in window) {
+      if (window.speechSynthesis.speaking) {
+        window.speechSynthesis.cancel();
+        btnIcon.innerText = 'volume_up';
+        return;
+      }
+      const mensagem = new SpeechSynthesisUtterance("Instrução da Ondansetrona: Tomar com um copo de água cheinho logo após o almoço, para proteger seu estômago contra enjoo.");
+      mensagem.lang = 'pt-BR';
+      mensagem.rate = 0.9;
+      mensagem.onstart = () => {
+        btnIcon.innerText = 'pause';
+      };
+      mensagem.onend = () => {
+        btnIcon.innerText = 'volume_up';
+      };
+      window.speechSynthesis.speak(mensagem);
+    } else {
+      alert("Tomar com 1 copo de água cheinho logo após o almoço para proteger o estômago.");
+    }
+  }
+
+  function confirmarMedicamento() {
+    const card = document.getElementById('card-remedio-atual');
+    card.classList.add('transition-all', 'duration-500');
+    card.innerHTML = `
+      <div class="p-6 text-center flex flex-col items-center justify-center space-y-3">
+        <div class="w-16 h-16 rounded-full bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center animate-bounce">
+          <span class="material-symbols-outlined text-[36px]">verified</span>
+        </div>
+        <div>
+          <h3 class="font-headline-md text-headline-md text-on-surface">Excelente trabalho!</h3>
+          <p class="font-body-md text-body-md text-on-surface-variant mt-1">Dose das 14:00 registrada com sucesso.</p>
+          <p class="font-label-sm text-label-sm text-primary font-semibold mt-2">Familiares avisados no aplicativo!</p>
+        </div>
+        <button onclick="location.reload()" class="mt-2 text-primary font-label-md text-label-md underline">
+          Desfazer ou ver detalhes
+        </button>
+      </div>
+    `;
+  }
+
+  function adiarMedicamento(minutos) {
+    alert(`Lembrete adiado em ${minutos} minutos. Enviaremos um aviso sonoro repensado para não assustar.`);
+  }
+
+  function notificarCuidadorManual() {
+    alert("Mensagem de status enviada com sucesso para o WhatsApp e app do cuidador cadastrado.");
+  }
+
+  function alternarCaminhada() {
+    const btn = document.getElementById('btn-caminhada');
+    const isDone = btn.classList.contains('bg-tertiary-container');
+    if (isDone) {
+      btn.className = "h-touch-min min-w-[100px] px-3 bg-surface-container-low text-primary hover:bg-surface-container rounded-xl font-label-md text-label-md flex items-center justify-center space-x-1 active:scale-95 transition-all";
+      btn.innerHTML = `<span class="material-symbols-outlined text-[20px]">radio_button_unchecked</span><span>Marcar</span>`;
+    } else {
+      btn.className = "h-touch-min min-w-[100px] px-3 bg-tertiary-container text-on-tertiary-container rounded-xl font-label-md text-label-md flex items-center justify-center space-x-1 active:scale-95 transition-all font-semibold";
+      btn.innerHTML = `<span class="material-symbols-outlined text-[20px]">check_circle</span><span>Feito!</span>`;
+    }
+  }
+
+  function selecionarSono(elemento, status) {
+    const container = document.getElementById('sleep-options');
+    const botoes = container.querySelectorAll('button');
+    botoes.forEach(b => {
+      b.className = "h-touch-min bg-surface-container-low text-on-surface rounded-xl flex flex-col items-center justify-center py-1 transition-all";
+    });
+    elemento.className = "h-touch-min bg-primary text-on-primary rounded-xl flex flex-col items-center justify-center py-1 transition-all shadow-sm";
+    document.getElementById('feedback-sono').classList.remove('hidden');
+  }
+
+  function abrirLembreteCalendario() {
+    alert("Compromisso sincronizado! A consulta com Dr. Carlos Mendes já consta na sua agenda pessoal do aparelho com rota calculada.");
+  }
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/85 backdrop-blur-xl shadow-[0_-2px_12px_rgba(19,78,84,0.06)]" data-active-classes="text-primary-container font-semibold"><div class="flex justify-between items-center h-20 px-inset-xs max-w-lg mx-auto"><a class="flex flex-col items-center justify-center flex-1 h-touch-expanded text-on-surface-variant hover:text-primary transition-all duration-200 group" data-path="meu-dia" href="#"><div class="w-10 h-8 flex items-center justify-center rounded-full group-hover:bg-surface-container-low"><span class="material-symbols-outlined text-[24px]">sentiment_calm</span></div><span class="font-label-sm text-label-sm text-center leading-tight mt-0.5">Meu Dia</span></a><a class="flex flex-col items-center justify-center flex-1 h-touch-expanded text-on-surface-variant hover:text-primary transition-all duration-200 group" data-path="remedios-e-rotina" href="#"><div class="w-10 h-8 flex items-center justify-center rounded-full group-hover:bg-surface-container-low"><span class="material-symbols-outlined text-[24px]">medication</span></div><span class="font-label-sm text-label-sm text-center leading-tight mt-0.5">Remédios</span></a><a class="flex flex-col items-center justify-center flex-1 h-touch-expanded text-on-surface-variant hover:text-primary transition-all duration-200 group" data-path="nutricao-e-paladar" href="#"><div class="w-10 h-8 flex items-center justify-center rounded-full group-hover:bg-surface-container-low"><span class="material-symbols-outlined text-[24px]">nutrition</span></div><span class="font-label-sm text-label-sm text-center leading-tight mt-0.5">Nutrição</span></a><a class="flex flex-col items-center justify-center flex-1 h-touch-expanded text-on-surface-variant hover:text-primary transition-all duration-200 group" data-path="rede-e-familia" href="#"><div class="w-10 h-8 flex items-center justify-center rounded-full group-hover:bg-surface-container-low"><span class="material-symbols-outlined text-[24px]">volunteer_activism</span></div><span class="font-label-sm text-label-sm text-center leading-tight mt-0.5">Família</span></a><a class="flex flex-col items-center justify-center flex-1 h-touch-expanded text-on-surface-variant hover:text-primary transition-all duration-200 group" data-path="painel-clinico" href="#"><div class="w-10 h-8 flex items-center justify-center rounded-full group-hover:bg-surface-container-low"><span class="material-symbols-outlined text-[24px]">clinical_notes</span></div><span class="font-label-sm text-label-sm text-center leading-tight mt-0.5">Clínico</span></a></div></nav></body></html>

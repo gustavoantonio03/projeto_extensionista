@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><title>OncoVida</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "surface-container-high": "#e9e8e6", "on-tertiary": "#ffffff", "surface-container-low": "#f4f3f1", "on-primary": "#ffffff", "surface-bright": "#faf9f7", "outline-variant": "#bfc8c9", "surface-container": "#efeeec", "surface-tint": "#30666c", "surface": "#faf9f7", "on-surface-variant": "#404849", "on-tertiary-container": "#7bc3af", "on-primary-fixed": "#001f23", "inverse-on-surface": "#f1f1ef", "primary-fixed": "#b6ecf3", "on-primary-fixed-variant": "#134e54", "outline": "#70797a", "background": "#faf9f7", "secondary": "#5a5d71", "on-tertiary-fixed-variant": "#005142", "on-secondary-container": "#5e6275", "error": "#ba1a1a", "primary-container": "#134e54", "inverse-primary": "#9ad0d6", "inverse-surface": "#2f3130", "surface-variant": "#e3e2e0", "on-surface": "#1a1c1b", "on-tertiary-fixed": "#002019", "secondary-container": "#dcdef5", "tertiary-fixed": "#a8f1db", "on-background": "#1a1c1b", "primary": "#00363b", "on-primary-container": "#89bec5", "on-secondary-fixed": "#171b2b", "on-error-container": "#93000a", "primary-fixed-dim": "#9ad0d6", "on-secondary-fixed-variant": "#434658", "surface-container-highest": "#e3e2e0", "tertiary": "#00382d", "secondary-fixed-dim": "#c3c5dc", "surface-container-lowest": "#ffffff", "tertiary-fixed-dim": "#8cd4c0", "secondary-fixed": "#dfe1f8", "error-container": "#ffdad6", "on-error": "#ffffff", "tertiary-container": "#005142", "surface-dim": "#dadad8", "on-secondary": "#ffffff" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "inset-sm": "8px", "inset-md": "16px", "inset-xl": "32px", "touch-min": "48px", "gutter-mobile": "16px", "stack-md": "16px", "gutter-tablet": "24px", "inset-lg": "24px", "stack-sm": "8px", "stack-lg": "24px", "inset-xs": "4px", "margin-screen": "20px", "touch-expanded": "56px" }, fontFamily: { "body-md": ["Plus Jakarta Sans"], "headline-md": ["Plus Jakarta Sans"], "label-lg": ["Plus Jakarta Sans"], "display-lg": ["Plus Jakarta Sans"], "display-lg-mobile": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "label-md": ["Plus Jakarta Sans"], "label-sm": ["Plus Jakarta Sans"], "body-lg": ["Plus Jakarta Sans"], "body-sm": ["Plus Jakarta Sans"], "headline-sm": ["Plus Jakarta Sans"] }, fontSize: { "body-md": ["15px", { "lineHeight": "22px", "fontWeight": "400" }], "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }], "label-lg": ["15px", { "lineHeight": "20px", "fontWeight": "600" }], "display-lg": ["36px", { "lineHeight": "44px", "fontWeight": "700" }], "display-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }], "headline-lg": ["24px", { "lineHeight": "32px", "fontWeight": "600" }], "label-md": ["13px", { "lineHeight": "18px", "fontWeight": "500" }], "label-sm": ["11px", { "lineHeight": "16px", "fontWeight": "600" }], "body-lg": ["17px", { "lineHeight": "26px", "fontWeight": "400" }], "body-sm": ["13px", { "lineHeight": "18px", "fontWeight": "400" }], "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }] } } } };</script></head><body class="bg-surface font-body-md text-on-surface antialiased flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(19,78,84,0.06)]"><div class="h-20 px-margin-screen flex items-center justify-between gap-inset-sm"><div class="flex items-center gap-inset-sm"><img alt="Logo minimalista e elegante em vetor para aplicativo oncológico adulto 'OncoVida', combinando um laço de esperança estilizado harmoniosamente integrado com uma folha suave de vida e renovação, cores petróleo e menta suave, fundo neutro limpo, design médico premium e acolhedor.. Design context: - Primary color: #134e54
+- Font: plusJakartaSans
+- Mode: light
+- Roundness: rounded-md
+. The logo should be visually consistent with these brand tokens." class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1WPfZgOvxntCrX5_9LmXgZZw3c8_Gzc56RPxOIIOzTojWZ02o23WS09W6V5NUe5LM_dnHj0bw0l8jChJIVBEnny4lpm6i2T8s1l0wIL3uCyqALnRdTDv5hIxLbA0HLpXmg6SwiPjWXC88eb1jJ8tYr60Y9RaTTUBATArM9rSQ0fMO3Gks7ydqQ3vr-dve_IK4c8U2Sb5ckGHZxEBiO-fCBoENY-YUoZkAiXVdENNLtc446hMZXv5vzdcc8"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-primary leading-tight tracking-tight">OncoVida</span><span class="font-label-sm text-label-sm text-on-surface-variant line-clamp-1">Nutrição E Paladar</span></div></div><div class="flex items-center gap-inset-xs"><button aria-label="Seletor de Perfil e Acessibilidade" class="h-touch-min min-w-touch-min px-inset-xs rounded-xl flex items-center justify-center gap-inset-xs text-on-surface-variant hover:bg-surface-container-low transition-colors"><span class="material-symbols-outlined text-primary-container">hearing</span><span class="font-label-md text-label-md font-semibold text-primary-container hidden sm:inline">Paciente</span><span class="material-symbols-outlined text-outline">arrow_drop_down</span></button><a aria-label="Emergência SOS Onco" class="h-touch-min px-3 rounded-xl bg-error text-on-error flex items-center justify-center gap-1.5 shadow-[0_2px_8px_rgba(186,26,26,0.25)] hover:bg-error/90 active:scale-95 transition-all" data-path="sos-emergencia" href="#"><span class="material-symbols-outlined text-xl">emergency</span><span class="font-label-md text-label-md font-bold uppercase tracking-wide">SOS</span></a><div class="flex items-center pl-inset-xs"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1VWEqVytYek6tayEIECGIgNCgzKkxjQu4Pc7p3zorhvB0Elx-AMOxiB_j4RYYhqTtc-97p8GTJuH9qIO0doV8CKk5T5-pgYtuD8VLmIzNsnWbzzAYWAnzQHRSMepdHk95zkYHSQt2KU5lViIhDuTWK5r7rmHYPuWBPrRCL6ZF791xSskJgQOcYIbUCoYC15lq1tkpTCntc6M1N8tSiCy3DO_TwoUd0sm0JAADM8PsXcOiXv5dLAExD4hUc"/></div></div></div></header><main class="flex-1 flex flex-col relative w-full pt-20 pb-28 px-margin-screen bg-surface"><div class="flex flex-col w-full space-y-6">
+<!-- Acolhimento & Status do Dia -->
+<section class="bg-surface-container-low rounded-xl p-5 shadow-sm">
+<div class="flex items-center justify-between gap-4">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-full bg-primary-container text-on-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">restaurant</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-primary font-semibold tracking-wider uppercase">Nutrição Compassiva</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Como foi sua refeição hoje?</h2>
+</div>
+</div>
+<!-- Ouvir em Áudio (Acessibilidade para fadiga visual) -->
+<button aria-label="Ouvir orientações em áudio" class="h-11 px-3.5 rounded-full bg-surface-container-highest text-primary font-label-md text-label-md flex items-center gap-2 active:scale-95 transition-transform" id="btn-listen-guide">
+<span class="material-symbols-outlined text-lg">volume_up</span>
+<span class="hidden sm:inline">Ouvir Dicas</span>
+</button>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2">
+      Sem pressão ou culpa. Registre com apenas um toque para que sua equipe nutricional ajuste seu cardápio de recuperação.
+    </p>
+</section>
+<!-- Módulo de Nutrição Simplificado por Fotos -->
+<section class="flex flex-col space-y-4">
+<div class="flex items-center justify-between">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Almoço Sugerido</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Pratos de digestão suave e fácil absorção</p>
+</div>
+<span class="font-label-sm text-label-sm text-on-tertiary-container bg-tertiary-container/10 px-2.5 py-1 rounded-full font-medium">Ciclo 2 - Dia 4</span>
+</div>
+<!-- Carrossel de Opções Nutricionais Fotorrealistas -->
+<div class="flex gap-3.5 overflow-x-auto pb-2 -mx-margin-screen px-margin-screen snap-x no-scrollbar">
+<!-- Cartão 1: Sopa Cremosa -->
+<article class="meal-option-card min-w-[220px] max-w-[220px] bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden snap-start flex flex-col cursor-pointer transition-all active:scale-[0.98]">
+<div class="relative h-32 w-full">
+<img class="w-full h-full object-cover" data-alt="Tigela aconchegante de cerâmica artesanal com sopa aveludada de abóbora e mandioquinha, levemente finalizada com salsinha fresca picada e gotas de azeite dourado. Iluminação natural suave e reconfortante em tons quentes terrosos e acolhedores, fotografia culinária clean para recuperação pós-quimioterapia." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBr8GLV2oqGWfgLUyRTSqxGsq4vqR6K8bm4Zh7PXfuqBuPaiyvPqST89iLpFTwC7_tbp1xxOH6BA6pwz0FdUWlQcvWfGic5xTkri3wlbbyJ02rfztL-A_uR9h9SLj4eTtL3MAlJeSvPAmracBES-DwGol5QUdPQTtnBP-COJHbQe3F4Or7iUyohpiyj3_bSfLr5WwOaOcnRF2URQ538rwPAanUO7OnEHvH43MGACfB50E0nBJfQH1wm"/>
+<span class="absolute top-2.5 left-2.5 bg-surface/90 backdrop-blur-md text-primary font-label-sm text-label-sm px-2.5 py-0.5 rounded-full font-semibold shadow-sm">Textura Aveludada</span>
+</div>
+<div class="p-3.5 flex flex-col flex-1 justify-between">
+<div>
+<h4 class="font-label-lg text-label-lg text-on-surface">Sopa Leve de Legumes</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-1 mt-0.5">Com abóbora e mandioquinha</p>
+</div>
+<span class="mt-2 text-primary font-label-sm text-label-sm font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">spa</span> 280 kcal • Hidratante
+          </span>
+</div>
+</article>
+<!-- Cartão 2: Purê Suave com Frango -->
+<article class="meal-option-card min-w-[220px] max-w-[220px] bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden snap-start flex flex-col cursor-pointer transition-all active:scale-[0.98]">
+<div class="relative h-32 w-full">
+<img class="w-full h-full object-cover" data-alt="Prato raso de porcelana branca com purê suave de batata inglesa e inhame ultra cremoso, acompanhado de peito de frango cozido desfiado macio e suculento sem condimentos fortes. Estilo culinário hospitalar premium, luz da manhã difusa e apetitosa." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAW2UDCimkdmjMqr8wPLmUged-W8OyebNl_hhZzxlhGAGMuQaN6meD2yi3muGyARjxMzp_NQbSYXi9eGTv1Q9oQmwEPgMhwatgADhZvUDcVqL58brHb3FQR5etvBFHqcLxAkuLk6QfnqHKGz-0anAMY-jQmUvMYKYObWPA426WXmutstZyBR6_mC5OsUUeqVXsYSxVIL9VbDerthbtOjjSzJcmF7G1rYoyUsJ4QyLXy2XO-e2qVPEGL"/>
+<span class="absolute top-2.5 left-2.5 bg-surface/90 backdrop-blur-md text-primary font-label-sm text-label-sm px-2.5 py-0.5 rounded-full font-semibold shadow-sm">Proteína Fácil</span>
+</div>
+<div class="p-3.5 flex flex-col flex-1 justify-between">
+<div>
+<h4 class="font-label-lg text-label-lg text-on-surface">Purê Suave &amp; Frango</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-1 mt-0.5">Peito desfiado úmido e macio</p>
+</div>
+<span class="mt-2 text-primary font-label-sm text-label-sm font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">fitness_center</span> 340 kcal • Alta proteína
+          </span>
+</div>
+</article>
+<!-- Cartão 3: Frutas Geladinhas -->
+<article class="meal-option-card min-w-[220px] max-w-[220px] bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden snap-start flex flex-col cursor-pointer transition-all active:scale-[0.98]">
+<div class="relative h-32 w-full">
+<img class="w-full h-full object-cover" data-alt="Potinho de vidro fosco com cubinhos perfeitamente cortados de melancia geladinha, melão amarelo e mamão papaia com folhinhas de hortelã fresca para aliviar mucosite e sensação de sede. Fundo claro iluminado com toque refrescante." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDRt29MMdYk92Oi5sODOvueelzrZ0baRLU_dNP3Ds7aiXtG8sX2ElbSoySvvCT8-jQpDXOvfaAvpizf2BpvPv2CkiXO7rOCTT26FisE_mzkq8sgCJpkrSPf9DX_fwTs6lKJNpQbMGxNNjinNw-NqU1whakxtc3LkrPuMNFpwr_8ZSxIUAxs1mwiJqJzDI1lRZ93AFrUinvIcTwQEycv6jXOZCL6bJAodSaQUQzXY87kKLHg0RZHr3mb"/>
+<span class="absolute top-2.5 left-2.5 bg-surface/90 backdrop-blur-md text-primary font-label-sm text-label-sm px-2.5 py-0.5 rounded-full font-semibold shadow-sm">Anti-Náusea</span>
+</div>
+<div class="p-3.5 flex flex-col flex-1 justify-between">
+<div>
+<h4 class="font-label-lg text-label-lg text-on-surface">Frutas em Cubinhos</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-1 mt-0.5">Melancia e mamão gelados</p>
+</div>
+<span class="mt-2 text-primary font-label-sm text-label-sm font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">ac_unit</span> Refresca o paladar
+          </span>
+</div>
+</article>
+</div>
+<!-- Registro Rápido Sem Digitação (Tap Target amplo 56px) -->
+<div class="bg-surface-container-lowest rounded-xl p-4 shadow-sm space-y-3">
+<span class="font-label-md text-label-md text-on-surface-variant block font-medium">Toque rápido: Quanto você conseguiu comer?</span>
+<div class="grid grid-cols-1 gap-2.5" id="acceptance-buttons">
+<!-- Opção 1: Sucesso Total -->
+<button class="acceptance-btn w-full min-h-touch-expanded p-3 rounded-xl bg-surface-container-low hover:bg-tertiary-fixed/30 active:scale-[0.99] flex items-center justify-between text-left transition-all" data-status="tudo">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">sentiment_very_satisfied</span>
+</div>
+<div>
+<span class="font-label-lg text-label-lg text-on-surface block">Desceu Muito Bem!</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Consegui comer tudo ou quase tudo</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-tertiary-container checkmark opacity-0 transition-opacity">check_circle</span>
+</button>
+<!-- Opção 2: Parcial -->
+<button class="acceptance-btn w-full min-h-touch-expanded p-3 rounded-xl bg-surface-container-low hover:bg-secondary-container/40 active:scale-[0.99] flex items-center justify-between text-left transition-all" data-status="metade">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-2xl">sentiment_neutral</span>
+</div>
+<div>
+<span class="font-label-lg text-label-lg text-on-surface block">Comi só a Metade</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Fiquei satisfeito rápido, mas sem enjoo</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-secondary checkmark opacity-0 transition-opacity">check_circle</span>
+</button>
+<!-- Opção 3: Rejeição/Enjoo -->
+<button class="acceptance-btn w-full min-h-touch-expanded p-3 rounded-xl bg-surface-container-low hover:bg-error-container/40 active:scale-[0.99] flex items-center justify-between text-left transition-all" data-status="enjoo">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-error-container text-on-error-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">sentiment_dissatisfied</span>
+</div>
+<div>
+<span class="font-label-lg text-label-lg text-on-surface block">Rejeição / Fiquei Enjoado</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Deu náusea ou não suportei o gosto</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-error checkmark opacity-0 transition-opacity">check_circle</span>
+</button>
+</div>
+<!-- Feedback Interativo de Confirmação Lúdica -->
+<div class="hidden p-3 rounded-lg bg-surface-container font-label-md text-label-md text-primary flex items-center gap-2" id="feedback-message">
+<span class="material-symbols-outlined text-lg">check</span>
+<span>Anotado com carinho! Seu nutricionista já foi atualizado.</span>
+</div>
+</div>
+</section>
+<!-- Seleção Rápida de Alterações de Paladar (Disgeusia) -->
+<section class="bg-surface-container-lowest rounded-xl p-5 shadow-sm space-y-4">
+<div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container text-xl">qr_code_2</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Sentindo a boca diferente?</h3>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Toque no sintoma para ver uma dica prática de conforto imediato:</p>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5" id="taste-chips">
+<!-- Sintoma 1: Gosto Metálico -->
+<button class="taste-btn p-3.5 rounded-xl bg-surface-container-low hover:bg-surface-container text-left flex flex-col justify-between gap-3 active:scale-95 transition-all" data-tip="metallic">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-lg">iron</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface font-semibold">Gosto Metálico</span>
+</div>
+<span class="font-label-sm text-label-sm text-primary font-medium">Toque p/ Dica</span>
+</button>
+<!-- Sintoma 2: Comida Sem Gosto -->
+<button class="taste-btn p-3.5 rounded-xl bg-surface-container-low hover:bg-surface-container text-left flex flex-col justify-between gap-3 active:scale-95 transition-all" data-tip="bland">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-lg">block</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface font-semibold">Boca Sem Gosto</span>
+</div>
+<span class="font-label-sm text-label-sm text-primary font-medium">Toque p/ Dica</span>
+</button>
+<!-- Sintoma 3: Cheiro Forte -->
+<button class="taste-btn p-3.5 rounded-xl bg-surface-container-low hover:bg-surface-container text-left flex flex-col justify-between gap-3 active:scale-95 transition-all" data-tip="smell">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-lg">air</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface font-semibold">Cheiro Forte</span>
+</div>
+<span class="font-label-sm text-label-sm text-primary font-medium">Toque p/ Dica</span>
+</button>
+</div>
+<!-- Dica Automática em Destaque Dinâmico -->
+<div class="p-4 rounded-xl bg-primary-fixed/20 flex items-start gap-3 transition-all" id="taste-tip-container">
+<div class="w-9 h-9 rounded-full bg-primary-container text-on-primary flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-lg">lightbulb</span>
+</div>
+<div class="flex-1">
+<span class="font-label-md text-label-md text-on-primary-fixed font-bold block" id="tip-title">Dica Prática: Gosto Metálico na Boca</span>
+<p class="font-body-sm text-body-sm text-on-primary-fixed-variant mt-1" id="tip-content">
+          Troque garfos e colheres de metal por <strong>talheres plásticos, de louça ou de bambu</strong>. Chupar pastilhas suaves de hortelã ou picolé de limão antes de comer também ajuda a 'limpar' as papilas.
+        </p>
+</div>
+</div>
+</section>
+<!-- Biblioteca de Orientações Educativas em Vídeo (Estilo YouTube Integrado) -->
+<section class="space-y-3.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-error text-2xl">smart_display</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Pílulas de Conhecimento</h3>
+</div>
+<button class="font-label-md text-label-md text-primary font-semibold hover:underline">Ver todas (12)</button>
+</div>
+<!-- Vídeo 1 em Destaque Especial: Camila Nutricionista -->
+<article class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm flex flex-col group">
+<div class="relative h-48 w-full bg-surface-container-high cursor-pointer overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Nutricionista oncológica mulher com jaleco impecável em consultório caloroso e acolhedor, sorrindo de maneira empática enquanto segura xícara de infusão suave de gengibre. Ambiente médico humanizado e acolhedor com plantas verdes e iluminação suave de estúdio." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCeqLNFpvzwT9bVs3Rlo_3u735hPZO8lsSDwtX-5rfyGpEVlc-WSCoMY7aCGOuB1xLoiAtlrA5AtvwQRQ5iQa3Z1UpaDIDNACynYWgv9yrwnnrBzjvXFkYiJElvdfOxPkpmuuOCcxBaADkLLHEQ03X3sIebUSCI7ClaMoUSw8b0aLCT_i6fFc5lC15TQo3KqmQc9-ohx-wf5NeGAXgL1jepwcLmhr02SOA4lqcqtl2DYYFjTwzIWy6"/>
+<!-- Scrim e Botão Play Central Estilo YouTube -->
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent flex items-center justify-center">
+<div class="w-14 h-14 rounded-full bg-error text-on-error flex items-center justify-center shadow-lg transform group-hover:scale-110 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</div>
+</div>
+<!-- Duração do Vídeo -->
+<span class="absolute bottom-3 right-3 bg-black/75 text-white font-label-sm text-label-sm px-2 py-0.5 rounded font-mono">
+          4:15 min
+        </span>
+<!-- Tag de Especialidade -->
+<span class="absolute top-3 left-3 bg-surface/90 backdrop-blur text-primary font-label-sm text-label-sm px-2.5 py-1 rounded-full font-semibold">
+          Especial Quimioterapia
+        </span>
+</div>
+<div class="p-4 space-y-2">
+<h4 class="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary transition-colors">
+          Como diminuir o enjoo e a náusea pós-quimioterapia
+        </h4>
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-primary-container text-on-primary flex items-center justify-center text-xs font-semibold">
+            C
+          </div>
+<span class="font-label-md text-label-md text-on-surface-variant font-medium">Dra. Camila Albuquerque • Nutrição Oncológica</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+          Pequenas mudanças práticas: temperatura das refeições, água saborizada com gengibre e por que evitar cheiro de refogado.
+        </p>
+</div>
+</article>
+<!-- Vídeo 2: História de Superação - Dona Clara -->
+<article class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm p-3 flex gap-3.5 items-center group cursor-pointer hover:bg-surface-container-low transition-colors">
+<div class="relative w-28 h-20 rounded-lg overflow-hidden shrink-0 bg-surface-container-high">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Retrato acolhedor de senhora idosa com olhar sereno e sorriso radiante de esperança e vitória, sentada numa poltrona ensolarada de jardim segurando um chá morno. Cores calmas e ternura genuína de superação oncológica." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBU8V_iQsWR0GrGJEHedNvj50jacphziUlqfs1zygK5f3wmkOtDW98KOY25eT9qihtJSHI0xYe9ZZwHUEB1f66ufB_wxb8x5D9ny42LtlTmPoctanHFRXci15gW57mAoLhzaOqcBMARI-cJOMMfAtLeibxsbpfuVEZig0gZE0bZK7MIAr_QrNBzjuJB3S29T5NkywADcmMPNutzj20RWyUvcOx4HoCZOO-voA2P2PbKxy_mXzBgTr9v"/>
+<div class="absolute inset-0 bg-black/30 flex items-center justify-center">
+<div class="w-8 h-8 rounded-full bg-white/90 text-on-surface flex items-center justify-center shadow">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</div>
+</div>
+<span class="absolute bottom-1 right-1 bg-black/80 text-white font-label-sm text-[10px] px-1 rounded">
+          3:30
+        </span>
+</div>
+<div class="flex flex-col min-w-0 flex-1">
+<span class="font-label-sm text-label-sm text-primary font-semibold uppercase tracking-wider">História de Superação</span>
+<h4 class="font-label-lg text-label-lg text-on-surface truncate mt-0.5">O caminho da cura da Dona Clara</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-1 mt-0.5">"Voltei a sentir o sabor da canja da minha neta"</p>
+</div>
+</article>
+</section>
+<!-- Botão de Contato Direto via WhatsApp (Banner de Rodapé de Alta Acessibilidade) -->
+<section class="bg-gradient-to-br from-[#1b5e20]/10 via-[#2e7d32]/15 to-surface-container-lowest rounded-xl p-5 shadow-md flex flex-col space-y-4">
+<div class="flex items-start gap-3.5">
+<div class="w-12 h-12 rounded-2xl bg-[#25d366] text-white flex items-center justify-center shadow-md shrink-0">
+<span class="material-symbols-outlined text-2xl">chat</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-primary font-bold uppercase tracking-wider">Plantão de Cuidados</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface leading-snug">Dúvida sobre a alimentação ou reação ao remédio?</h3>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">
+      Não fique inseguro em casa. Nossa equipe de enfermagem e nutrição oncológica responde em poucos minutos.
+    </p>
+<!-- Botão Principal de Conversão com Área de Toque Generosa (56px) -->
+<a class="h-touch-expanded w-full bg-[#1e7e34] hover:bg-[#165c26] text-white rounded-xl font-label-lg text-label-lg flex items-center justify-center gap-2.5 shadow-md active:scale-98 transition-transform" href="https://wa.me/5511999999999?text=Ol%C3%A1%2C%20equipe%20OncoVida.%20Gostaria%20de%20tirar%20uma%20d%C3%BAvida%20sobre%20minha%20alimenta%C3%A7%C3%A3o%20de%20hoje." rel="noopener noreferrer" target="_blank">
+<span class="material-symbols-outlined text-2xl">forum</span>
+<span>Falar com Enfermagem no WhatsApp</span>
+</a>
+</section>
+</div>
+<script>
+  (function() {
+    // Interação de Aceitação de Refeições
+    const buttons = document.querySelectorAll('.acceptance-btn');
+    const feedback = document.getElementById('feedback-message');
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', function() {
+        // Reset states
+        buttons.forEach(b => {
+          b.classList.remove('bg-surface-container-highest');
+          const chk = b.querySelector('.checkmark');
+          if (chk) chk.classList.add('opacity-0');
+        });
+
+        // Activate current
+        this.classList.add('bg-surface-container-highest');
+        const check = this.querySelector('.checkmark');
+        if (check) check.classList.remove('opacity-0');
+
+        // Show cute toast
+        if (feedback) {
+          feedback.classList.remove('hidden');
+          setTimeout(() => {
+            feedback.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }, 100);
+        }
+      });
+    });
+
+    // Interação das Dicas de Paladar (Disgeusia)
+    const tasteBtns = document.querySelectorAll('.taste-btn');
+    const tipTitle = document.getElementById('tip-title');
+    const tipContent = document.getElementById('tip-content');
+    const tipContainer = document.getElementById('taste-tip-container');
+
+    const tips = {
+      metallic: {
+        title: "Dica Prática: Gosto Metálico na Boca",
+        text: "Troque garfos e colheres de metal por talheres plásticos, de louça ou de bambu. Chupar pastilhas suaves de hortelã ou picolé de limão antes de comer também ajuda a 'limpar' as papilas."
+      },
+      bland: {
+        title: "Dica Prática: Comida sem Gosto ou Amarga",
+        text: "Realce os pratos com ervas naturais aromáticas (manjericão, alecrim suave, orégano) e algumas gotas de azeite extra virgem. Evite excesso de sal, que pode irritar a mucosa."
+      },
+      smell: {
+        title: "Dica Prática: Cheiro Muito Forte ou Enjoativo",
+        text: "Consuma alimentos em temperatura ambiente ou frios/gelados — refeições quentes liberam muito mais vapor aromático que ativa a náusea no cérebro. Peça para alguém cozinhar em ambiente ventilado."
+      }
+    };
+
+    tasteBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        const type = this.getAttribute('data-tip');
+        if (tips[type]) {
+          tipTitle.textContent = tips[type].title;
+          tipContent.innerHTML = tips[type].text;
+          
+          // Efeito de pulso suave de atenção
+          tipContainer.classList.add('scale-[1.02]');
+          setTimeout(() => tipContainer.classList.remove('scale-[1.02]'), 200);
+        }
+
+        // Highlight selected
+        tasteBtns.forEach(b => b.classList.remove('bg-surface-container-highest'));
+        this.classList.add('bg-surface-container-highest');
+      });
+    });
+
+    // Ouvir Dicas em Áudio (TTS Feedback Nativo)
+    const audioBtn = document.getElementById('btn-listen-guide');
+    if (audioBtn) {
+      audioBtn.addEventListener('click', function() {
+        if ('speechSynthesis' in window) {
+          window.speechSynthesis.cancel();
+          const utterance = new SpeechSynthesisUtterance("Olá! Hoje sugerimos refeições leves como sopa aveludada ou purê com frango. Toque na carinha que melhor representa como você se sentiu após comer. Se sentir gosto metálico, use talheres plásticos ou de madeira.");
+          utterance.lang = 'pt-BR';
+          utterance.rate = 0.9; // Leitura mais calma e humanizada
+          window.speechSynthesis.speak(utterance);
+          
+          this.classList.add('bg-primary-container', 'text-on-primary');
+          setTimeout(() => {
+            this.classList.remove('bg-primary-container', 'text-on-primary');
+          }, 3000);
+        } else {
+          alert("Orientações em áudio iniciadas. Relaxe e ouça com calma.");
+        }
+      });
+    }
+  })();
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/85 backdrop-blur-xl shadow-[0_-2px_12px_rgba(19,78,84,0.06)]" data-active-classes="text-primary-container font-semibold"><div class="flex justify-between items-center h-20 px-inset-xs max-w-lg mx-auto"><a class="flex flex-col items-center justify-center flex-1 h-touch-expanded text-on-surface-variant hover:text-primary transition-all duration-200 group" data-path="meu-dia" href="#"><div class="w-10 h-8 flex items-center justify-center rounded-full group-hover:bg-surface-container-low"><span class="material-symbols-outlined text-[24px]">sentiment_calm</span></div><span class="font-label-sm text-label-sm text-center leading-tight mt-0.5">Meu Dia</span></a><a class="flex flex-col items-center justify-center flex-1 h-touch-expanded text-on-surface-variant hover:text-primary transition-all duration-200 group" data-path="remedios-e-rotina" href="#"><div class="w-10 h-8 flex items-center justify-center rounded-full group-hover:bg-surface-container-low"><span class="material-symbols-outlined text-[24px]">medication</span></div><span class="font-label-sm text-label-sm text-center leading-tight mt-0.5">Remédios</span></a><a class="flex flex-col items-center justify-center flex-1 h-touch-expanded text-on-surface-variant hover:text-primary transition-all duration-200 group" data-path="nutricao-e-paladar" href="#"><div class="w-10 h-8 flex items-center justify-center rounded-full group-hover:bg-surface-container-low"><span class="material-symbols-outlined text-[24px]">nutrition</span></div><span class="font-label-sm text-label-sm text-center leading-tight mt-0.5">Nutrição</span></a><a class="flex flex-col items-center justify-center flex-1 h-touch-expanded text-on-surface-variant hover:text-primary transition-all duration-200 group" data-path="rede-e-familia" href="#"><div class="w-10 h-8 flex items-center justify-center rounded-full group-hover:bg-surface-container-low"><span class="material-symbols-outlined text-[24px]">volunteer_activism</span></div><span class="font-label-sm text-label-sm text-center leading-tight mt-0.5">Família</span></a><a class="flex flex-col items-center justify-center flex-1 h-touch-expanded text-on-surface-variant hover:text-primary transition-all duration-200 group" data-path="painel-clinico" href="#"><div class="w-10 h-8 flex items-center justify-center rounded-full group-hover:bg-surface-container-low"><span class="material-symbols-outlined text-[24px]">clinical_notes</span></div><span class="font-label-sm text-label-sm text-center leading-tight mt-0.5">Clínico</span></a></div></nav></body></html>
