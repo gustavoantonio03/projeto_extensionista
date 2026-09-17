@@ -1,0 +1,120 @@
+/**
+ * @siglo/ui — Serene Clinical Humanism (CSS variables)
+ * Fonte: stitch_app_oncologia_pedi_trica/serene_clinical_humanism/DESIGN.md
+ */
+:root {
+  /* Superfícies (linho quente — nunca branco hospitalar) */
+  --siglo-surface: #faf9f7;
+  --siglo-surface-dim: #dadad8;
+  --siglo-surface-bright: #faf9f7;
+  --siglo-surface-container-lowest: #ffffff;
+  --siglo-surface-container-low: #f4f3f1;
+  --siglo-surface-container: #efeeec;
+  --siglo-surface-container-high: #e9e8e6;
+  --siglo-surface-container-highest: #e3e2e0;
+  --siglo-on-surface: #1a1c1b;
+  --siglo-on-surface-variant: #404849;
+  --siglo-inverse-surface: #2f3130;
+  --siglo-inverse-on-surface: #f1f1ef;
+  --siglo-outline: #70797a;
+  --siglo-outline-variant: #bfc8c9;
+  --siglo-surface-tint: #30666c;
+
+  /* Primária — Deep Petroleum Teal */
+  --siglo-primary: #00363b;
+  --siglo-primary-solid: #134e54;
+  --siglo-on-primary: #ffffff;
+  --siglo-primary-container: #134e54;
+  --siglo-on-primary-container: #89bec5;
+  --siglo-inverse-primary: #9ad0d6;
+  --siglo-primary-fixed: #b6ecf3;
+  --siglo-primary-fixed-dim: #9ad0d6;
+  --siglo-on-primary-fixed: #001f23;
+  --siglo-on-primary-fixed-variant: #134e54;
+  --siglo-primary-press: #0c363a;
+
+  /* Secundária — Heather Slate */
+  --siglo-secondary: #5a5d71;
+  --siglo-on-secondary: #ffffff;
+  --siglo-secondary-container: #dcdef5;
+  --siglo-on-secondary-container: #5e6275;
+  --siglo-secondary-fixed: #dfe1f8;
+  --siglo-secondary-fixed-dim: #c3c5dc;
+  --siglo-on-secondary-fixed: #171b2b;
+  --siglo-on-secondary-fixed-variant: #434658;
+
+  /* Terciária — Restorative Sage Mint */
+  --siglo-tertiary: #00382d;
+  --siglo-tertiary-container: #005142;
+  --siglo-on-tertiary-container: #7bc3af;
+  --siglo-tertiary-fixed: #a8f1db;
+  --siglo-tertiary-fixed-dim: #8cd4c0;
+  --siglo-on-tertiary-fixed: #002019;
+  --siglo-on-tertiary-fixed-variant: #005142;
+
+  /* Erro */
+  --siglo-error: #ba1a1a;
+  --siglo-on-error: #ffffff;
+  --siglo-error-container: #ffdad6;
+  --siglo-on-error-container: #93000a;
+
+  /* Fundo */
+  --siglo-background: #faf9f7;
+  --siglo-on-background: #1a1c1b;
+  --siglo-surface-variant: #e3e2e0;
+
+  /* Acentos funcionais */
+  --siglo-alert-coral: #c85a32;
+  --siglo-alert-amber: #b87428;
+  --siglo-neutral-dark: #1a2426;
+  --siglo-border-organic: #e4e0d8;
+  --siglo-divider: #f0eee9;
+  --siglo-secondary-support-bg: #eeebe5;
+  --siglo-chip-resting-bg: #f0eee9;
+  --siglo-chip-resting-text: #454b4d;
+  --siglo-chip-selected-bg: #e6eff0;
+  --siglo-chip-selected-text: #134e54;
+  --siglo-chip-selected-border: #94bdc1;
+  --siglo-input-border: #dcd7cd;
+
+  /* Tipografia */
+  --siglo-font: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* Espaçamento (grade 8px) */
+  --siglo-touch-min: 48px;
+  --siglo-touch-expanded: 56px;
+  --siglo-inset-xs: 4px;
+  --siglo-inset-sm: 8px;
+  --siglo-inset-md: 16px;
+  --siglo-inset-lg: 24px;
+  --siglo-inset-xl: 32px;
+  --siglo-stack-sm: 8px;
+  --siglo-stack-md: 16px;
+  --siglo-stack-lg: 24px;
+  --siglo-gutter-mobile: 16px;
+  --siglo-gutter-tablet: 24px;
+  --siglo-margin-screen: 20px;
+
+  /* Raio orgânico */
+  --siglo-radius-sm: 0.25rem;
+  --siglo-radius: 0.5rem;
+  --siglo-radius-md: 0.75rem;
+  --siglo-radius-lg: 1rem;
+  --siglo-radius-xl: 1.5rem;
+  --siglo-radius-full: 9999px;
+
+  /* Elevação — tint petroleum, nunca preto */
+  --siglo-shadow-1: 0 2px 12px -2px rgba(19, 78, 84, 0.05);
+  --siglo-shadow-2: 0 8px 24px -4px rgba(19, 78, 84, 0.1);
+  --siglo-shadow-3: 0 16px 40px -8px rgba(26, 36, 38, 0.16);
+  --siglo-border-level-1: 1px solid rgba(228, 224, 216, 0.7);
+}
+
+/* Fundo e texto base por padrão do design system */
+body {
+  background-color: var(--siglo-background);
+  color: var(--siglo-neutral-dark);
+  font-family: var(--siglo-font);
+  font-size: 15px; /* base mínima do design system */
+  line-height: 1.5;
+}

@@ -1,8 +1,8 @@
 ---
 titulo: Cérebro do Projeto — Gestão de Laboratório Oncológico
 status: documento vivo (living document)
-versao: 0.1
-atualizado_em: 2026-09-10
+versao: 0.2
+atualizado_em: 2026-09-17
 aliases: [SIGLO, Cérebro, MOC]
 ---
 
@@ -275,13 +275,13 @@ Malha de wikilinks deste cérebro. Ao criar cada página em `docs/`, marque o st
 
 | Categoria | Páginas (wikilinks) | Caminho-alvo | Status |
 |---|---|---|---|
-| Visão | [[Visão do Produto]] · [[Personas e Stakeholders]] · [[Backlog do Produto]] · [[Glossário Clínico]] | `docs/01-visao/` | 🔴 a criar |
+| Visão | [[Visão do Produto]] · [[Personas e Stakeholders]] · [[Backlog do Produto]] · [[Glossário Clínico]] | `docs/01-visao/` | 🟡 parcial — [[Backlog do Produto]] em `docs/01-visao/backlog-do-produto.md` |
 | Módulos | [[Módulo Pacientes]] · [[Módulo Exames]] · [[Módulo Laudos]] · [[Módulo BI]] · [[Módulo Identidade e Acesso]] · [[Módulo Notificações]] · [[Módulo Integrações Clínicas]] · [[Módulo Auditoria e Conformidade]] | `docs/02-modulos/` | 🔴 a criar |
-| Arquitetura | [[Decisões de Arquitetura (ADRs)]] · [[Arquitetura Frontend]] · [[Arquitetura Backend]] · [[Modelo de Dados]] · [[Ambientes e Infraestrutura]] · [[CI/CD]] | `docs/03-arquitetura/` | 🔴 a criar |
+| Arquitetura | [[Decisões de Arquitetura (ADRs)]] · [[Arquitetura Frontend]] · [[Arquitetura Backend]] · [[Modelo de Dados]] · [[Ambientes e Infraestrutura]] · [[CI/CD]] | `docs/03-arquitetura/` | 🟡 parcial — ADRs 0001–0004 + [[Ambientes e Infraestrutura]] criados |
 | Engenharia | [[Padrões de Código]] · [[Política de Branches e Commits]] · [[Code Review]] · [[Definição de Pronto (DoD)]] | `docs/04-engenharia/` | 🔴 a criar |
-| Sprints | [[Roadmap de Sprints]] · [[Sprint 00 — Fundações]] · [[Sprint 01 — Identidade e Acesso]] · [[Sprint 02 — Pacientes]] · [[Sprint 03 — Exames: fluxo]] · [[Sprint 04 — Rastreabilidade]] · [[Sprint 05 — Laudos: emissão]] · [[Sprint 06 — Laudos: liberação]] · [[Sprint 07 — Portal do Paciente]] · [[Sprint 08 — BI]] · [[Sprint 09 — Hardening LGPD]] · [[Sprint 10 — UAT e Go-live]] | `docs/05-sprints/` | 🔴 a criar |
+| Sprints | [[Roadmap de Sprints]] · [[Sprint 00 — Fundações]] · [[Sprint 01 — Identidade e Acesso]] · [[Sprint 02 — Pacientes]] · [[Sprint 03 — Exames: fluxo]] · [[Sprint 04 — Rastreabilidade]] · [[Sprint 05 — Laudos: emissão]] · [[Sprint 06 — Laudos: liberação]] · [[Sprint 07 — Portal do Paciente]] · [[Sprint 08 — BI]] · [[Sprint 09 — Hardening LGPD]] · [[Sprint 10 — UAT e Go-live]] | `docs/05-sprints/` | 🟡 parcial — [[Sprint 00 — Fundações]] em `docs/05-sprints/sprint-00-fundacoes.md` |
 | Qualidade | [[Plano de Testes]] · [[Gates de Qualidade]] · [[Critérios de Aceite]] | `docs/06-qualidade/` | 🔴 a criar |
-| LGPD | [[Inventário de Dados (LGPD)]] · [[Matriz de Papéis e Permissões (RBAC)]] · [[Política de Retenção de Dados]] · [[RIPD — Relatório de Impacto]] · [[Plano de Resposta a Incidentes]] | `docs/07-lgpd/` | 🔴 a criar |
+| LGPD | [[Inventário de Dados (LGPD)]] · [[Matriz de Papéis e Permissões (RBAC)]] · [[Política de Retenção de Dados]] · [[RIPD — Relatório de Impacto]] · [[Plano de Resposta a Incidentes]] | `docs/07-lgpd/` | 🟡 parcial — [[Inventário de Dados (LGPD)]] rascunho em `docs/07-lgpd/inventario-de-dados.md` |
 | Usabilidade | [[Design System — Serene Clinical Humanism]] · [[Plano de Testes de Usabilidade]] · [[Acessibilidade WCAG 2.1 AA]] · [[Métricas de UX (SUS)]] | `docs/08-ux/` | 🔴 a criar |
 | Governança | [[KPIs e Métricas]] · [[Registro de Riscos]] · [[Rituais do Time]] | `docs/09-governanca/` | 🔴 a criar |
 
@@ -293,4 +293,5 @@ Malha de wikilinks deste cérebro. Ao criar cada página em `docs/`, marque o st
 
 | Data | Versão | Mudança |
 |---|---|---|
+| 2026-09-17 | 0.2 | Sprint 00 executada: monorepo estruturado, CI (lint+testes+SAST), docker-compose local, ADRs 0001–0004, backlog inicial, tokens do design system em `packages/ui`, rascunho do [[Inventário de Dados (LGPD)]] |
 | 2026-09-10 | 0.1 | Criação do cérebro: visão, arquitetura Go+Python/Next.js, módulos de domínio, roadmap de sprints 0–10, QA, LGPD e usabilidade |

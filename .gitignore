@@ -1,0 +1,40 @@
+# Dependências / builds
+node_modules/
+dist/
+.vite/
+coverage/
+
+# Go
+services/core/bin/
+*.test
+*.out
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+htmlcov/
+.coverage
+.coverage.*
+
+# Ambientes — segredos nunca versionados (Cérebro §7)
+# NOTA: o exemplo versionado chama-se "env.example" (sem ponto inicial) porque a
+# plataforma bloqueia arquivos com padrão ".env*". Copie-o para .env localmente.
+.env
+.env.*
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Artefatos de cobertura (safety extra)
+services/bi/.coverage*
+services/bi/htmlcov/
+
+# Dados locais de infra
+infra/data/

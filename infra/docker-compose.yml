@@ -1,0 +1,67 @@
+name: siglo
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: siglo-postgres
+    environment:
+      POSTGRES_USER: siglo
+      POSTGRES_PASSWORD: CHANGE_ME_LOCAL
+      POSTGRES_DB: siglo
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks: [siglo-net]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U siglo -d siglo"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # Aplica as migrações versionadas do core (golang-migrate) — nunca DDL manual (ADR-0003).
+  migrations:
+    image: migrate/migrate:v4.17.1
+    container_name: siglo-migrations
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ../services/core/migrations:/migrations:ro
+    entrypoint: ["migrate", "-path=/migrations", "-database", "postgres://siglo:CHANGE_ME_LOCAL@postgres:5432/siglo?sslmode=disable", "up"]
+    restart: "no"
+    networks: [siglo-net]
+
+  redis:
+    image: redis:7-alpine
+    container_name: siglo-redis
+    ports:
+      - "6379:6379"
+    networks: [siglo-net]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  minio:
+    image: minio/minio:latest
+    container_name: siglo-minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: siglo
+      MINIO_ROOT_PASSWORD: CHANGE_ME_LOCAL
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - miniodata:/data
+    networks: [siglo-net]
+
+volumes:
+  pgdata:
+  miniodata:
+
+networks:
+  siglo-net:
+    driver: bridge

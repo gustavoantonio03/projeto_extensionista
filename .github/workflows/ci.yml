@@ -1,0 +1,80 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ui:
+    name: packages/ui — typecheck + testes
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - run: bun install
+        working-directory: packages/ui
+      - run: bun run typecheck
+        working-directory: packages/ui
+      - run: bun run test
+        working-directory: packages/ui
+
+  core:
+    name: services/core — lint + testes (Go)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
+          cache-dependency-path: services/core/go.mod
+      - name: Vet
+        working-directory: services/core
+        run: go vet ./...
+      - name: Testes
+        working-directory: services/core
+        run: go test ./... -race -covermode=atomic
+  bi:
+    name: services/bi — lint + testes (Python)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements-dev.txt
+        working-directory: services/bi
+      - run: ruff check app tests
+        working-directory: services/bi
+      # conftest.py na raiz do serviço garante `app` importável pelo pytest no CI.
+      - run: pytest -q --cov=app --cov-report=term
+        working-directory: services/bi
+
+  sast:
+    name: SAST (Semgrep)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      # Container oficial (returntocorp/semgrep-action@v1 está deprecada).
+      # --error: findings = falha do job. Sem token: varredura local, resultados no log.
+      - name: Semgrep scan
+        run: >-
+          docker run --rm -v "${{ github.workspace }}:/src" semgrep/semgrep:latest
+          semgrep scan --config p/default --error --metrics=off /src
+      # npm audit volta quando packages/ui tiver package-lock.json commitado.
+
+  compose:
+    name: Infra — valida docker-compose
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Valida compose
+        run: docker compose -f infra/docker-compose.yml config -q
