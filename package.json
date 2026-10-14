@@ -1,12 +1,18 @@
 {
   "name": "siglo",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "private": true,
   "workspaces": [
-    "packages/ui"
+    "packages/*",
+    "apps/*"
   ],
   "scripts": {
-    "ui:test": "bun test packages/ui || bunx vitest run --root packages/ui",
-    "ui:typecheck": "tsc --noEmit -p packages/ui"
+    "dev": "npm run dev -w @siglo/web",
+    "build": "npm run build -w @siglo/web",
+    "lint": "npm run lint --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "ui:test": "npm run test -w @siglo/ui",
+    "ui:typecheck": "npm run typecheck -w @siglo/ui"
   }
 }

@@ -7,7 +7,8 @@
 | [ADR-0001](adr-0001-monorepo.md) | Monorepo com fronteiras por módulo de domínio | Aceito | 2026-09-17 |
 | [ADR-0002](adr-0002-go-python.md) | Go (núcleo) + Python (dados/BI) | Aceito | 2026-09-17 |
 | [ADR-0003](adr-0003-postgres-schemas.md) | PostgreSQL 16 com schemas por módulo | Aceito | 2026-09-17 |
-| [ADR-0004](adr-0004-keycloak.md) | Keycloak como IdP (OIDC) | Aceito | 2026-09-17 |
+| [ADR-0004](adr-0004-keycloak.md) | Keycloak como IdP (OIDC) — implementação adiada para B1 | Aceito | 2026-09-17 |
+| [ADR-0005](adr-0005-front-end-first.md) | Front-end First para o Portal do Paciente/Cuidador | Aceito | 2026-10-14 |
 
 ## Processo
 

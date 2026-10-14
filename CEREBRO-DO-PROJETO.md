@@ -1,16 +1,23 @@
 ---
-titulo: Cérebro do Projeto — Gestão de Laboratório Oncológico
+titulo: Cérebro do Projeto — SIGLO · Portal do Paciente/Cuidador
 status: documento vivo (living document)
-versao: 0.2
-atualizado_em: 2026-09-17
-aliases: [SIGLO, Cérebro, MOC]
+versao: 0.3
+atualizado_em: 2026-10-14
+aliases: [SIGLO, OncoVida, Cérebro, MOC]
 ---
 
 # 🧠 Cérebro do Projeto — SIGLO
-**Sistema Integrado de Gestão de Laboratório Oncológico**
+**Sistema Integrado de Gestão de Laboratório Oncológico** · produto em foco: **Portal do Paciente/Cuidador "OncoVida"**
 
 > Este arquivo é o **hub central** (Map of Content) do projeto. Todo conhecimento parte daqui.
 > Convention: `[[Wikilink]]` = página do projeto (a criar em `docs/` conforme o [[Índice de Páginas]]). O conteúdo essencial está inline neste documento; os wikilinks definem a malha de conhecimento que o time vai expandir.
+
+> [!IMPORTANT]
+> **Diretriz vigente (v0.3 — 2026-10-14): Front-end First.**
+> 1. O produto em foco é o **Portal do Paciente/Cuidador** — público **infantil** (paciente pediátrico) e **adulto** (cuidador familiar e paciente adulto).
+> 2. A **Fase 1** entrega **100% do front-end** (UI/UX, componentes, rotas, estados de tela, interações) com **dados mockados**. **Nenhuma** lógica de servidor, banco ou integração real de API é implementada agora.
+> 3. Todo trabalho de back-end (Go/Python/Postgres/Keycloak) foi movido para a **Fase 2** — ver [[#5-roadmap-de-sprints]] e [[ADR-0005 — Front-end First]].
+> 4. **Rastreabilidade:** toda entrega começa com `📍 Sprint XX · Etapa XX.N — <nome>` (ver [[#5.3 Etapas padrão de cada sprint]]).
 
 ---
 
@@ -19,10 +26,10 @@ aliases: [SIGLO, Cérebro, MOC]
 | Tema | Seção |
 |---|---|
 | Visão, problema e personas | [[#1-visão-do-produto]] · [[Visão do Produto]] · [[Personas e Stakeholders]] |
-| Módulos de domínio | [[#2-módulos-de-domínio]] · [[Módulo Pacientes]] · [[Módulo Exames]] · [[Módulo Laudos]] · [[Módulo BI]] |
+| Módulos de domínio e do portal | [[#2-módulos-de-domínio]] · [[Módulos do Portal]] · [[Módulo Pacientes]] · [[Módulo Exames]] · [[Módulo Laudos]] |
 | Arquitetura (Frontend · Backend · Dados) | [[#3-arquitetura-de-software]] · [[Arquitetura Frontend]] · [[Arquitetura Backend]] · [[Modelo de Dados]] |
 | Boas práticas de engenharia | [[#4-boas-práticas-de-engenharia]] · [[Padrões de Código]] · [[CI/CD]] |
-| Plano de sprints | [[#5-roadmap-de-sprints]] · [[Roadmap de Sprints]] |
+| Plano de sprints (Fase 1 front · Fase 2 back) | [[#5-roadmap-de-sprints]] · [[Roadmap de Sprints]] |
 | Qualidade, LGPD e usabilidade | [[#6-qualidade-de-software]] · [[#7-segurança-e-lgpd]] · [[#8-usabilidade-e-acessibilidade]] |
 | Governança | [[#9-métricas-riscos-e-rituais]] · [[Registro de Riscos]] · [[Rituais do Time]] |
 | Mapa de páginas | [[#10-índice-de-páginas]] · [[Índice de Páginas]] |
@@ -31,28 +38,35 @@ aliases: [SIGLO, Cérebro, MOC]
 
 ## 1. Visão do Produto
 
+### 1.0 Foco atual
+O SIGLO é uma plataforma de laboratório oncológico; a **primeira face entregue** é o **Portal do Paciente/Cuidador (OncoVida)**, que acompanha a rotina de tratamento da criança/paciente: check-in de como se sente, remédios e agenda, alimentação, exames e evolução, família e equipe de cuidado. O portal é construído **front-end first** (Fase 1) e conectado ao back-end na Fase 2.
+
 ### 1.1 Problema
 Laboratórios oncológicos operam com processos fragmentados (planilhas, sistemas legados, WhatsApp) entre coleta, análise e emissão de laudos. Consequências: atrasos no diagnóstico, retrabalho, falta de rastreabilidade da amostra e ausência de indicadores de gestão.
+**Do lado da família:** crianças em tratamento e seus cuidadores lidam com muitos remédios, exames, sintomas e orientações — em geral espalhados em papéis e mensagens, com linguagem técnica e ansiogênica.
 
 ### 1.2 Solução
 Plataforma web modular que digitaliza o fluxo ponta a ponta do laboratório: **cadastro de pacientes → ordem e coleta de exames → rastreabilidade da amostra → análise → laudo revisado e assinado → liberação ao paciente/médico → BI para gestão**.
+A ponta visível para a família é o **Portal do Paciente/Cuidador**: acolhedor para a criança, claro e organizado para o adulto.
 
 ### 1.3 Objetivos de Produto
-1. Reduzir o **turnaround time (TAT)** entre coleta e liberação do laudo.
-2. Garantir **rastreabilidade** integral da amostra (coleta → resultado).
-3. Assegurar **conformidade LGPD** por padrão (privacy by design).
-4. Oferecer experiência humana e acessível a pacientes/cuidadores, conforme o [[Design System — Serene Clinical Humanism]] (`stitch_app_oncologia_pedi_trica/serene_clinical_humanism/DESIGN.md`).
-5. Entregar **BI gerencial** com dados pseudonimizados.
+1. **(Fase 1)** Entregar um portal **acolhedor para crianças** e **claro para adultos/cuidadores**, com navegação simples e arquitetura de informação previsível.
+2. **(Fase 1)** Validar jornadas com **dados mockados** e testes de usabilidade antes de investir no back-end.
+3. Reduzir o **turnaround time (TAT)** entre coleta e liberação do laudo. *(Fase 2)*
+4. Garantir **rastreabilidade** integral da amostra (coleta → resultado). *(Fase 2)*
+5. Assegurar **conformidade LGPD** por padrão (privacy by design), com atenção a **dados de crianças (art. 14)**.
+6. Entregar **BI gerencial** com dados pseudonimizados. *(Fase 2)*
 
 ### 1.4 Personas
-| Persona | Necessidade principal | Módulo principal |
-|---|---|---|
-| Patologista | Emitir/revisar laudos com templates e dupla checagem | [[Módulo Laudos]] |
-| Técnico/Biomédico | Registrar coleta e rastrear amostras sem erro | [[Módulo Exames]] |
-| Recepção/Gestor | Agendar, cadastrar e acompanhar fila de trabalho | [[Módulo Pacientes]] · [[Módulo Exames]] |
-| Paciente / Cuidador familiar | Acompanhar exames e laudos com clareza e calma | Portal do Paciente (S7) |
-| Administrador / DPO | Governar acessos, auditoria e privacidade | [[Módulo Identidade e Acesso]] · [[Módulo Auditoria e Conformidade]] |
-| Diretoria | Indicadores e tomada de decisão | [[Módulo BI]] |
+| Persona | Necessidade principal | Onde atua | Fase |
+|---|---|---|---|
+| **Criança paciente (≈ 6–12 anos)** | Dizer como se sente com toques e emojis, entender o dia sem medo, sentir-se acompanhada | Portal — **Modo Criança** | **1** |
+| **Cuidador familiar (mãe/pai/responsável)** | Organizar remédios, agenda e exames; registrar sintomas; falar rápido com a equipe | Portal — **Modo Cuidador** | **1** |
+| **Paciente adulto / adolescente** | Acompanhar o próprio tratamento com clareza e calma | Portal — Modo Cuidador | **1** |
+| Rede familiar (avós, irmãos) | Enviar carinho e acompanhar com permissões limitadas | Portal — Família | **1** |
+| Equipe de enfermagem (visão no portal) | Ver check-ins e alertas da família | Portal — Equipe (leitura) | 1 (UI) / 2 (dados) |
+| Patologista · Técnico/Biomédico · Recepção/Gestor | Laudos, coleta, rastreio e fila de trabalho | Módulos de laboratório | 2 |
+| Administrador / DPO · Diretoria | Acessos, auditoria, privacidade e indicadores | [[Módulo Identidade e Acesso]] · [[Módulo BI]] | 2 |
 
 Detalhes: [[Personas e Stakeholders]] · Requisitos vivos: [[Backlog do Produto]] · Vocabulário clínico: [[Glossário Clínico]]
 
@@ -62,6 +76,20 @@ Detalhes: [[Personas e Stakeholders]] · Requisitos vivos: [[Backlog do Produto]
 
 O código é organizado por **módulo de domínio** (bounded contexts). Cada módulo tem seu schema no banco, seus testes e sua documentação — facilitando manutenção e evolução independente.
 
+### 2.1 Módulos do Portal (front-end · Fase 1)
+| Módulo do portal | Rota | Conteúdo | Módulo de back-end futuro |
+|---|---|---|---|
+| Boas-vindas & Perfis | `/boas-vindas`, `/entrar`, `/perfis` | Onboarding, login simulado, escolha da criança e do modo (Criança/Cuidador) | [[Módulo Identidade e Acesso]] · [[Módulo Pacientes]] |
+| Meu Dia | `/inicio` | Check-in por emojis/voz, mapa de dor, sintomas, temperatura, resumo do dia | [[Módulo Pacientes]] |
+| Remédios & Agenda | `/remedios`, `/agenda` | Próxima dose, "já tomei", calendário de consultas/exames, hábitos | [[Módulo Pacientes]] · [[Módulo Notificações]] |
+| Alimentação | `/alimentacao` | Como foi a refeição, dicas para paladar, pílulas de conhecimento | [[Módulo Pacientes]] |
+| Exames & Evolução | `/exames` | Exames agendados, resultados liberados em linguagem simples, gráficos de peso/altura | [[Módulo Exames]] · [[Módulo Laudos]] |
+| Família & Equipe | `/familia` | Rede de carinho, mensagens, equipe de cuidado, linha do tempo | [[Módulo Pacientes]] · [[Módulo Notificações]] |
+| Perfil & Acessibilidade | `/perfil` | Dados da criança, modo de uso, tamanho de texto, movimento reduzido, privacidade | [[Módulo Identidade e Acesso]] |
+
+Detalhes: [[Módulos do Portal]] · Arquitetura: [[Arquitetura Frontend]].
+
+### 2.2 Módulos de back-end (Fase 2)
 | Módulo | Responsabilidade | Entidades principais | Fronteira |
 |---|---|---|---|
 | [[Módulo Pacientes]] | Cadastro, consentimentos, vínculo cuidador–paciente, histórico | `paciente`, `consentimento`, `vinculo_cuidador` | Não conhece exames |
@@ -69,40 +97,41 @@ O código é organizado por **módulo de domínio** (bounded contexts). Cada mó
 | [[Módulo Laudos]] | Emissão, revisão (dupla checagem), versionamento, assinatura digital, liberação | `laudo`, `versao_laudo`, `assinatura` | Referencia `ordem_exame_id` |
 | [[Módulo BI]] | Dashboards, indicadores (TAT, produtividade, retrabalho), ETL de dados pseudonimizados | `fato_tat`, `dim_tempo`, `dim_exame` | Somente leitura; sem PII |
 | [[Módulo Identidade e Acesso]] | Autenticação OIDC, RBAC, sessões | `papel`, `permissao`, `usuario` | Cross-cutting |
-| [[Módulo Notificações]] | E-mail/SMS de status (coleta realizada, laudo liberado) | `notificacao`, `template` | Cross-cutting |
+| [[Módulo Notificações]] | E-mail/SMS/push de status (dose, coleta realizada, laudo liberado) | `notificacao`, `template` | Cross-cutting |
 | [[Módulo Integrações Clínicas]] | HL7/FHIR, LIS legado, DICOM (spike) | `contrato_integracao` | Anticorrupção |
 | [[Módulo Auditoria e Conformidade]] | Trilha de auditoria imutável, inventário LGPD, retenção | `evento_auditoria`, `base_legal` | Cross-cutting |
 
 **Regra de ouro:** comunicação entre módulos acontece por **contratos explícitos** (OpenAPI em `packages/contracts`) e eventos de domínio — nunca por acesso direto ao schema do vizinho.
+**Ponte Fase 1 → Fase 2:** os mocks do front ficam atrás de uma camada `apps/web/src/lib/data` com tipos em `apps/web/src/lib/types.ts`; na Fase 2 esses tipos viram o rascunho do OpenAPI e a camada passa a chamar a API — sem reescrever telas.
 
 ---
 
 ## 3. Arquitetura de Software
 
 ### 3.1 Princípios
-1. **Modular primeiro**: modular monolith com fronteiras rígidas; extração para microserviços só quando houver dor real (evolução documentada em [[Decisões de Arquitetura (ADRs)]]).
-2. **Separação Frontend / Backend / Dados** com contratos versionados.
-3. **Privacy by design** e **security by default** (LGPD + OWASP ASVS).
-4. 12-Factor, observabilidade nativa, infraestrutura como código.
+1. **Front-end first** (Fase 1): UI completa e validada com mocks antes do back-end — [[ADR-0005 — Front-end First]].
+2. **Modular primeiro**: modular monolith com fronteiras rígidas; extração para microserviços só quando houver dor real (evolução documentada em [[Decisões de Arquitetura (ADRs)]]).
+3. **Separação Frontend / Backend / Dados** com contratos versionados.
+4. **Privacy by design** e **security by default** (LGPD + OWASP ASVS).
+5. 12-Factor, observabilidade nativa, infraestrutura como código.
 
 ### 3.2 Diagrama
 
 ```mermaid
 flowchart LR
-  WEB["Frontend — Next.js (React)\nPortal + Admin + BFF"]
-  KC["Keycloak — OIDC"]
-  GW["API Gateway — Go\nAuthZ, rate limit, tracing"]
+  WEB["Frontend — Next.js (React)\nPortal Paciente/Cuidador"]
+  MOCK["Mocks tipados\n(Fase 1)"]
+  KC["Keycloak — OIDC (Fase 2)"]
+  GW["API Gateway — Go (Fase 2)"]
   PAC["Pacientes (Go)"]
   EXA["Exames (Go)"]
   LAU["Laudos (Go)"]
   IAM["IAM (Go)"]
   BI["BI — Python (FastAPI)"]
-  ETL["ETL — Python"]
   DB[("PostgreSQL\nschemas por módulo")]
-  RD[("Redis")]
-  S3[("Object Storage\nPDF laudos / DICOM")]
-  WEB --> GW
-  WEB -.->|OIDC| KC
+  WEB --> MOCK
+  WEB -.->|Fase 2| GW
+  WEB -.->|OIDC Fase 2| KC
   GW --> PAC
   GW --> EXA
   GW --> LAU
@@ -110,23 +139,20 @@ flowchart LR
   PAC --> DB
   EXA --> DB
   LAU --> DB
-  LAU --> S3
-  IAM --> RD
-  ETL --> DB
   BI --> DB
 ```
 
 ### 3.3 Escolha de stack (decisão)
 | Camada | Escolha | Justificativa |
 |---|---|---|
-| **Frontend** | **Next.js (React) + TypeScript** | SSR/RSC para portal do paciente, BFF embutido, ecossistema shadcn/ui + Tailwind; tokens do [[Design System — Serene Clinical Humanism]] |
-| **Backend — núcleo de domínio** | **Go** (chi/Fiber + `pgx`) | Alta concorrência para filas de exame/laudo, tipagem forte, binários leves, baixo custo operacional |
-| **Backend — dados & BI** | **Python** (FastAPI + pandas/dbt) | Produtividade em ETL, análise estatística, geração de PDF de laudos e futura camada de ML |
-| **Banco de dados** | **PostgreSQL 16** (+ Redis, Object Storage S3-compatível) | ACID para fluxo clínico, schemas por módulo, JSONB para resultados heterogêneos, madurez para BI |
-| Autenticação | Keycloak (OIDC/OAuth2) | RBAC fino, MFA para equipe clínica, auditável |
-| BI de visualização | Metabase ou Superset sobre views pseudonimizadas | Rapidez para MVP do [[Módulo BI]] |
+| **Frontend** | **Next.js (App Router) + React + TypeScript + Tailwind CSS v4** | Rotas por arquivo, ótimo para portal responsivo; componentes do `@siglo/ui` com tokens do [[Design System — Acolher]] |
+| **Backend — núcleo de domínio** *(Fase 2)* | **Go** (chi/Fiber + `pgx`) | Alta concorrência para filas de exame/laudo, tipagem forte, binários leves |
+| **Backend — dados & BI** *(Fase 2)* | **Python** (FastAPI + pandas/dbt) | ETL, análise estatística, PDF de laudos e futura camada de ML |
+| **Banco de dados** *(Fase 2)* | **PostgreSQL 16** (+ Redis, Object Storage S3-compatível) | ACID para fluxo clínico, schemas por módulo, JSONB para resultados |
+| Autenticação *(Fase 2)* | Keycloak (OIDC/OAuth2) | RBAC fino, MFA para equipe clínica, auditável — na Fase 1, **sessão simulada** |
+| Gerenciador de pacotes | **npm workspaces** | Disponível no ambiente do time; `package-lock.json` versionado |
 
-Decisões registradas: [[Decisões de Arquitetura (ADRs)]] (ADR-0001 monorepo, ADR-0002 Go+Python, ADR-0003 Postgres por schemas, ADR-0004 Keycloak).
+Decisões registradas: [[Decisões de Arquitetura (ADRs)]] (ADR-0001 monorepo, ADR-0002 Go+Python, ADR-0003 Postgres por schemas, ADR-0004 Keycloak, **ADR-0005 Front-end First**).
 
 ### 3.4 Monorepo (estrutura-alvo)
 
@@ -135,25 +161,23 @@ siglo/
 ├── CEREBRO-DO-PROJETO.md        # 🧠 este hub
 ├── docs/                        # wiki expandida (ver Índice de Páginas)
 ├── apps/
-│   └── web/                     # Next.js — portal paciente + admin
-├── services/
+│   └── web/                     # Next.js — Portal Paciente/Cuidador (Fase 1)
+│       └── src/
+│           ├── app/             # rotas (App Router)
+│           ├── components/      # componentes de tela/feature
+│           ├── lib/             # types, data (mocks), contexto de perfil
+│           └── mocks/           # fixtures estáticas
+├── services/                    # Fase 2
 │   ├── core/                    # Go — modular monolith de domínio
-│   │   ├── internal/
-│   │   │   ├── pacientes/       # handler → service → repository
-│   │   │   ├── exames/
-│   │   │   ├── laudos/
-│   │   │   ├── iam/
-│   │   │   └── auditoria/
-│   │   └── cmd/api/
 │   └── bi/                      # Python — FastAPI + pipelines ETL
 ├── packages/
-│   ├── contracts/               # OpenAPI + schemas compartilhados
-│   └── ui/                      # design system (tokens Serene Clinical Humanism)
+│   ├── contracts/               # OpenAPI (Fase 2, derivado de apps/web/src/lib/types.ts)
+│   └── ui/                      # design system: tokens + componentes React
 ├── infra/                       # docker-compose, IaC, migrações
 └── .github/workflows/           # CI/CD
 ```
 
-Padrão interno de cada módulo backend: **handler → service → repository**, validação na borda, erros de domínio tipados. Detalhes: [[Arquitetura Backend]] · Frontend: [[Arquitetura Frontend]] · Dados: [[Modelo de Dados]] · Ambientes: [[Ambientes e Infraestrutura]]
+Padrão interno de cada módulo backend: **handler → service → repository**. Frontend: **rota → tela (feature) → componentes `@siglo/ui`**, dados sempre via `lib/data`. Detalhes: [[Arquitetura Frontend]] · [[Arquitetura Backend]] · [[Modelo de Dados]] · [[Ambientes e Infraestrutura]]
 
 ---
 
@@ -163,7 +187,8 @@ Padrão interno de cada módulo backend: **handler → service → repository**,
 |---|---|
 | Versionamento | Trunk-based com branches curtas (`feat/…`, `fix/…`); Conventional Commits; release semântico |
 | Code review | 1 aprovação obrigatória (2 em módulos clínicos: laudos/exames); checklist em [[Code Review]] |
-| Contratos | API-first: OpenAPI em `packages/contracts` antes da implementação |
+| Contratos | API-first na Fase 2: OpenAPI em `packages/contracts`; na Fase 1 os tipos do front são a fonte do rascunho |
+| Componentes | Todo elemento visual reutilizável nasce em `packages/ui` (variantes com `cva`), nunca duplicado em `apps/web` |
 | Estilo | Go: `gofmt` + `golangci-lint` · Python: `ruff` + `mypy` · TS: ESLint + Prettier |
 | Migrações | Versionadas e imutáveis (golang-migrate / Alembic) — nunca DDL manual |
 | Erros e logs | Erros de domínio tipados; logs estruturados JSON **sem PII** |
@@ -177,24 +202,47 @@ Referências: [[Padrões de Código]] · [[Política de Branches e Commits]] · 
 
 ## 5. Roadmap de Sprints
 
-Cadência: **sprints de 2 semanas** · Sprint 0 com 1 semana · MVP clínico ao fim do Sprint 6 · go-live no Sprint 10.
-Gestão completa: [[Roadmap de Sprints]] · Rituais: [[Rituais do Time]] · DoD por sprint: [[Definição de Pronto (DoD)]]
+Cadência: **sprints de 2 semanas** · Sprint 00 com 1 semana.
+**Recorte:** a **Fase 1 (Front-end) vai do Sprint 01 ao Sprint 08** — ao fim do Sprint 08 o Portal do Paciente/Cuidador está **100% finalizado no front-end** com mocks. Todo back-end foi isolado na **Fase 2 (Sprints B1–B9)**.
+Gestão completa: [[Roadmap de Sprints]] (`docs/05-sprints/roadmap-de-sprints.md`) · Rituais: [[Rituais do Time]] · DoD: [[Definição de Pronto (DoD)]]
 
 > Cada sprint incorpora etapas de **QA**, **segurança/LGPD** e **usabilidade** — qualidade é contínua, não fase final.
 
-| Sprint | Foco | Entregas principais | QA · LGPD · UX embutidos |
-|---|---|---|---|
-| [[Sprint 00 — Fundações]] (sem. 0) | Setup | Monorepo, CI/CD, ambientes, ADRs 0001–0004, backlog inicial, tokens do design system no `packages/ui` | Pipeline com lint+testes+SAST ativos desde o dia 1; rascunho do [[Inventário de Dados (LGPD)]] |
-| [[Sprint 01 — Identidade e Acesso]] | IAM | Keycloak OIDC, RBAC, shell Next.js autenticado, trilha de auditoria v1 | Testes E2E de login; matriz RBAC revisada por segurança |
-| [[Sprint 02 — Pacientes]] | [[Módulo Pacientes]] | CRUD, busca, consentimentos, vínculo cuidador | Testes unit+integração ≥80% no diff; PII mascarada em logs; validação de consentimento LGPD |
-| [[Sprint 03 — Exames: fluxo]] | [[Módulo Exames]] | Catálogo, ordem de serviço, status (coleta→triagem→análise) | Testes de workflow; teste de usabilidade moderado com técnico (protótipo) |
-| [[Sprint 04 — Rastreabilidade]] | [[Módulo Exames]] | Código de barras/QR da amostra, upload de resultados (S3), spike HL7/FHIR | Testes de integração com storage; auditoria de acesso a anexos |
-| [[Sprint 05 — Laudos: emissão]] | [[Módulo Laudos]] | Templates, editor estruturado, fluxo de dupla revisão | Testes do fluxo de revisão; par de revisão clínica obrigatório |
-| [[Sprint 06 — Laudos: liberação]] | [[Módulo Laudos]] | Versionamento, assinatura digital, liberação + [[Módulo Notificações]] | Trilha de acesso ao laudo; retenção configurada; **MVP clínico completo** |
-| [[Sprint 07 — Portal do Paciente]] | UX | Portal responsivo com o [[Design System — Serene Clinical Humanism]] | WCAG 2.1 AA; teste com 5 usuários (paciente/cuidador); baseline SUS |
-| [[Sprint 08 — BI]] | [[Módulo BI]] | Modelo estrela, ETL Python, dashboards TAT/retrabalho em Metabase/Superset | Dados **pseudonimizáveis**; validação de indicadores com a diretoria |
-| [[Sprint 09 — Hardening LGPD]] | Segurança | Pentest interno, RIPD, plano de resposta a incidentes, backup/DR drill | SAST/DAST limpos; revisão final do DPO; [[Plano de Resposta a Incidentes]] testado |
-| [[Sprint 10 — UAT e Go-live]] | Entrega | Correções de UAT, testes de usabilidade finais, playbook de operação, go-live | Testes E2E de regressão; checklist de lançamento; plano de rollback |
+### 5.1 Fase 1 — Front-end do Portal (escopo atual)
+| Sprint | Foco | Entregas principais | QA · LGPD · UX embutidos | Status |
+|---|---|---|---|---|
+| [[Sprint 00 — Fundações]] | Setup | Monorepo, CI, ambientes, ADRs 0001–0004, backlog, tokens iniciais | Pipeline lint+testes+SAST | ✅ concluído |
+| [[Sprint 01 — Fundação Front-end e Design System]] | Base | Next.js em `apps/web`, [[Design System — Acolher]] (tokens + componentes React em `packages/ui`), camada de mocks | Testes unitários dos componentes; contraste AA dos tokens | 🟡 em andamento |
+| [[Sprint 02 — Shell, Boas-vindas e Perfis]] | Navegação | Onboarding, login simulado, seleção de criança, Modo Criança/Cuidador, header, navegação inferior, botão SOS | Teclado e leitor de tela no shell; nenhum PII em logs | 🔴 |
+| [[Sprint 03 — Meu Dia]] | Check-in | Humor por emojis, voz (simulada), mapa de dor, sintomas, temperatura, resumo do dia | Teste de tarefa "registrar como me sinto" | 🔴 |
+| [[Sprint 04 — Remédios e Agenda]] | Rotina | Próxima dose, "já tomei", lista do dia, calendário de consultas/exames, hábitos | Estados de erro/vazio; lembretes claros para adulto | 🔴 |
+| [[Sprint 05 — Alimentação e Aprender]] | Bem-estar | Registro de refeição, dicas de paladar, pílulas de conhecimento (vídeos) | Linguagem simples revisada | 🔴 |
+| [[Sprint 06 — Exames e Evolução]] | Clínico (visão família) | Exames agendados, resultados liberados em linguagem simples, gráficos de peso/altura, linha do tempo | Linguagem não ansiogênica; dado sensível só no Modo Cuidador | 🔴 |
+| [[Sprint 07 — Família e Equipe]] | Rede de apoio | Rede de carinho, mensagens, equipe de cuidado, perfil e acessibilidade | Permissões visuais por papel (mock) | 🔴 |
+| [[Sprint 08 — Qualidade e Entrega do Front-end]] | Hardening UI | Estados loading/vazio/erro em tudo, responsividade, E2E (Playwright + axe), usabilidade com 5 famílias, docs | **WCAG 2.1 AA**; SUS baseline; **Front-end finalizado** | 🔴 |
+
+### 5.2 Fase 2 — Back-end e integração (fase futura)
+| Sprint | Foco | Origem no plano v0.2 |
+|---|---|---|
+| B1 | Identidade e Acesso (Keycloak, RBAC, auditoria v1) + troca da sessão simulada | antigo S01 |
+| B2 | Pacientes (CRUD, consentimentos, vínculo cuidador) + OpenAPI a partir dos tipos do front | antigo S02 |
+| B3 | Exames: fluxo | antigo S03 |
+| B4 | Rastreabilidade (QR, S3, spike HL7/FHIR) | antigo S04 |
+| B5 | Laudos: emissão (+ telas internas do laboratório) | antigo S05 |
+| B6 | Laudos: liberação + Notificações — **MVP clínico** | antigo S06 |
+| B7 | Integração Portal ↔ API (substituir `lib/data` mock) | antigo S07 |
+| B8 | BI | antigo S08 |
+| B9 | Hardening LGPD + UAT e Go-live | antigos S09–S10 |
+
+### 5.3 Etapas padrão de cada sprint
+Toda entrega é rastreada como **`📍 Sprint XX · Etapa XX.N — nome`**:
+
+| Etapa | Nome | Saída |
+|---|---|---|
+| XX.1 | Refinamento | Histórias e critérios de aceite do sprint, ajustes no cérebro/backlog |
+| XX.2 | Implementação | Código (componentes `@siglo/ui` + telas `apps/web` + mocks) |
+| XX.3 | QA & Acessibilidade | Lint, typecheck, testes, checagem de contraste/teclado/leitor de tela |
+| XX.4 | Review & Documentação | Demo, atualização de status neste cérebro e no doc do sprint |
 
 ---
 
@@ -204,32 +252,33 @@ Gestão completa: [[Roadmap de Sprints]] · Rituais: [[Rituais do Time]] · DoD 
 
 | Nível | Ferramenta | Regra |
 |---|---|---|
-| Unitários | `testing`+testify (Go), pytest (Python), Vitest (TS) | Cobertura ≥ 80% no diff; testes de regra de negócio isolados |
-| Integração | testcontainers (PG/Redis/S3) | Todo repository e fluxo inter-módulo testado |
-| E2E | Playwright | Jornadas críticas: login, nova ordem, emissão e liberação de laudo |
-| Carga | k6 | Pico simulado de 10× uso médio sem degradação de TAT de API |
-| Contrato | OpenAPI diff no CI | Breaking change bloqueia merge |
+| Unitários | Vitest + Testing Library (TS) · `testing`+testify (Go) · pytest (Python) | Cobertura ≥ 80% no diff; todo componente `@siglo/ui` testado |
+| Integração | testcontainers (PG/Redis/S3) *(Fase 2)* | Todo repository e fluxo inter-módulo testado |
+| E2E | Playwright + axe-core | Jornadas críticas da Fase 1: onboarding, check-in, "já tomei", ver exame |
+| Carga | k6 *(Fase 2)* | Pico simulado de 10× uso médio sem degradação |
+| Contrato | OpenAPI diff no CI *(Fase 2)* | Breaking change bloqueia merge |
 
-**Gates de qualidade (CI)** — detalhes em [[Gates de Qualidade]]: build verde → lint → testes → cobertura → SAST/deps → contrato → imagem assinada.
+**Gates de qualidade (CI)** — detalhes em [[Gates de Qualidade]]: build verde → lint → typecheck → testes → cobertura → SAST/deps.
 **Critérios de aceite** por história: [[Critérios de Aceite]] · Bugs pós-release rastreados em [[KPIs e Métricas]] (bug escape rate < 5%).
 
 ---
 
 ## 7. Segurança e LGPD
 
-Base legal predominante: **tutela da saúde (art. 11, LGPD)** — dados sensíveis de saúde; consentimento explícito apenas para finalidades acessórias (ex.: comunicação marketing). Governança completa: [[Módulo Auditoria e Conformidade]].
+Base legal predominante: **tutela da saúde (art. 11, LGPD)** — dados sensíveis de saúde; consentimento explícito apenas para finalidades acessórias. **Dados de crianças e adolescentes (art. 14):** tratamento no **melhor interesse** da criança, com consentimento específico e em destaque de pelo menos um dos pais/responsável legal para o que não for tutela da saúde, e informação em **linguagem adequada à idade**. Governança completa: [[Módulo Auditoria e Conformidade]].
 
 | Controle | Implementação |
 |---|---|
 | Inventário e classificação de dados | [[Inventário de Dados (LGPD)]] — todo dado sensível mapeado com base legal e finalidade |
 | Minimização e finalidade | Coleta restrita ao necessário; campos justificados no inventário |
+| Fase 1 (front com mocks) | **Somente dados fictícios**; nenhum PII real em fixtures, logs, analytics ou imagens externas; fontes e imagens servidas localmente |
 | Pseudonimização/anonimização | Views pseudonimizadas para BI; anonimização em exports analíticos |
 | Criptografia | TLS 1.3 em trânsito; AES-256 em repouso (banco e object storage) |
-| Controle de acesso | RBAC de menor privilégio em [[Matriz de Papéis e Permissões (RBAC)]]; MFA para equipe clínica |
+| Controle de acesso | RBAC de menor privilégio em [[Matriz de Papéis e Permissões (RBAC)]]; criança vê apenas conteúdo adequado; dados clínicos detalhados só no Modo Cuidador |
 | Auditoria | Trilha append-only de todo acesso a dado de saúde (quem, quando, o quê) |
 | Retenção e descarte | [[Política de Retenção de Dados]] conforme prazos aplicáveis (validar com DPO/CFM) |
 | Direitos do titular | Fluxos de acesso, correção e eliminação (quando aplicável) no [[Módulo Pacientes]] |
-| Impacto e incidentes | [[RIPD — Relatório de Impacto]] · [[Plano de Resposta a Incidentes]] (notificação ANPD/titulares) |
+| Impacto e incidentes | [[RIPD — Relatório de Impacto]] · [[Plano de Resposta a Incidentes]] |
 | Segurança de desenvolvimento | OWASP ASVS L2, SAST/DAST, secrets em cofre — nunca em código |
 
 **Responsabilidades:** Controlador = o laboratório; Operadores = fornecedores de nuvem/e-mail — contratos de operador obrigatórios. Papel do DPO descrito em [[Módulo Auditoria e Conformidade]].
@@ -238,32 +287,37 @@ Base legal predominante: **tutela da saúde (art. 11, LGPD)** — dados sensíve
 
 ## 8. Usabilidade e Acessibilidade
 
-Fundamentada no [[Design System — Serene Clinical Humanism]] (já presente no repositório): SOBERANO E ACOLHEDOR, para usuários sob fadiga, "chemo brain" e sobrecarga sensorial.
+O portal atende **dois públicos na mesma base**: a **criança** (acolhimento, brincadeira gentil, pouco texto) e o **adulto/cuidador** (clareza, densidade de informação controlada, navegação previsível). O visual evolui o [[Design System — Serene Clinical Humanism]] para o **[[Design System — Acolher]]** (`docs/08-ux/design-system-acolher.md`): fundo creme/pêssego, ameixa (plum) como cor de ação, laranja suave e lavanda como acentos, ilustrações planas com folhas orgânicas, cards brancos bem arredondados e títulos editoriais em serifa — referências visuais aprovadas em 2026-10-14. O teal clínico permanece como acento de "equipe de saúde".
 
 | Prática | Regra |
 |---|---|
-| Design tokens | Paleta teal/linho, Plus Jakarta Sans, base 15px, alvos de toque ≥ 48px — extraídos para `packages/ui` no Sprint 0 |
-| Acessibilidade | WCAG 2.1 AA em toda tela; navegação por teclado e leitor de tela (detalhes: [[Acessibilidade WCAG 2.1 AA]]) |
-| Carga cognitiva | Fluxos curtos, linguagem simples, help text sempre visível (nunca só tooltip) |
-| Testes de usabilidade | 2 rodadas: protótipo (S3) e produto (S7) com pacientes/cuidadores e equipe clínica — plano em [[Plano de Testes de Usabilidade]] |
-| Métricas | SUS ≥ 80 · conclusão de tarefa ≥ 90% · taxa de erro em formulários críticos < 5% ([[Métricas de UX (SUS)]]) |
+| Design tokens | Tokens "Acolher" em `packages/ui`; Nunito (UI) + Fraunces (títulos); base 16px; alvos de toque ≥ 48px (56px em ações primárias) |
+| Dois modos | **Modo Criança**: ilustrações, mascote Lumi, emojis **sempre acompanhados de texto**, frases curtas, uma tarefa por tela · **Modo Cuidador**: detalhes clínicos, horários, histórico e atalhos |
+| Linguagem | Simples, acolhedora e honesta; sem jargão para a criança; sem infantilizar o adulto; nunca culpa ("sem pressão") |
+| Acessibilidade | WCAG 2.1 AA em toda tela; navegação por teclado e leitor de tela; `prefers-reduced-motion`; texto ajustável (detalhes: [[Acessibilidade WCAG 2.1 AA]]) |
+| Carga cognitiva | Fluxos curtos, help text sempre visível (nunca só tooltip), máximo 5 itens na navegação principal |
+| Emergência | Botão **SOS** sempre visível, com confirmação e contatos da equipe |
+| Testes de usabilidade | 2 rodadas: protótipo navegável (S04) e produto (S08) com crianças acompanhadas e cuidadores — [[Plano de Testes de Usabilidade]] |
+| Métricas | SUS ≥ 80 (cuidadores) · conclusão de tarefa ≥ 90% · taxa de erro em formulários críticos < 5% ([[Métricas de UX (SUS)]]) |
 | Heurísticas | Avaliação heurística de Nielsen em cada release de portal |
 
 ---
 
 ## 9. Métricas, Riscos e Rituais
 
-**KPIs de produto:** TAT coleta→laudo · % laudos liberados em 1ª revisão · taxa de retrabalho de amostra.
+**KPIs de produto (Fase 1):** conclusão de tarefa nas jornadas críticas · SUS · tempo para registrar um check-in · % telas com WCAG AA.
+**KPIs de produto (Fase 2):** TAT coleta→laudo · % laudos liberados em 1ª revisão · taxa de retrabalho de amostra.
 **KPIs de engenharia (DORA):** frequência de deploy · lead time de mudança · taxa de falha de mudança · MTTR. Painel: [[KPIs e Métricas]].
 
 **Principais riscos** (registro vivo em [[Registro de Riscos]]):
 
 | Risco | Impacto | Mitigação |
 |---|---|---|
-| Vazamento de dado de saúde | Crítico | Criptografia, RBAC, auditoria, plano de incidentes, pentest (S9) |
-| Integração com LIS legado falhar | Alto | Módulo anticorrupção, spike HL7/FHIR no S4, import manual como fallback |
-| Validação clínica dos laudos | Alto | Dupla revisão obrigatória + padrão de templates com equipe médica (S5) |
-| Baixa adoção pelos usuários | Médio | Design system humano, testes de usabilidade desde o S3, treinamento no go-live |
+| Interface infantilizar adultos ou ser complexa para crianças | Alto | Dois modos de uso, testes com ambos os públicos (S04 e S08) |
+| Mocks divergirem do contrato real da Fase 2 | Médio | Tipos centralizados em `lib/types.ts` + camada `lib/data`; OpenAPI derivado dos tipos em B2 |
+| Vazamento de dado de saúde (inclusive de criança) | Crítico | Só dados fictícios na Fase 1; criptografia, RBAC, auditoria e pentest na Fase 2 |
+| Integração com LIS legado falhar | Alto | Módulo anticorrupção, spike HL7/FHIR em B4, import manual como fallback |
+| Validação clínica dos laudos | Alto | Dupla revisão obrigatória + templates com equipe médica (B5) |
 
 **Rituais:** daily 15min · planejamento · review/demo · retrospectiva · refinement semanal — detalhes em [[Rituais do Time]].
 
@@ -275,14 +329,14 @@ Malha de wikilinks deste cérebro. Ao criar cada página em `docs/`, marque o st
 
 | Categoria | Páginas (wikilinks) | Caminho-alvo | Status |
 |---|---|---|---|
-| Visão | [[Visão do Produto]] · [[Personas e Stakeholders]] · [[Backlog do Produto]] · [[Glossário Clínico]] | `docs/01-visao/` | 🟡 parcial — [[Backlog do Produto]] em `docs/01-visao/backlog-do-produto.md` |
-| Módulos | [[Módulo Pacientes]] · [[Módulo Exames]] · [[Módulo Laudos]] · [[Módulo BI]] · [[Módulo Identidade e Acesso]] · [[Módulo Notificações]] · [[Módulo Integrações Clínicas]] · [[Módulo Auditoria e Conformidade]] | `docs/02-modulos/` | 🔴 a criar |
-| Arquitetura | [[Decisões de Arquitetura (ADRs)]] · [[Arquitetura Frontend]] · [[Arquitetura Backend]] · [[Modelo de Dados]] · [[Ambientes e Infraestrutura]] · [[CI/CD]] | `docs/03-arquitetura/` | 🟡 parcial — ADRs 0001–0004 + [[Ambientes e Infraestrutura]] criados |
+| Visão | [[Visão do Produto]] · [[Personas e Stakeholders]] · [[Backlog do Produto]] · [[Glossário Clínico]] | `docs/01-visao/` | 🟡 parcial — [[Backlog do Produto]] (v0.3, Fase 1 front) |
+| Módulos | [[Módulos do Portal]] · [[Módulo Pacientes]] · [[Módulo Exames]] · [[Módulo Laudos]] · [[Módulo BI]] · [[Módulo Identidade e Acesso]] · [[Módulo Notificações]] · [[Módulo Integrações Clínicas]] · [[Módulo Auditoria e Conformidade]] | `docs/02-modulos/` | 🔴 a criar (Módulos do Portal resumido em §2.1) |
+| Arquitetura | [[Decisões de Arquitetura (ADRs)]] · [[ADR-0005 — Front-end First]] · [[Arquitetura Frontend]] · [[Arquitetura Backend]] · [[Modelo de Dados]] · [[Ambientes e Infraestrutura]] · [[CI/CD]] | `docs/03-arquitetura/` | 🟡 parcial — ADRs 0001–0005 + [[Ambientes e Infraestrutura]] |
 | Engenharia | [[Padrões de Código]] · [[Política de Branches e Commits]] · [[Code Review]] · [[Definição de Pronto (DoD)]] | `docs/04-engenharia/` | 🔴 a criar |
-| Sprints | [[Roadmap de Sprints]] · [[Sprint 00 — Fundações]] · [[Sprint 01 — Identidade e Acesso]] · [[Sprint 02 — Pacientes]] · [[Sprint 03 — Exames: fluxo]] · [[Sprint 04 — Rastreabilidade]] · [[Sprint 05 — Laudos: emissão]] · [[Sprint 06 — Laudos: liberação]] · [[Sprint 07 — Portal do Paciente]] · [[Sprint 08 — BI]] · [[Sprint 09 — Hardening LGPD]] · [[Sprint 10 — UAT e Go-live]] | `docs/05-sprints/` | 🟡 parcial — [[Sprint 00 — Fundações]] em `docs/05-sprints/sprint-00-fundacoes.md` |
+| Sprints | [[Roadmap de Sprints]] · [[Sprint 00 — Fundações]] · [[Sprint 01 — Fundação Front-end e Design System]] · [[Sprint 02 — Shell, Boas-vindas e Perfis]] · [[Sprint 03 — Meu Dia]] · [[Sprint 04 — Remédios e Agenda]] · [[Sprint 05 — Alimentação e Aprender]] · [[Sprint 06 — Exames e Evolução]] · [[Sprint 07 — Família e Equipe]] · [[Sprint 08 — Qualidade e Entrega do Front-end]] | `docs/05-sprints/` | 🟡 parcial — roadmap + Sprint 00 + Sprint 01 |
 | Qualidade | [[Plano de Testes]] · [[Gates de Qualidade]] · [[Critérios de Aceite]] | `docs/06-qualidade/` | 🔴 a criar |
-| LGPD | [[Inventário de Dados (LGPD)]] · [[Matriz de Papéis e Permissões (RBAC)]] · [[Política de Retenção de Dados]] · [[RIPD — Relatório de Impacto]] · [[Plano de Resposta a Incidentes]] | `docs/07-lgpd/` | 🟡 parcial — [[Inventário de Dados (LGPD)]] rascunho em `docs/07-lgpd/inventario-de-dados.md` |
-| Usabilidade | [[Design System — Serene Clinical Humanism]] · [[Plano de Testes de Usabilidade]] · [[Acessibilidade WCAG 2.1 AA]] · [[Métricas de UX (SUS)]] | `docs/08-ux/` | 🔴 a criar |
+| LGPD | [[Inventário de Dados (LGPD)]] · [[Matriz de Papéis e Permissões (RBAC)]] · [[Política de Retenção de Dados]] · [[RIPD — Relatório de Impacto]] · [[Plano de Resposta a Incidentes]] | `docs/07-lgpd/` | 🟡 parcial — [[Inventário de Dados (LGPD)]] rascunho |
+| Usabilidade | [[Design System — Acolher]] · [[Design System — Serene Clinical Humanism]] · [[Plano de Testes de Usabilidade]] · [[Acessibilidade WCAG 2.1 AA]] · [[Métricas de UX (SUS)]] | `docs/08-ux/` | 🟡 parcial — [[Design System — Acolher]] |
 | Governança | [[KPIs e Métricas]] · [[Registro de Riscos]] · [[Rituais do Time]] | `docs/09-governanca/` | 🔴 a criar |
 
 **Regras do cérebro:** (1) todo novo conceito vira wikilink antes de virar página; (2) nomes de wikilink são canônicos — não renomear sem atualizar o índice; (3) este hub nunca cresce em detalhe: detalhe mora na página vinculada.
@@ -293,5 +347,6 @@ Malha de wikilinks deste cérebro. Ao criar cada página em `docs/`, marque o st
 
 | Data | Versão | Mudança |
 |---|---|---|
+| 2026-10-14 | 0.3 | Foco no **Portal do Paciente/Cuidador** (público infantil + adulto); diretriz **Front-end First** ([[ADR-0005 — Front-end First]]); roadmap reorganizado em **Fase 1 (S01–S08, front-end)** e **Fase 2 (B1–B9, back-end)**; etapas padrão de sprint para rastreabilidade; [[Design System — Acolher]]; LGPD art. 14 (crianças) |
 | 2026-09-17 | 0.2 | Sprint 00 executada: monorepo estruturado, CI (lint+testes+SAST), docker-compose local, ADRs 0001–0004, backlog inicial, tokens do design system em `packages/ui`, rascunho do [[Inventário de Dados (LGPD)]] |
 | 2026-09-10 | 0.1 | Criação do cérebro: visão, arquitetura Go+Python/Next.js, módulos de domínio, roadmap de sprints 0–10, QA, LGPD e usabilidade |

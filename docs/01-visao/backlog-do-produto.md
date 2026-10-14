@@ -1,79 +1,114 @@
 # Backlog do Produto
 
-> Fonte: [[Cérebro do Projeto — SIGLO]] · MVP clínico ao fim do Sprint 06.
+> Fonte: [[Cérebro do Projeto — SIGLO]] · Versão 0.3 (2026-10-14) — **Front-end First** ([[ADR-0005 — Front-end First]]).
 > Prioridade: **P0** bloqueia o sprint · **P1** importante · **P2** pode deslizar.
+> Público: 🧒 criança · 🧑 cuidador/adulto · 👥 ambos.
 
-## Sprint 00 — Fundações
+## Sprint 00 — Fundações ✅
 
-| ID | História | Pri. | Sprint |
-|---|---|---|---|
-| F-1 | Como dev, quero o monorepo estruturado por módulos de domínio para trabalhar com fronteiras claras | P0 | 00 |
-| F-2 | Como arquiteto, quero ADRs 0001–0004 registrados para decisões auditáveis | P0 | 00 |
-| F-3 | Como dev, quero CI com lint, testes e SAST ativos desde o dia 1 | P0 | 00 |
-| F-4 | Como dev, quero ambiente local dockerizado (PostgreSQL, Redis, MinIO) | P0 | 00 |
-| F-5 | Como designer/dev, quero os tokens do design system em `packages/ui` | P0 | 00 |
-| F-6 | Como DPO, quero o rascunho do inventário de dados LGPD | P0 | 00 |
+| ID | História | Pri. |
+|---|---|---|
+| F-1 | Como dev, quero o monorepo estruturado por módulos de domínio | P0 |
+| F-2 | Como arquiteto, quero ADRs 0001–0004 registrados | P0 |
+| F-3 | Como dev, quero CI com lint, testes e SAST desde o dia 1 | P0 |
+| F-4 | Como dev, quero ambiente local dockerizado (PostgreSQL, Redis, MinIO) | P0 |
+| F-5 | Como designer/dev, quero os tokens do design system em `packages/ui` | P0 |
+| F-6 | Como DPO, quero o rascunho do inventário de dados LGPD | P0 |
 
-## Sprint 01 — Identidade e Acesso
+# Fase 1 — Front-end do Portal
 
-| ID | História | Pri. | Sprint |
-|---|---|---|---|
-| I-1 | Como usuário da equipe, quero autenticar via OIDC (Keycloak) | P0 | 01 |
-| I-2 | Como admin, quero RBAC com papéis mínimos definidos na matriz | P0 | 01 |
-| I-3 | Como auditor, quero trilha de auditoria v1 (login e ações sensíveis) | P0 | 01 |
-| I-4 | Como dev, quero shell Next.js autenticado com guarda de rotas | P0 | 01 |
-| I-5 | Como segurança, quero MFA obrigatório para equipe clínica | P1 | 01 |
+## Sprint 01 — Fundação Front-end e Design System
 
-## Sprint 02 — Pacientes
+| ID | História | Pri. |
+|---|---|---|
+| FE-01 | Como dev, quero `apps/web` em Next.js + TypeScript + Tailwind v4 rodando no workspace npm | P0 |
+| FE-02 | Como designer, quero os tokens "Acolher" (cores, fontes, raios, sombras) com contraste AA documentado | P0 |
+| FE-03 | Como dev, quero componentes base React em `@siglo/ui` (botão, card, chip, badge, campos, lista, modal, estados) | P0 |
+| FE-04 | Como dev, quero componentes de saúde (seletor de humor, escala de dor, gráfico, calendário, progresso) | P0 |
+| FE-05 | Como dev, quero a camada de dados mock tipada (`lib/types`, `lib/data`, `mocks/`) | P0 |
+| FE-06 | Como time, quero uma vitrine do design system para revisar visualmente os componentes | P1 |
 
-| ID | História | Pri. | Sprint |
-|---|---|---|---|
-| P-1 | Como recepção, quero cadastrar paciente com dados mínimos necessários | P0 | 02 |
-| P-2 | Como recepção, quero buscar pacientes por nome/documento com máscara e paginação | P0 | 02 |
-| P-3 | Como recepção, quero registrar consentimentos com finalidade e base legal | P0 | 02 |
-| P-4 | Como cuidador, quero ser vinculado a um paciente com permissões limitadas | P1 | 02 |
-| P-5 | Como DPO, quero PII mascarada em logs | P0 | 02 |
+## Sprint 02 — Shell, Boas-vindas e Perfis
 
-## Sprint 03 — Exames: fluxo
+| ID | História | Pri. |
+|---|---|---|
+| FE-07 | 👥 Como novo usuário, quero um onboarding ilustrado em 3 passos | P0 |
+| FE-08 | 🧑 Como cuidador, quero entrar (login simulado) | P0 |
+| FE-09 | 🧑 Como cuidador, quero escolher a criança acompanhada e o modo (Criança/Cuidador) | P0 |
+| FE-10 | 👥 Como usuário, quero navegação inferior (mobile) / lateral (desktop) com no máximo 5 itens | P0 |
+| FE-11 | 👥 Como usuário, quero um botão SOS sempre visível com contatos da equipe | P0 |
+| FE-12 | 👥 Como usuário, quero ajustar tamanho do texto e reduzir animações | P1 |
 
-| ID | História | Pri. | Sprint |
-|---|---|---|---|
-| E-1 | Como biomédico, quero catálogo de exames com preparo e prazo | P0 | 03 |
-| E-2 | Como recepção, quero abrir ordem de serviço com múltiplos exames | P0 | 03 |
-| E-3 | Como técnico, quero acompanhar status (coleta → triagem → análise) | P0 | 03 |
-| E-4 | Como designer, quero protótipo testado com técnico de laboratório | P1 | 03 |
+## Sprint 03 — Meu Dia
 
-## Sprint 04 — Rastreabilidade
+| ID | História | Pri. |
+|---|---|---|
+| FE-13 | 🧒 Como criança, quero dizer como me sinto tocando em um rosto com emoji e texto | P0 |
+| FE-14 | 🧒 Como criança, quero mostrar onde dói tocando no corpo e escolher a intensidade | P0 |
+| FE-15 | 🧑 Como cuidador, quero registrar sintomas, temperatura e sono | P0 |
+| FE-16 | 👥 Como usuário, quero gravar por voz (simulado) em vez de escrever | P1 |
+| FE-17 | 👥 Como usuário, quero ver o resumo do dia (próxima dose, próximo compromisso) | P0 |
 
-| ID | História | Pri. | Sprint |
-|---|---|---|---|
-| R-1 | Como técnico, quero gerar código de barras/QR por amostra | P0 | 04 |
-| R-2 | Como técnico, quero escanear a amostra e ver histórico completo | P0 | 04 |
-| R-3 | Como técnico, quero anexar resultados em storage S3-compatível | P0 | 04 |
-| R-4 | Como arquiteto, quero spike HL7/FHIR com contrato de integração | P1 | 04 |
+## Sprint 04 — Remédios e Agenda
 
-## Sprint 05 — Laudos: emissão
+| ID | História | Pri. |
+|---|---|---|
+| FE-18 | 👥 Como usuário, quero ver a próxima dose com instrução simples e marcar "já tomei" | P0 |
+| FE-19 | 🧑 Como cuidador, quero a lista de remédios do dia com status (tomado/pendente/atrasado) | P0 |
+| FE-20 | 👥 Como usuário, quero um calendário mensal com consultas, exames e quimioterapias | P0 |
+| FE-21 | 🧒 Como criança, quero acompanhar hábitos (água, caminhada, sono) de forma lúdica | P1 |
+| FE-22 | 🧑 Como cuidador, quero adiar um lembrete ("lembrar em 15 min") | P2 |
 
-| ID | História | Pri. | Sprint |
-|---|---|---|---|
-| L-1 | Como patologista, quero templates por tipo de exame | P0 | 05 |
-| L-2 | Como patologista, quero editor estruturado com campos validados | P0 | 05 |
-| L-3 | Como patologista, quero fluxo de dupla revisão obrigatória | P0 | 05 |
+## Sprint 05 — Alimentação e Aprender
 
-## Sprint 06 — Laudos: liberação (MVP clínico)
+| ID | História | Pri. |
+|---|---|---|
+| FE-23 | 👥 Como usuário, quero registrar quanto consegui comer, sem culpa | P0 |
+| FE-24 | 🧑 Como cuidador, quero ver refeições sugeridas para a fase do tratamento | P1 |
+| FE-25 | 👥 Como usuário, quero dicas rápidas para boca diferente (gosto metálico, enjoo) | P0 |
+| FE-26 | 👥 Como usuário, quero pílulas de conhecimento (vídeos curtos) por tema e idade | P1 |
 
-| ID | História | Pri. | Sprint |
-|---|---|---|---|
-| L-4 | Como patologista, quero versionamento imutável de laudos | P0 | 06 |
-| L-5 | Como patologista, quero assinatura digital no laudo | P0 | 06 |
-| L-6 | Como paciente, quero ser notificado quando o laudo for liberado | P0 | 06 |
-| L-7 | Como gestor, quero trilha de acesso ao laudo e política de retenção | P0 | 06 |
+## Sprint 06 — Exames e Evolução
 
-## Pós-MVP (Sprints 07–10)
+| ID | História | Pri. |
+|---|---|---|
+| FE-27 | 🧑 Como cuidador, quero ver exames agendados com preparo | P0 |
+| FE-28 | 🧑 Como cuidador, quero ver resultados liberados com explicação em linguagem simples | P0 |
+| FE-29 | 👥 Como usuário, quero gráficos de peso e altura ao longo do tratamento | P1 |
+| FE-30 | 🧒 Como criança, quero ver minha jornada de tratamento como um caminho de conquistas | P1 |
+| FE-31 | 🧑 Como cuidador, quero que detalhes clínicos apareçam apenas no Modo Cuidador | P0 |
 
-| ID | História | Pri. | Sprint |
-|---|---|---|---|
-| U-1 | Portal do paciente com design system e WCAG 2.1 AA | P0 | 07 |
-| B-1 | Modelo estrela + ETL Python + dashboards TAT/retrabalho | P0 | 08 |
-| S-1 | Pentest interno, RIPD, resposta a incidentes, backup/DR drill | P0 | 09 |
-| G-1 | UAT, playbook de operação e go-live | P0 | 10 |
+## Sprint 07 — Família e Equipe
+
+| ID | História | Pri. |
+|---|---|---|
+| FE-32 | 👥 Como família, quero enviar e receber mensagens de carinho | P0 |
+| FE-33 | 🧑 Como cuidador, quero ver a equipe de cuidado e contatá-la | P0 |
+| FE-34 | 🧑 Como cuidador, quero ver a linha do tempo de eventos (check-ins, doses, refeições) | P1 |
+| FE-35 | 🧑 Como cuidador, quero gerenciar quem da família tem acesso (visual, mock) | P1 |
+| FE-36 | 👥 Como usuário, quero uma tela de perfil, privacidade e acessibilidade | P0 |
+
+## Sprint 08 — Qualidade e Entrega do Front-end
+
+| ID | História | Pri. |
+|---|---|---|
+| FE-37 | Como usuário, quero estados de carregando, vazio e erro claros em todas as telas | P0 |
+| FE-38 | Como usuário, quero o portal responsivo (celular, tablet, desktop) | P0 |
+| FE-39 | Como time, quero E2E (Playwright + axe) das jornadas críticas no CI | P0 |
+| FE-40 | Como time, quero auditoria WCAG 2.1 AA de todas as telas | P0 |
+| FE-41 | Como time, quero teste de usabilidade com 5 famílias e baseline SUS | P1 |
+| FE-42 | Como time, quero documentação de [[Arquitetura Frontend]] e guia de integração para a Fase 2 | P0 |
+
+# Fase 2 — Back-end (fase futura)
+
+| Sprint | Histórias herdadas do plano v0.2 |
+|---|---|
+| B1 | I-1 OIDC (Keycloak) · I-2 RBAC · I-3 auditoria v1 · I-4 shell autenticado real · I-5 MFA |
+| B2 | P-1 cadastro · P-2 busca · P-3 consentimentos · P-4 vínculo cuidador · P-5 PII mascarada em logs |
+| B3 | E-1 catálogo · E-2 ordem de serviço · E-3 status · E-4 protótipo com técnico |
+| B4 | R-1 QR/código de barras · R-2 histórico da amostra · R-3 anexos S3 · R-4 spike HL7/FHIR |
+| B5 | L-1 templates · L-2 editor estruturado · L-3 dupla revisão |
+| B6 | L-4 versionamento · L-5 assinatura · L-6 notificação de laudo · L-7 trilha/retenção |
+| B7 | Integração do portal: substituir `lib/data` mock por API |
+| B8 | B-1 modelo estrela + ETL + dashboards |
+| B9 | S-1 pentest/RIPD/incidentes/DR · G-1 UAT e go-live |
