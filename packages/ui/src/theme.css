@@ -1,0 +1,70 @@
+/**
+ * @siglo/ui — Design System "Acolher"
+ * Variáveis CSS para Portal Paciente/Cuidador
+ */
+
+:root {
+  /* Fundo e Canvas */
+  --acolher-canvas: #fff8f0;
+  --acolher-cream: #faebd6;
+  --acolher-card-bg: #ffffff;
+
+  /* Pêssego e tons quentes */
+  --acolher-peach-100: #fde6cf;
+  --acolher-peach-200: #f9c98f;
+  --acolher-peach-300: #f6ae5c;
+
+  /* Ameixa / Plum (Ação primária) */
+  --acolher-plum-50: #f6f0fa;
+  --acolher-plum-100: #ede3f5;
+  --acolher-plum-600: #6e3f8c;
+  --acolher-plum-700: #5a3175;
+  --acolher-plum-800: #45245b;
+
+  /* Lavanda */
+  --acolher-lavender-100: #ede6f6;
+  --acolher-lavender-300: #b79ad6;
+
+  /* Laranja acolhedor */
+  --acolher-orange-400: #f08a5d;
+  --acolher-orange-700: #b04a26;
+
+  /* Tipografia / Textos */
+  --acolher-ink: #1f2340;
+  --acolher-ink-muted: #5b5f7a;
+  --acolher-line: #f1e4d6;
+
+  /* Estados semânticos */
+  --acolher-success: #2e7d5b;
+  --acolher-success-bg: #e5f4ec;
+  --acolher-warning: #9a5b0f;
+  --acolher-warning-bg: #fff1da;
+  --acolher-danger: #c0392b;
+  --acolher-danger-bg: #fdecea;
+  --acolher-clinical: #134e54;
+  --acolher-clinical-bg: #e6eff0;
+
+  /* Fontes */
+  --font-sans: 'Nunito', system-ui, -apple-system, sans-serif;
+  --font-display: 'Fraunces', Georgia, serif;
+
+  /* Raio orgânico */
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+  --radius-card: 28px;
+  --radius-full: 9999px;
+
+  /* Sombras com tint ameixa */
+  --shadow-soft: 0 4px 20px -4px rgba(110, 63, 140, 0.08);
+  --shadow-lift: 0 10px 30px -6px rgba(110, 63, 140, 0.14);
+  --shadow-modal: 0 20px 48px -10px rgba(31, 35, 64, 0.22);
+}
+
+body {
+  background-color: var(--acolher-canvas);
+  color: var(--acolher-ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}

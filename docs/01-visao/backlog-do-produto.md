@@ -99,6 +99,53 @@
 | FE-41 | Como time, quero teste de usabilidade com 5 famílias e baseline SUS | P1 |
 | FE-42 | Como time, quero documentação de [[Arquitetura Frontend]] e guia de integração para a Fase 2 | P0 |
 
+# Fase 1B — Front-end do Portal do Médico / Equipe Multidisciplinar
+
+> Mesma regra da Fase 1: **somente UI + mocks**. Público: 🩺 médico · 👩‍⚕️ enfermagem/nutrição.
+
+## Sprint 09 — Shell Médico e Triagem
+
+| ID | História | Pri. |
+|---|---|---|
+| MD-01 | 🩺 Como médico, quero um shell próprio (`/medico`) com menu lateral e identificação do perfil | P0 |
+| MD-02 | 👥 Como usuário de demonstração, quero alternar entre Portal do Paciente e Portal do Médico | P0 |
+| MD-03 | 🩺 Como médico, quero ver a lista de pacientes monitorados ordenada por criticidade (crítico › atenção › estável) | P0 |
+| MD-04 | 🩺 Como médico, quero indicadores do dia (críticos, em atenção, check-ins pendentes, adesão média) | P0 |
+| MD-05 | 🩺 Como médico, quero filtrar por busca, leito, tratamento e criticidade | P0 |
+| MD-06 | 🩺 Como médico, quero ver o motivo do alerta (febre, pico de dor, dose atrasada) direto na linha do paciente | P0 |
+| MD-07 | Como dev, quero componentes `@siglo/ui` clínicos reutilizáveis (`SeverityBadge`, `LineChart`, `Tabs`, `Select`) | P0 |
+
+## Sprint 10 — Visão 360 do Paciente
+
+| ID | História | Pri. |
+|---|---|---|
+| MD-08 | 🩺 Como médico, quero o resumo clínico do paciente (diagnóstico, ciclo, responsável, alertas ativos) | P0 |
+| MD-09 | 🩺 Como médico, quero curvas de peso e altura ao longo do tratamento | P0 |
+| MD-10 | 🩺 Como médico, quero o histórico de humor, dor e temperatura reportados pela família | P0 |
+| MD-11 | 🩺 Como médico, quero a adesão aos medicamentos (tomadas × previstas) por dia | P0 |
+| MD-12 | 🩺 Como médico, quero a linha do tempo de intercorrências com gravidade | P1 |
+| MD-13 | 🩺 Como médico, quero atalhos para prescrever e para falar com o cuidador a partir do paciente | P1 |
+
+## Sprint 11 — Prescrição e Rotina
+
+| ID | História | Pri. |
+|---|---|---|
+| MD-14 | 🩺 Como médico, quero cadastrar um medicamento (nome, dose, horário, instruções) para um paciente | P0 |
+| MD-15 | 🩺 Como médico, quero ajustar dose/horário e suspender um medicamento com confirmação | P0 |
+| MD-16 | 🩺 Como médico, quero que a prescrição apareça em `/remedios` do paciente | P0 |
+| MD-17 | 👩‍⚕️ Como nutricionista, quero registrar recomendações nutricionais que aparecem em `/nutricao` | P0 |
+| MD-18 | 🩺 Como médico, quero ver o histórico de alterações da prescrição | P1 |
+
+## Sprint 12 — Comunicação e Entrega Front-end Médico
+
+| ID | História | Pri. |
+|---|---|---|
+| MD-19 | 🩺 Como médico, quero enviar orientações clínicas a um cuidador (com prioridade normal/urgente) | P0 |
+| MD-20 | 👩‍⚕️ Como enfermagem, quero responder recados dos cuidadores | P0 |
+| MD-21 | 👥 Como cuidador, quero ver as orientações da equipe em `/familia` | P0 |
+| MD-22 | Como usuário, quero estados de carregando, vazio e erro nas telas médicas | P0 |
+| MD-23 | Como time, quero `ui:typecheck`, `ui:test` e `build` verdes e revisão WCAG 2.1 AA do portal médico | P0 |
+
 # Fase 2 — Back-end (fase futura)
 
 | Sprint | Histórias herdadas do plano v0.2 |

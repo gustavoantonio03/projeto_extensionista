@@ -1,8 +1,8 @@
 ---
 titulo: Cérebro do Projeto — SIGLO · Portal do Paciente/Cuidador
 status: documento vivo (living document)
-versao: 0.3
-atualizado_em: 2026-10-14
+versao: 0.4
+atualizado_em: 2026-10-19
 aliases: [SIGLO, OncoVida, Cérebro, MOC]
 ---
 
@@ -64,7 +64,8 @@ A ponta visível para a família é o **Portal do Paciente/Cuidador**: acolhedor
 | **Cuidador familiar (mãe/pai/responsável)** | Organizar remédios, agenda e exames; registrar sintomas; falar rápido com a equipe | Portal — **Modo Cuidador** | **1** |
 | **Paciente adulto / adolescente** | Acompanhar o próprio tratamento com clareza e calma | Portal — Modo Cuidador | **1** |
 | Rede familiar (avós, irmãos) | Enviar carinho e acompanhar com permissões limitadas | Portal — Família | **1** |
-| Equipe de enfermagem (visão no portal) | Ver check-ins e alertas da família | Portal — Equipe (leitura) | 1 (UI) / 2 (dados) |
+| **Médico oncopediatra / Equipe multidisciplinar (enfermagem, nutrição)** | Priorizar pacientes por criticidade, ver histórico de sintomas, ajustar prescrição e orientar cuidadores | Portal do Médico (`/medico`) | **1B** |
+| Equipe de enfermagem (visão no portal do paciente) | Ver check-ins e alertas da família | Portal - Equipe (leitura) | 1 (UI) / 2 (dados) |
 | Patologista · Técnico/Biomédico · Recepção/Gestor | Laudos, coleta, rastreio e fila de trabalho | Módulos de laboratório | 2 |
 | Administrador / DPO · Diretoria | Acessos, auditoria, privacidade e indicadores | [[Módulo Identidade e Acesso]] · [[Módulo BI]] | 2 |
 
@@ -86,6 +87,10 @@ O código é organizado por **módulo de domínio** (bounded contexts). Cada mó
 | Exames & Evolução | `/exames` | Exames agendados, resultados liberados em linguagem simples, gráficos de peso/altura | [[Módulo Exames]] · [[Módulo Laudos]] |
 | Família & Equipe | `/familia` | Rede de carinho, mensagens, equipe de cuidado, linha do tempo | [[Módulo Pacientes]] · [[Módulo Notificações]] |
 | Perfil & Acessibilidade | `/perfil` | Dados da criança, modo de uso, tamanho de texto, movimento reduzido, privacidade | [[Módulo Identidade e Acesso]] |
+| **Médico — Triagem** | `/medico` | Dashboard: pacientes monitorados, criticidade, alertas de febre/dor, filtros por leito/tratamento | [[Módulo Pacientes]] · [[Módulo Notificações]] |
+| **Médico — Visão 360** | `/medico/pacientes/[id]` | Curvas de peso/altura, histórico de humor/dor, adesão a medicamentos, intercorrências | [[Módulo Pacientes]] · [[Módulo Exames]] |
+| **Médico — Prescrição** | `/medico/prescricao` | Cadastro/ajuste de medicamentos, horários e recomendações nutricionais (alimentam `/remedios` e `/nutricao`) | [[Módulo Pacientes]] |
+| **Médico — Comunicação** | `/medico/comunicacao` | Recados clínicos, orientações aos cuidadores, respostas da enfermagem (aparecem em `/familia`) | [[Módulo Notificações]] |
 
 Detalhes: [[Módulos do Portal]] · Arquitetura: [[Arquitetura Frontend]].
 
@@ -203,7 +208,7 @@ Referências: [[Padrões de Código]] · [[Política de Branches e Commits]] · 
 ## 5. Roadmap de Sprints
 
 Cadência: **sprints de 2 semanas** · Sprint 00 com 1 semana.
-**Recorte:** a **Fase 1 (Front-end) vai do Sprint 01 ao Sprint 08** — ao fim do Sprint 08 o Portal do Paciente/Cuidador está **100% finalizado no front-end** com mocks. Todo back-end foi isolado na **Fase 2 (Sprints B1–B9)**.
+**Recorte:** a **Fase 1 (Front-end) vai do Sprint 01 ao Sprint 12**: Sprints 01–08 = Portal do Paciente/Cuidador (concluir) e Sprints 09–12 = **Portal do Médico / Equipe Multidisciplinar** (Fase 1B). Ao fim do Sprint 12 todo o front-end do SIGLO está **100% finalizado com mocks**. Todo back-end foi isolado na **Fase 2 (Sprints B1–B9)**.
 Gestão completa: [[Roadmap de Sprints]] (`docs/05-sprints/roadmap-de-sprints.md`) · Rituais: [[Rituais do Time]] · DoD: [[Definição de Pronto (DoD)]]
 
 > Cada sprint incorpora etapas de **QA**, **segurança/LGPD** e **usabilidade** — qualidade é contínua, não fase final.
@@ -212,7 +217,7 @@ Gestão completa: [[Roadmap de Sprints]] (`docs/05-sprints/roadmap-de-sprints.md
 | Sprint | Foco | Entregas principais | QA · LGPD · UX embutidos | Status |
 |---|---|---|---|---|
 | [[Sprint 00 — Fundações]] | Setup | Monorepo, CI, ambientes, ADRs 0001–0004, backlog, tokens iniciais | Pipeline lint+testes+SAST | ✅ concluído |
-| [[Sprint 01 — Fundação Front-end e Design System]] | Base | Next.js em `apps/web`, [[Design System — Acolher]] (tokens + componentes React em `packages/ui`), camada de mocks | Testes unitários dos componentes; contraste AA dos tokens | 🟡 em andamento |
+| [[Sprint 01 — Fundação Front-end e Design System]] | Base | Next.js em `apps/web`, [[Design System — Acolher]] (tokens + componentes React em `packages/ui`), camada de mocks | Testes unitários dos componentes; contraste AA dos tokens | ✅ concluído |
 | [[Sprint 02 — Shell, Boas-vindas e Perfis]] | Navegação | Onboarding, login simulado, seleção de criança, Modo Criança/Cuidador, header, navegação inferior, botão SOS | Teclado e leitor de tela no shell; nenhum PII em logs | 🔴 |
 | [[Sprint 03 — Meu Dia]] | Check-in | Humor por emojis, voz (simulada), mapa de dor, sintomas, temperatura, resumo do dia | Teste de tarefa "registrar como me sinto" | 🔴 |
 | [[Sprint 04 — Remédios e Agenda]] | Rotina | Próxima dose, "já tomei", lista do dia, calendário de consultas/exames, hábitos | Estados de erro/vazio; lembretes claros para adulto | 🔴 |
@@ -220,6 +225,18 @@ Gestão completa: [[Roadmap de Sprints]] (`docs/05-sprints/roadmap-de-sprints.md
 | [[Sprint 06 — Exames e Evolução]] | Clínico (visão família) | Exames agendados, resultados liberados em linguagem simples, gráficos de peso/altura, linha do tempo | Linguagem não ansiogênica; dado sensível só no Modo Cuidador | 🔴 |
 | [[Sprint 07 — Família e Equipe]] | Rede de apoio | Rede de carinho, mensagens, equipe de cuidado, perfil e acessibilidade | Permissões visuais por papel (mock) | 🔴 |
 | [[Sprint 08 — Qualidade e Entrega do Front-end]] | Hardening UI | Estados loading/vazio/erro em tudo, responsividade, E2E (Playwright + axe), usabilidade com 5 famílias, docs | **WCAG 2.1 AA**; SUS baseline; **Front-end finalizado** | 🔴 |
+
+### 5.1b Fase 1B — Front-end do Portal do Médico / Equipe Multidisciplinar (escopo atual)
+Mesma regra: **100% front-end com mocks**, reutilizando `@siglo/ui` (tema Acolher em versão "clínica": mais densa, limpa e orientada a prioridade).
+
+| Sprint | Foco | Entregas principais | QA · LGPD · UX embutidos | Status |
+|---|---|---|---|---|
+| [[Sprint 09 — Shell Médico e Triagem]] | Navegação + Dashboard | Rotas `/medico`, shell com menu lateral, alternância Paciente ⇄ Médico, lista de pacientes com criticidade, KPIs do dia, filtros por leito/tratamento/criticidade, componentes `@siglo/ui` clínicos (`SeverityBadge`, `LineChart`, `Tabs`, `Select`) | Criticidade nunca só por cor; navegação por teclado; mocks sem PII real | ✅ concluído |
+| [[Sprint 10 — Visão 360 do Paciente]] | Prontuário visual | `/medico/pacientes/[id]`: curvas de peso/altura, histórico de humor e dor (MoodPicker/PainScale), adesão a medicamentos, linha do tempo de intercorrências | Dados sensíveis de menores (LGPD art. 14) sinalizados na tela | ✅ concluído |
+| [[Sprint 11 — Prescrição e Rotina]] | Prescrição | `/medico/prescricao`: cadastrar/ajustar/suspender medicamentos, doses e horários, recomendações nutricionais — refletidos em `/remedios` e `/nutricao` do paciente | Validação de formulário; confirmação em ações de risco; campos com ajuda sempre visível | ✅ concluído |
+| [[Sprint 12 — Comunicação e Entrega Front-end Médico]] | Comunicação + QA | `/medico/comunicacao`: mural de recados clínicos, orientações aos familiares, respostas da enfermagem (refletidas em `/familia`); estados loading/vazio/erro; QA final | Typecheck/testes/build verdes; revisão WCAG 2.1 AA; **front-end completo do SIGLO** | ✅ concluído |
+
+Ao fim do Sprint 12 o **ciclo visual completo** (Paciente/Cuidador + Médico/Equipe) está finalizado com dados mockados; só então inicia a Fase 2.
 
 ### 5.2 Fase 2 — Back-end e integração (fase futura)
 | Sprint | Foco | Origem no plano v0.2 |
@@ -347,6 +364,7 @@ Malha de wikilinks deste cérebro. Ao criar cada página em `docs/`, marque o st
 
 | Data | Versão | Mudança |
 |---|---|---|
+| 2026-10-19 | 0.4 | **Fase 1B — Front-end do Portal do Médico / Equipe Multidisciplinar** (Sprints 09–12, rotas `/medico/*`, dados mockados, sem back-end); persona Médico/Equipe no escopo da Fase 1; alternância Paciente ⇄ Médico para demonstração; back-end segue na Fase 2 |
 | 2026-10-14 | 0.3 | Foco no **Portal do Paciente/Cuidador** (público infantil + adulto); diretriz **Front-end First** ([[ADR-0005 — Front-end First]]); roadmap reorganizado em **Fase 1 (S01–S08, front-end)** e **Fase 2 (B1–B9, back-end)**; etapas padrão de sprint para rastreabilidade; [[Design System — Acolher]]; LGPD art. 14 (crianças) |
 | 2026-09-17 | 0.2 | Sprint 00 executada: monorepo estruturado, CI (lint+testes+SAST), docker-compose local, ADRs 0001–0004, backlog inicial, tokens do design system em `packages/ui`, rascunho do [[Inventário de Dados (LGPD)]] |
 | 2026-09-10 | 0.1 | Criação do cérebro: visão, arquitetura Go+Python/Next.js, módulos de domínio, roadmap de sprints 0–10, QA, LGPD e usabilidade |

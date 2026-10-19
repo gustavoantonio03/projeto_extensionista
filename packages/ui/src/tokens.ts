@@ -1,7 +1,8 @@
 /**
- * @siglo/ui — Design tokens "Serene Clinical Humanism"
- * Fonte: stitch_app_oncologia_pedi_trica/serene_clinical_humanism/DESIGN.md
- * NÃO editar valores sem atualizar o DESIGN.md correspondente.
+ * @siglo/ui — Design tokens "Serene Clinical Humanism" + "Acolher"
+ * Fontes:
+ * - Serene: stitch_app_oncologia_pedi_trica/serene_clinical_humanism/DESIGN.md
+ * - Acolher: docs/08-ux/design-system-acolher.md (Portal Paciente/Cuidador pediátrico e adulto)
  */
 
 export const colors = {
@@ -110,6 +111,7 @@ export const radius = {
   md: "0.75rem",
   lg: "1rem",
   xl: "1.5rem",
+  card: "1.75rem", // 28px — cantos arredondados de cards Acolher
   full: "9999px",
 } as const;
 
@@ -119,6 +121,10 @@ export const shadows = {
   level2: "0 8px 24px -4px rgba(19, 78, 84, 0.10)",
   level3: "0 16px 40px -8px rgba(26, 36, 38, 0.16)",
   borderLevel1: "1px solid rgba(228, 224, 216, 0.7)",
+  // Sombras com tint ameixa para design system Acolher
+  soft: "0 4px 20px -4px rgba(110, 63, 140, 0.08)",
+  lift: "0 10px 30px -6px rgba(110, 63, 140, 0.14)",
+  modal: "0 20px 48px -10px rgba(31, 35, 64, 0.22)",
 } as const;
 
 /** Regras de acessibilidade/movimento do design system. */
@@ -129,7 +135,66 @@ export const a11y = {
   wcagTarget: "2.1 AA",
 } as const;
 
-export type ColorToken = keyof typeof colors;
+/**
+ * Paleta do Design System "Acolher"
+ * Desenvolvido para Portal Paciente/Cuidador (público infantil + adulto).
+ * Contraste verificado para WCAG 2.1 AA.
+ */
+export const acolherColors = {
+  canvas: "#FFF8F0",
+  cream: "#FAEBD6",
+  cardBg: "#FFFFFF",
 
-export const sigloTheme = { colors, typography, spacing, radius, shadows, a11y } as const;
+  peach100: "#FDE6CF",
+  peach200: "#F9C98F",
+  peach300: "#F6AE5C",
+
+  plum50: "#F6F0FA",
+  plum100: "#EDE3F5",
+  plum600: "#6E3F8C", // Ação primária (7.6:1 em branco)
+  plum700: "#5A3175", // Hover / Press
+  plum800: "#45245B",
+
+  lavender100: "#EDE6F6",
+  lavender300: "#B79AD6",
+
+  orange400: "#F08A5D",
+  orange700: "#B04A26",
+
+  ink: "#1F2340", // Texto principal
+  inkMuted: "#5B5F7A", // Texto secundário
+  line: "#F1E4D6", // Divisores e bordas suaves
+
+  success: "#2E7D5B",
+  successBg: "#E5F4EC",
+
+  warning: "#9A5B0F",
+  warningBg: "#FFF1DA",
+
+  danger: "#C0392B",
+  dangerBg: "#FDECEA",
+
+  clinical: "#134E54",
+  clinicalBg: "#E6EFF0",
+} as const;
+
+export const acolherTypography = {
+  fontSans: "'Nunito', system-ui, -apple-system, sans-serif",
+  fontDisplay: "'Fraunces', serif",
+} as const;
+
+export type ColorToken = keyof typeof colors;
+export type AcolherColorToken = keyof typeof acolherColors;
+
+export const sigloTheme = {
+  colors,
+  acolherColors,
+  typography,
+  acolherTypography,
+  spacing,
+  radius,
+  shadows,
+  a11y,
+} as const;
+
 export default sigloTheme;
