@@ -7,6 +7,52 @@
 export type UserRole = "paciente" | "cuidador" | "familia" | "clinico";
 export type AppMode = "crianca" | "cuidador";
 
+export interface CaregiverProfile {
+  id: string;
+  name: string;
+  shortName: string;
+  relation: "mae" | "pai" | "avo" | "avo_m" | "tio" | "outro";
+  relationLabel: string; // ex: "Mãe", "Pai", "Avó"
+  avatarUrl: string;
+  isPrimary: boolean;
+  phone?: string;
+}
+
+export interface SessionState {
+  currentMode: AppMode;
+  activeCaregiver: CaregiverProfile;
+  isParentLocked: boolean;
+}
+
+export interface AuditEntry {
+  id: string;
+  action:
+    | "administrou_medicamento"
+    | "registrou_sintoma"
+    | "registrou_refeicao"
+    | "conferiu_medicamento";
+  description: string;
+  performedBy: CaregiverProfile;
+  performedAt: string; // ex: "08:05" ou ISO
+  targetId?: string;
+  verifiedBy?: CaregiverProfile;
+  verifiedAt?: string;
+  verificationStatus?: "pendente" | "conferido";
+}
+
+export interface MedicationLog {
+  id: string;
+  medicationId: string;
+  medicationName: string;
+  dosage: string;
+  takenAt: string;
+  performedBy: CaregiverProfile;
+  verificationStatus: "pendente" | "conferido";
+  verifiedBy?: CaregiverProfile;
+  verifiedAt?: string;
+  notes?: string;
+}
+
 export interface PatientProfile {
   id: string;
   name: string;
@@ -32,6 +78,10 @@ export interface DailyCheckIn {
   sleepQuality: "otimo" | "picado" | "dificuldade";
   voiceNoteUrl?: string;
   notes?: string;
+  performedBy?: CaregiverProfile;
+  performedAt?: string;
+  verifiedBy?: CaregiverProfile;
+  verifiedAt?: string;
 }
 
 export interface Medication {
@@ -44,6 +94,11 @@ export interface Medication {
   category: "antiemetico" | "corticoide" | "quimio-oral" | "suporte";
   taken: boolean;
   takenAt?: string;
+  performedBy?: CaregiverProfile;
+  performedAt?: string;
+  verificationStatus?: "pendente" | "conferido";
+  verifiedBy?: CaregiverProfile;
+  verifiedAt?: string;
 }
 
 export interface SuggestedMeal {

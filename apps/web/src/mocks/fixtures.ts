@@ -6,7 +6,49 @@ import {
   FamilyMember,
   CareTeamMember,
   Appointment,
+  CaregiverProfile,
+  AuditEntry,
+  MedicationLog,
 } from "../lib/types";
+
+export const mockPrimaryCaregiver: CaregiverProfile = {
+  id: "cg-1",
+  name: "Ana Paula Albuquerque",
+  shortName: "Ana",
+  relation: "mae",
+  relationLabel: "Mãe (Cuidadora Principal)",
+  avatarUrl: "/illustrations/onboarding-cuidado.jpg",
+  isPrimary: true,
+  phone: "(11) 98111-2233",
+};
+
+export const mockSecondaryCaregiver: CaregiverProfile = {
+  id: "cg-2",
+  name: "Carlos Eduardo Albuquerque",
+  shortName: "Carlos",
+  relation: "pai",
+  relationLabel: "Pai",
+  avatarUrl: "/illustrations/onboarding-familia.jpg",
+  isPrimary: false,
+  phone: "(11) 98222-3344",
+};
+
+export const mockTertiaryCaregiver: CaregiverProfile = {
+  id: "cg-3",
+  name: "Helena Marlene Albuquerque",
+  shortName: "Helena",
+  relation: "avo",
+  relationLabel: "Avó",
+  avatarUrl: "/illustrations/onboarding-familia.jpg",
+  isPrimary: false,
+  phone: "(11) 98333-4455",
+};
+
+export const mockCaregivers: CaregiverProfile[] = [
+  mockPrimaryCaregiver,
+  mockSecondaryCaregiver,
+  mockTertiaryCaregiver,
+];
 
 export const mockPatient: PatientProfile = {
   id: "pac-001",
@@ -43,6 +85,11 @@ export const mockMedications: Medication[] = [
     category: "corticoide",
     taken: true,
     takenAt: "08:05",
+    performedBy: mockPrimaryCaregiver,
+    performedAt: "08:05",
+    verificationStatus: "conferido",
+    verifiedBy: mockSecondaryCaregiver,
+    verifiedAt: "08:30",
   },
   {
     id: "med-3",
@@ -53,6 +100,53 @@ export const mockMedications: Medication[] = [
     instructions: "Tomar 30 minutos após o jantar com bastante água.",
     category: "quimio-oral",
     taken: false,
+  },
+];
+
+export const mockMedicationLogs: MedicationLog[] = [
+  {
+    id: "log-1",
+    medicationId: "med-2",
+    medicationName: "Dexametasona 4mg",
+    dosage: "1 comprimido",
+    takenAt: "08:05",
+    performedBy: mockPrimaryCaregiver,
+    verificationStatus: "conferido",
+    verifiedBy: mockSecondaryCaregiver,
+    verifiedAt: "08:30",
+    notes: "Tomado com suco de maçã sem resíduo. Tolerância imediata 100%.",
+  },
+];
+
+export const mockAuditTrail: AuditEntry[] = [
+  {
+    id: "audit-1",
+    action: "conferiu_medicamento",
+    description: "Pai (Carlos) conferiu a administração de Dexametasona 4mg.",
+    performedBy: mockSecondaryCaregiver,
+    performedAt: "08:30",
+    targetId: "med-2",
+    verificationStatus: "conferido",
+    verifiedBy: mockSecondaryCaregiver,
+    verifiedAt: "08:30",
+  },
+  {
+    id: "audit-2",
+    action: "administrou_medicamento",
+    description: "Mãe (Ana) registrou a dose de Dexametasona 4mg.",
+    performedBy: mockPrimaryCaregiver,
+    performedAt: "08:05",
+    targetId: "med-2",
+    verificationStatus: "conferido",
+    verifiedBy: mockSecondaryCaregiver,
+    verifiedAt: "08:30",
+  },
+  {
+    id: "audit-3",
+    action: "registrou_sintoma",
+    description: "Mãe (Ana) registrou temperatura matinal de 36.5°C.",
+    performedBy: mockPrimaryCaregiver,
+    performedAt: "07:45",
   },
 ];
 

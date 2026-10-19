@@ -34,7 +34,9 @@
 |---|---|---|
 | FE-07 | 👥 Como novo usuário, quero um onboarding ilustrado em 3 passos | P0 |
 | FE-08 | 🧑 Como cuidador, quero entrar (login simulado) | P0 |
+| FE-08a | 🧑 Como família, quero que a conta suporte múltiplos cuidadores (Mãe, Pai, Avó), com alternância de perfil ativo e identificação visual | P0 |
 | FE-09 | 🧑 Como cuidador, quero escolher a criança acompanhada e o modo (Criança/Cuidador) | P0 |
+| FE-09a | 🧒🔒 Como responsável, quero trava parental com PIN simples (ex: `1234`) para transitar do Modo Criança para o Modo Cuidador, impedindo que a criança acesse ações clínicas | P0 |
 | FE-10 | 👥 Como usuário, quero navegação inferior (mobile) / lateral (desktop) com no máximo 5 itens | P0 |
 | FE-11 | 👥 Como usuário, quero um botão SOS sempre visível com contatos da equipe | P0 |
 | FE-12 | 👥 Como usuário, quero ajustar tamanho do texto e reduzir animações | P1 |
@@ -45,7 +47,7 @@
 |---|---|---|
 | FE-13 | 🧒 Como criança, quero dizer como me sinto tocando em um rosto com emoji e texto | P0 |
 | FE-14 | 🧒 Como criança, quero mostrar onde dói tocando no corpo e escolher a intensidade | P0 |
-| FE-15 | 🧑 Como cuidador, quero registrar sintomas, temperatura e sono | P0 |
+| FE-15 | 🧑 Como cuidador, quero registrar sintomas, temperatura e sono, gravando quem registrou e horário | P0 |
 | FE-16 | 👥 Como usuário, quero gravar por voz (simulado) em vez de escrever | P1 |
 | FE-17 | 👥 Como usuário, quero ver o resumo do dia (próxima dose, próximo compromisso) | P0 |
 
@@ -55,6 +57,8 @@
 |---|---|---|
 | FE-18 | 👥 Como usuário, quero ver a próxima dose com instrução simples e marcar "já tomei" | P0 |
 | FE-19 | 🧑 Como cuidador, quero a lista de remédios do dia com status (tomado/pendente/atrasado) | P0 |
+| FE-19a | 🧑✍️ Como cuidador, quero que toda dose administrada registre explicitamente o cuidador autor (`performedBy`) e horário (`performedAt`) | P0 |
+| FE-19b | 🧑✅ Como cuidador, quero conferir (dupla checagem) a administração de medicação feita por outro familiar, registrando a conferência (`verifiedBy`) | P0 |
 | FE-20 | 👥 Como usuário, quero um calendário mensal com consultas, exames e quimioterapias | P0 |
 | FE-21 | 🧒 Como criança, quero acompanhar hábitos (água, caminhada, sono) de forma lúdica | P1 |
 | FE-22 | 🧑 Como cuidador, quero adiar um lembrete ("lembrar em 15 min") | P2 |

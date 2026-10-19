@@ -39,29 +39,31 @@ aliases: [SIGLO, OncoVida, Cérebro, MOC]
 ## 1. Visão do Produto
 
 ### 1.0 Foco atual
-O SIGLO é uma plataforma de laboratório oncológico; a **primeira face entregue** é o **Portal do Paciente/Cuidador (OncoVida)**, que acompanha a rotina de tratamento da criança/paciente: check-in de como se sente, remédios e agenda, alimentação, exames e evolução, família e equipe de cuidado. O portal é construído **front-end first** (Fase 1) e conectado ao back-end na Fase 2.
+O SIGLO é uma plataforma de laboratório oncológico; a **primeira face entregue** é o **Portal do Paciente/Cuidador (OncoVida)**, desenhado com **foco Mobile-First** (experiência fluida de Web App estilo aplicativo nativo/Instagram, otimizada para uso em smartphone com uma mão), que acompanha a rotina de tratamento da criança: check-in de humor e sintomas, remédios e rotina com dupla checagem, alimentação compassiva, exames e rede de apoio familiar. O portal é construído **front-end first** (Fase 1) e conectado ao back-end na Fase 2.
 
 ### 1.1 Problema
 Laboratórios oncológicos operam com processos fragmentados (planilhas, sistemas legados, WhatsApp) entre coleta, análise e emissão de laudos. Consequências: atrasos no diagnóstico, retrabalho, falta de rastreabilidade da amostra e ausência de indicadores de gestão.
-**Do lado da família:** crianças em tratamento e seus cuidadores lidam com muitos remédios, exames, sintomas e orientações — em geral espalhados em papéis e mensagens, com linguagem técnica e ansiogênica.
+**Do lado da família:** crianças em tratamento e seus múltiplos cuidadores (mãe, pai, avós) lidam com muitos remédios, exames, sintomas e orientações — em geral espalhados em papéis e mensagens, sem rastreabilidade de quem administrou cada remédio e com risco de doses duplicadas ou esquecidas.
 
 ### 1.2 Solução
 Plataforma web modular que digitaliza o fluxo ponta a ponta do laboratório: **cadastro de pacientes → ordem e coleta de exames → rastreabilidade da amostra → análise → laudo revisado e assinado → liberação ao paciente/médico → BI para gestão**.
-A ponta visível para a família é o **Portal do Paciente/Cuidador**: acolhedor para a criança, claro e organizado para o adulto.
+A ponta visível para a família é o **Portal do Paciente/Cuidador**: Mobile-First, acolhedor e seguro para a criança, com separação estrita para os adultos, suporte a múltiplos cuidadores na mesma conta e dupla checagem de ações críticas.
 
 ### 1.3 Objetivos de Produto
-1. **(Fase 1)** Entregar um portal **acolhedor para crianças** e **claro para adultos/cuidadores**, com navegação simples e arquitetura de informação previsível.
-2. **(Fase 1)** Validar jornadas com **dados mockados** e testes de usabilidade antes de investir no back-end.
-3. Reduzir o **turnaround time (TAT)** entre coleta e liberação do laudo. *(Fase 2)*
-4. Garantir **rastreabilidade** integral da amostra (coleta → resultado). *(Fase 2)*
-5. Assegurar **conformidade LGPD** por padrão (privacy by design), com atenção a **dados de crianças (art. 14)**.
-6. Entregar **BI gerencial** com dados pseudonimizados. *(Fase 2)*
+1. **(Fase 1)** Entregar um portal **Mobile-First** acolhedor para crianças e com ferramentas de alta segurança para múltiplos adultos/cuidadores.
+2. **(Fase 1 · Proteção Infantil)** Garantir **separação estrita** entre a visão lúdica da criança e a visão clínica/gestora do adulto por meio de **trava de segurança parental (PIN)**.
+3. **(Fase 1 · Rastreabilidade Familiar)** Permitir **múltiplos cuidadores na mesma conta** da criança, registrando autor e horário de cada ação crítica (remédios, temperatura) com mecanismo de **conferência cruzada (dupla checagem)**.
+4. **(Fase 1)** Validar jornadas com **dados mockados** e testes de usabilidade antes de investir no back-end.
+5. Reduzir o **turnaround time (TAT)** entre coleta e liberação do laudo. *(Fase 2)*
+6. Garantir **rastreabilidade** integral da amostra (coleta → resultado). *(Fase 2)*
+7. Assegurar **conformidade LGPD** por padrão (privacy by design), com atenção a **dados de crianças (art. 14)**.
+8. Entregar **BI gerencial** com dados pseudonimizados. *(Fase 2)*
 
 ### 1.4 Personas
 | Persona | Necessidade principal | Onde atua | Fase |
 |---|---|---|---|
-| **Criança paciente (≈ 6–12 anos)** | Dizer como se sente com toques e emojis, entender o dia sem medo, sentir-se acompanhada | Portal — **Modo Criança** | **1** |
-| **Cuidador familiar (mãe/pai/responsável)** | Organizar remédios, agenda e exames; registrar sintomas; falar rápido com a equipe | Portal — **Modo Cuidador** | **1** |
+| **Criança paciente (≈ 6–12 anos)** | Dizer como se sente com toques e emojis, entender o dia sem medo, brincar com Lumi; **sem acesso a controles clínicos sensíveis** | Portal — **Modo Criança** | **1** |
+| **Múltiplos Cuidadores Familiares (mãe, pai, avó, tia)** | Administrar remédios, registrar sintomas, conferir ações de outros cuidadores (dupla checagem) com sub-perfis autenticados | Portal — **Modo Cuidador** (protegido por PIN) | **1** |
 | **Paciente adulto / adolescente** | Acompanhar o próprio tratamento com clareza e calma | Portal — Modo Cuidador | **1** |
 | Rede familiar (avós, irmãos) | Enviar carinho e acompanhar com permissões limitadas | Portal — Família | **1** |
 | **Médico oncopediatra / Equipe multidisciplinar (enfermagem, nutrição)** | Priorizar pacientes por criticidade, ver histórico de sintomas, ajustar prescrição e orientar cuidadores | Portal do Médico (`/medico`) | **1B** |
@@ -308,7 +310,11 @@ O portal atende **dois públicos na mesma base**: a **criança** (acolhimento, b
 
 | Prática | Regra |
 |---|---|
-| Design tokens | Tokens "Acolher" em `packages/ui`; Nunito (UI) + Fraunces (títulos); base 16px; alvos de toque ≥ 48px (56px em ações primárias) |
+| Foco Mobile-First | Web App Mobile com layout vertical fluido (estilo app nativo/Instagram), alvos de toque generosos (≥ 48px, 56px em ações primárias) e bottom bar |
+| Design tokens | Tokens "Acolher" em `packages/ui`; Nunito (UI) + Fraunces (títulos); base 16px; sombras suaves e cantos arredondados |
+| Separação Estrita (PIN) | Criança NUNCA acessa ou modifica ações críticas do cuidador; transição Modo Criança → Modo Cuidador exige **trava parental com PIN simples** (ex: `1234`) |
+| Múltiplos Cuidadores | Mesma conta familiar suporta múltiplos cuidadores (Mãe, Pai, Avó), com alternância de perfil ativo e identificação visual |
+| Rastreabilidade & Dupla Checagem | Toda ação crítica (dar medicação, registrar temperatura/sintoma) grava **quem realizou e o horário** (`performedBy`, `performedAt`) e permite **conferência cruzada** por outro cuidador (`verifiedBy`, `verifiedAt`) |
 | Dois modos | **Modo Criança**: ilustrações, mascote Lumi, emojis **sempre acompanhados de texto**, frases curtas, uma tarefa por tela · **Modo Cuidador**: detalhes clínicos, horários, histórico e atalhos |
 | Linguagem | Simples, acolhedora e honesta; sem jargão para a criança; sem infantilizar o adulto; nunca culpa ("sem pressão") |
 | Acessibilidade | WCAG 2.1 AA em toda tela; navegação por teclado e leitor de tela; `prefers-reduced-motion`; texto ajustável (detalhes: [[Acessibilidade WCAG 2.1 AA]]) |
@@ -322,7 +328,7 @@ O portal atende **dois públicos na mesma base**: a **criança** (acolhimento, b
 
 ## 9. Métricas, Riscos e Rituais
 
-**KPIs de produto (Fase 1):** conclusão de tarefa nas jornadas críticas · SUS · tempo para registrar um check-in · % telas com WCAG AA.
+**KPIs de produto (Fase 1):** conclusão de tarefa nas jornadas críticas · SUS · tempo para registrar um check-in · taxa de conferência de medicações · % telas com WCAG AA.
 **KPIs de produto (Fase 2):** TAT coleta→laudo · % laudos liberados em 1ª revisão · taxa de retrabalho de amostra.
 **KPIs de engenharia (DORA):** frequência de deploy · lead time de mudança · taxa de falha de mudança · MTTR. Painel: [[KPIs e Métricas]].
 
@@ -330,7 +336,8 @@ O portal atende **dois públicos na mesma base**: a **criança** (acolhimento, b
 
 | Risco | Impacto | Mitigação |
 |---|---|---|
-| Interface infantilizar adultos ou ser complexa para crianças | Alto | Dois modos de uso, testes com ambos os públicos (S04 e S08) |
+| Interface infantilizar adultos ou ser complexa para crianças | Alto | Dois modos de uso com trava parental (PIN), testes com ambos os públicos (S04 e S08) |
+| Duplicidade ou esquecimento de dose de medicação por múltiplos familiares | Crítico | Registro explícito de quem deu (`performedBy`) + dupla checagem/conferência cruzada por outro cuidador |
 | Mocks divergirem do contrato real da Fase 2 | Médio | Tipos centralizados em `lib/types.ts` + camada `lib/data`; OpenAPI derivado dos tipos em B2 |
 | Vazamento de dado de saúde (inclusive de criança) | Crítico | Só dados fictícios na Fase 1; criptografia, RBAC, auditoria e pentest na Fase 2 |
 | Integração com LIS legado falhar | Alto | Módulo anticorrupção, spike HL7/FHIR em B4, import manual como fallback |
@@ -364,6 +371,7 @@ Malha de wikilinks deste cérebro. Ao criar cada página em `docs/`, marque o st
 
 | Data | Versão | Mudança |
 |---|---|---|
+| 2026-10-19 | 0.5 | **Refatoração de Perfis e Rastreabilidade Multi-Cuidador:** Foco Mobile-First (experiência Web App nativo); separação estrita Criança vs. Cuidador com trava parental (PIN `1234`); suporte a múltiplos cuidadores na mesma conta familiar (Mãe, Pai, Avó); rastreabilidade com autoria (`performedBy`, `performedAt`) e dupla checagem/conferência cruzada de medicamentos (`verifiedBy`, `verifiedAt`) |
 | 2026-10-19 | 0.4 | **Fase 1B — Front-end do Portal do Médico / Equipe Multidisciplinar** (Sprints 09–12, rotas `/medico/*`, dados mockados, sem back-end); persona Médico/Equipe no escopo da Fase 1; alternância Paciente ⇄ Médico para demonstração; back-end segue na Fase 2 |
 | 2026-10-14 | 0.3 | Foco no **Portal do Paciente/Cuidador** (público infantil + adulto); diretriz **Front-end First** ([[ADR-0005 — Front-end First]]); roadmap reorganizado em **Fase 1 (S01–S08, front-end)** e **Fase 2 (B1–B9, back-end)**; etapas padrão de sprint para rastreabilidade; [[Design System — Acolher]]; LGPD art. 14 (crianças) |
 | 2026-09-17 | 0.2 | Sprint 00 executada: monorepo estruturado, CI (lint+testes+SAST), docker-compose local, ADRs 0001–0004, backlog inicial, tokens do design system em `packages/ui`, rascunho do [[Inventário de Dados (LGPD)]] |
