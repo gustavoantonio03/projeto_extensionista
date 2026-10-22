@@ -10,6 +10,7 @@ import { StatCard } from "./components/StatCard";
 import { ProgressBar } from "./components/ProgressBar";
 import { MiniCalendar } from "./components/MiniCalendar";
 import { BottomNav } from "./components/BottomNav";
+import { MedicationCard } from "./components/MedicationCard";
 
 describe("Componentes @siglo/ui (Design System Acolher)", () => {
   it("Button renderiza texto e responde ao clique", async () => {
@@ -138,5 +139,34 @@ describe("Componentes @siglo/ui (Design System Acolher)", () => {
     const remediosTab = screen.getByRole("button", { name: /remédios/i });
     await user.click(remediosTab);
     expect(handleSelect).toHaveBeenCalledWith("remedios", "/remedios");
+  });
+
+  it("MedicationCard renderiza selo de rastreabilidade e botão de conferência cruzada", async () => {
+    const user = userEvent.setup();
+    const handleVerify = vi.fn();
+    const handleToggle = vi.fn();
+
+    render(
+      <MedicationCard
+        id="rx-1"
+        name="Dexametasona"
+        dosage="4mg"
+        time="08:00"
+        instructions="Tomar com água"
+        taken={true}
+        onToggleTaken={handleToggle}
+        performedByLabel="Mãe (Ana Paula)"
+        performedAt="08:05"
+        verificationStatus="pendente"
+        canVerify={true}
+        onVerify={handleVerify}
+      />
+    );
+
+    expect(screen.getByText(/Mãe \(Ana Paula\) deu a medicação às 08:05/i)).toBeInTheDocument();
+    const verifyBtn = screen.getByRole("button", { name: /conferir \/ confirmar registro/i });
+    expect(verifyBtn).toBeInTheDocument();
+    await user.click(verifyBtn);
+    expect(handleVerify).toHaveBeenCalledWith("rx-1");
   });
 });

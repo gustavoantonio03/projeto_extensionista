@@ -11,6 +11,8 @@ export interface CaregiverProfile {
   id: string;
   name: string;
   shortName: string;
+  /** Nome exibido nos selos de rastreabilidade, ex: "Ana Paula" → "Mãe (Ana Paula)". */
+  displayName: string;
   relation: "mae" | "pai" | "avo" | "avo_m" | "tio" | "outro";
   relationLabel: string; // ex: "Mãe", "Pai", "Avó"
   avatarUrl: string;
@@ -30,7 +32,8 @@ export interface AuditEntry {
     | "administrou_medicamento"
     | "registrou_sintoma"
     | "registrou_refeicao"
-    | "conferiu_medicamento";
+    | "conferiu_medicamento"
+    | "conferiu_registro";
   description: string;
   performedBy: CaregiverProfile;
   performedAt: string; // ex: "08:05" ou ISO

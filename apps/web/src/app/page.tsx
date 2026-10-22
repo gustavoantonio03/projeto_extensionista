@@ -10,15 +10,31 @@ import {
   PainScale,
   BottomNav,
   DecorBlob,
+  MedicationCard,
   type MoodValue,
   type BodyPart,
   type PainIntensity,
 } from "@siglo/ui";
 import { Header } from "../components/Header";
 import { mockPatient } from "../mocks/fixtures";
-import { submitCheckIn } from "../lib/data";
-import { Mic, Heart, Thermometer, Coffee, PhoneCall, CheckCircle2 } from "lucide-react";
-import { AppMode } from "../lib/types";
+import { submitCheckIn, verifyCheckIn } from "../lib/data";
+import { useMedicationTrail } from "../lib/useMedicationTrail";
+import {
+  caregiverTag,
+  medicationCategoryLabel,
+  medicationTrailProps,
+} from "../lib/caregiver";
+import {
+  Mic,
+  Heart,
+  Thermometer,
+  Coffee,
+  PhoneCall,
+  CheckCircle2,
+  CheckCheck,
+  Hourglass,
+} from "lucide-react";
+import { AppMode, DailyCheckIn } from "../lib/types";
 
 export default function MeuDiaPage() {
   const router = useRouter();
@@ -29,20 +45,60 @@ export default function MeuDiaPage() {
   const [temperature, setTemperature] = React.useState<number>(36.5);
   const [isRecording, setIsRecording] = React.useState(false);
   const [isSaved, setIsSaved] = React.useState(false);
+  const [lastCheckIn, setLastCheckIn] = React.useState<DailyCheckIn | null>(null);
+  const { meds, activeCaregiver, setActiveCaregiver, toggle, verify } =
+    useMedicationTrail();
+  const [touchedMedIds, setTouchedMedIds] = React.useState<string[]>([]);
+
+  const nextMed = meds.find((m) => !m.taken);
+  const featuredMeds = meds.filter(
+    (m) => m.id === nextMed?.id || touchedMedIds.includes(m.id)
+  );
+  const readOnly = mode === "crianca";
+
+  const touchMed = (id: string) =>
+    setTouchedMedIds((prev) => (prev.includes(id) ? prev : [...prev, id]));
+  const handleToggleMed = async (id: string, taken: boolean) => {
+    touchMed(id);
+    await toggle(id, taken);
+  };
+  const handleVerifyMed = async (id: string) => {
+    touchMed(id);
+    await verify(id);
+  };
 
   const handleSaveCheckIn = async () => {
-    await submitCheckIn({
-      mood: selectedMood,
-      painPart,
-      painIntensity: painPart ? painIntensity : undefined,
-      tasteSymptoms: ["enjoo-leve"],
-      temperature,
-      sleepQuality: "otimo",
-      notes: "Check-in matinal gravado com sucesso.",
-    });
+    const saved = await submitCheckIn(
+      {
+        mood: selectedMood,
+        painPart,
+        painIntensity: painPart ? painIntensity : undefined,
+        tasteSymptoms: ["enjoo-leve"],
+        temperature,
+        sleepQuality: "otimo",
+        notes: "Check-in matinal gravado com sucesso.",
+      },
+      activeCaregiver?.id
+    );
+    setLastCheckIn(saved);
     setIsSaved(true);
     setTimeout(() => setIsSaved(false), 3500);
   };
+
+  const handleVerifyCheckIn = async () => {
+    if (!lastCheckIn) return;
+    const updated = await verifyCheckIn(lastCheckIn.id, activeCaregiver?.id);
+    if (updated) setLastCheckIn(updated);
+  };
+
+  const checkInPerformer = lastCheckIn?.performedBy;
+  const canVerifyCheckIn =
+    !readOnly &&
+    !!lastCheckIn &&
+    !lastCheckIn.verifiedBy &&
+    !!activeCaregiver &&
+    !!checkInPerformer &&
+    checkInPerformer.id !== activeCaregiver.id;
 
   return (
     <div className="min-h-screen bg-[#FFF8F0]">
@@ -50,6 +106,7 @@ export default function MeuDiaPage() {
         patient={mockPatient}
         mode={mode}
         onToggleMode={setMode}
+        onCaregiverChange={setActiveCaregiver}
         title="Meu Dia"
         subtitle={`Bom dia, ${mockPatient.preferredName}!`}
       />
@@ -82,6 +139,34 @@ export default function MeuDiaPage() {
             </div>
           </div>
         </div>
+
+        {/* Doses em foco: a próxima pendente + as que acabaram de ser registradas/conferidas aqui */}
+        {featuredMeds.length > 0 && (
+          <section aria-label="Próxima dose" className="space-y-3">
+            <div className="flex items-center justify-between">
+              <h3 className="text-base font-bold text-[#1F2340]">
+                {nextMed ? "Próxima dose" : "Doses de hoje"}
+              </h3>
+              {nextMed && <Badge variant="plum">{nextMed.time}</Badge>}
+            </div>
+            {featuredMeds.map((med) => (
+              <MedicationCard
+                key={med.id}
+                id={med.id}
+                name={med.name}
+                dosage={med.dosage}
+                time={med.time}
+                instructions={med.instructions}
+                taken={med.taken}
+                category={medicationCategoryLabel(med.category)}
+                onToggleTaken={handleToggleMed}
+                onVerify={handleVerifyMed}
+                readOnly={readOnly}
+                {...medicationTrailProps(med, activeCaregiver)}
+              />
+            ))}
+          </section>
+        )}
 
         {/* Check-in de Voz Amigável */}
         <Card variant="tinted" className="text-center p-6 bg-[#F6F0FA]/70 border-[#EDE3F5]">
@@ -276,6 +361,41 @@ export default function MeuDiaPage() {
             {isSaved ? "Gravado com Sucesso! ❤️" : "Gravar Como Me Sinto Hoje"}
           </Button>
         </div>
+
+        {/* Selo de rastreabilidade do último registro */}
+        {lastCheckIn && checkInPerformer && (
+          <div className="space-y-2" data-testid="checkin-trail">
+            <p className="text-xs font-bold text-[#1F2340] bg-[#E5F4EC] border border-[#2E7D5B]/25 rounded-xl px-3 py-2 leading-snug">
+              ✅ {caregiverTag(checkInPerformer)} registrou o check-in
+              {lastCheckIn.performedAt ? ` às ${lastCheckIn.performedAt}` : ""} (
+              {lastCheckIn.temperature.toFixed(1)}°C)
+            </p>
+
+            {lastCheckIn.verifiedBy ? (
+              <p className="text-xs font-bold text-[#134E54] bg-[#E6EFF0] border border-[#134E54]/20 rounded-xl px-3 py-2 flex items-center gap-1.5 leading-snug">
+                <CheckCheck className="w-4 h-4 shrink-0" aria-hidden="true" />
+                <span>
+                  ✓ Conferido por {caregiverTag(lastCheckIn.verifiedBy)}
+                  {lastCheckIn.verifiedAt ? ` às ${lastCheckIn.verifiedAt}` : ""}
+                </span>
+              </p>
+            ) : canVerifyCheckIn ? (
+              <button
+                type="button"
+                onClick={handleVerifyCheckIn}
+                className="w-full min-h-11 rounded-2xl font-bold text-sm flex items-center justify-center gap-2 border-2 border-[#134E54] text-[#134E54] bg-white hover:bg-[#E6EFF0] transition-colors cursor-pointer active:scale-[0.98]"
+              >
+                <CheckCheck className="w-4 h-4" aria-hidden="true" />
+                Conferir / Confirmar registro
+              </button>
+            ) : (
+              <p className="text-xs font-semibold text-[#9A5B0F] bg-[#FFF1DA] rounded-xl px-3 py-2 flex items-center gap-1.5 leading-snug">
+                <Hourglass className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+                Aguardando conferência de outro cuidador
+              </p>
+            )}
+          </div>
+        )}
       </div>
 
       <BottomNav

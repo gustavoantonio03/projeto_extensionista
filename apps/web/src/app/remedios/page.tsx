@@ -12,26 +12,28 @@ import {
 } from "@siglo/ui";
 import { Header } from "../../components/Header";
 import { mockPatient } from "../../mocks/fixtures";
-import { getMedications, toggleMedicationTaken } from "../../lib/data";
-import { Medication, AppMode } from "../../lib/types";
+import { useMedicationTrail } from "../../lib/useMedicationTrail";
+import {
+  medicationCategoryLabel,
+  medicationTrailProps,
+} from "../../lib/caregiver";
+import { AppMode } from "../../lib/types";
 import { GlassWater, Calendar, Moon, Footprints, Sparkles } from "lucide-react";
 
 export default function RemediosPage() {
   const router = useRouter();
   const [mode, setMode] = React.useState<AppMode>("cuidador");
-  const [meds, setMeds] = React.useState<Medication[]>([]);
+  const { meds, activeCaregiver, setActiveCaregiver, toggle, verify } =
+    useMedicationTrail();
+  const [selectedDay, setSelectedDay] = React.useState(14);
   const [waterCups, setWaterCups] = React.useState(5);
   const totalWaterCups = 8;
   const [showCelebration, setShowCelebration] = React.useState(false);
 
-  React.useEffect(() => {
-    getMedications().then(setMeds);
-  }, []);
-
-  const handleToggle = async (id: string, taken: boolean) => {
-    const updated = await toggleMedicationTaken(id, taken);
-    if (updated) {
-      setMeds((prev) => prev.map((m) => (m.id === id ? updated : m)));
+  const celebrateIfFull = (cups: number) => {
+    if (cups === totalWaterCups) {
+      setShowCelebration(true);
+      setTimeout(() => setShowCelebration(false), 3500);
     }
   };
 
@@ -43,14 +45,46 @@ export default function RemediosPage() {
       return;
     }
     setWaterCups(targetCups);
-    if (targetCups === totalWaterCups) {
-      setShowCelebration(true);
-      setTimeout(() => setShowCelebration(false), 3500);
-    }
+    celebrateIfFull(targetCups);
   };
 
+  /** Botão "+ Beber 1 copo": só avança (nunca desmarca) e para na meta. */
+  const handleDrinkOne = () => {
+    if (waterCups >= totalWaterCups) return;
+    const next = waterCups + 1;
+    setWaterCups(next);
+    celebrateIfFull(next);
+  };
+
+  const readOnly = mode === "crianca";
   const nextMed = meds.find((m) => !m.taken);
   const otherMeds = meds.filter((m) => m.id !== nextMed?.id);
+  const pendingVerification = meds.filter(
+    (m) => m.taken && m.verificationStatus === "pendente"
+  ).length;
+
+  const renderCard = (med: (typeof meds)[number]) => (
+    <MedicationCard
+      key={med.id}
+      id={med.id}
+      name={med.name}
+      dosage={med.dosage}
+      time={med.time}
+      instructions={med.instructions}
+      taken={med.taken}
+      category={medicationCategoryLabel(med.category)}
+      onToggleTaken={toggle}
+      onVerify={verify}
+      readOnly={readOnly}
+      {...medicationTrailProps(med, activeCaregiver)}
+      onAudioPlay={() => {
+        if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+        const u = new SpeechSynthesisUtterance(med.instructions);
+        u.lang = "pt-BR";
+        window.speechSynthesis.speak(u);
+      }}
+    />
+  );
 
   return (
     <div className="min-h-screen bg-[#FFF8F0]">
@@ -58,6 +92,7 @@ export default function RemediosPage() {
         patient={mockPatient}
         mode={mode}
         onToggleMode={setMode}
+        onCaregiverChange={setActiveCaregiver}
         title="Remédios & Rotina"
         subtitle="Alarmes pontuais e seguros"
       />
@@ -77,6 +112,20 @@ export default function RemediosPage() {
           <Badge variant="success">100% Sincronizado</Badge>
         </div>
 
+        {/* Aviso de conferência pendente (dupla checagem entre cuidadores) */}
+        {pendingVerification > 0 && !readOnly && (
+          <div
+            role="status"
+            className="p-3 rounded-2xl bg-[#FFF1DA] border border-[#9A5B0F]/25 text-xs font-bold text-[#9A5B0F]"
+          >
+            ⏳ {pendingVerification}{" "}
+            {pendingVerification === 1
+              ? "dose aguardando conferência"
+              : "doses aguardando conferência"}{" "}
+            de outro cuidador.
+          </div>
+        )}
+
         {/* Dose Próxima em Destaque */}
         {nextMed ? (
           <section>
@@ -86,21 +135,7 @@ export default function RemediosPage() {
                 Dose Próxima • {nextMed.time}
               </h3>
             </div>
-            <MedicationCard
-              id={nextMed.id}
-              name={nextMed.name}
-              dosage={nextMed.dosage}
-              time={nextMed.time}
-              instructions={nextMed.instructions}
-              taken={nextMed.taken}
-              onToggleTaken={handleToggle}
-              category="Prevenir enjoo"
-              onAudioPlay={() => {
-                const u = new SpeechSynthesisUtterance(nextMed.instructions);
-                u.lang = "pt-BR";
-                window.speechSynthesis.speak(u);
-              }}
-            />
+            {renderCard(nextMed)}
           </section>
         ) : (
           <Card className="text-center p-6 bg-[#E5F4EC]/60 border-[#2E7D5B]/30">
@@ -120,24 +155,11 @@ export default function RemediosPage() {
             <h3 className="text-base font-bold text-[#1F2340] mb-3">
               Outros Medicamentos de Hoje
             </h3>
-            <div className="space-y-3">
-              {otherMeds.map((med) => (
-                <MedicationCard
-                  key={med.id}
-                  id={med.id}
-                  name={med.name}
-                  dosage={med.dosage}
-                  time={med.time}
-                  instructions={med.instructions}
-                  taken={med.taken}
-                  onToggleTaken={handleToggle}
-                />
-              ))}
-            </div>
+            <div className="space-y-3">{otherMeds.map((med) => renderCard(med))}</div>
           </section>
         )}
 
-        {/* Calendário Mensal e Próxima Consulta */}
+        {/* Calendário Semanal e Próximas Consultas/Exames */}
         <section>
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-base font-bold text-[#1F2340]">
@@ -156,7 +178,8 @@ export default function RemediosPage() {
               { day: 22, type: "exame", label: "Hemograma" },
               { day: 24, type: "consulta", label: "Dr. Roberto" },
             ]}
-            selectedDay={14}
+            selectedDay={selectedDay}
+            onSelectDay={setSelectedDay}
           />
         </section>
 
@@ -238,12 +261,13 @@ export default function RemediosPage() {
                 variant="secondary"
                 size="sm"
                 fullWidth
+                disabled={waterCups >= totalWaterCups}
                 leftIcon={<GlassWater className="w-4 h-4 text-[#134E54]" />}
-                onClick={() =>
-                  handleCupClick(Math.min(totalWaterCups - 1, waterCups))
-                }
+                onClick={handleDrinkOne}
               >
-                + Beber 1 copo de água agora (250 ml)
+                {waterCups >= totalWaterCups
+                  ? "Meta de hoje concluída 🎉"
+                  : "+ Beber 1 copo de água agora (250 ml)"}
               </Button>
             </Card>
 

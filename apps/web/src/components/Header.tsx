@@ -28,6 +28,8 @@ export interface HeaderProps {
   onToggleMode: (mode: AppMode) => void;
   title?: string;
   subtitle?: string;
+  /** Chamado quando o cuidador ativo é trocado (dropdown) ou assumido via PIN. */
+  onCaregiverChange?: (caregiver: CaregiverProfile) => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -36,6 +38,7 @@ export const Header: React.FC<HeaderProps> = ({
   onToggleMode,
   title,
   subtitle,
+  onCaregiverChange,
 }) => {
   const [isSpeaking, setIsSpeaking] = React.useState(false);
   const [caregivers, setCaregivers] = React.useState<CaregiverProfile[]>([]);
@@ -115,6 +118,7 @@ export const Header: React.FC<HeaderProps> = ({
     if (selectedCaregiverId) {
       const updatedCaregiver = await setActiveCaregiver(selectedCaregiverId);
       setActiveCaregiverState(updatedCaregiver);
+      onCaregiverChange?.(updatedCaregiver);
     }
 
     setIsPinModalOpen(false);
@@ -124,6 +128,7 @@ export const Header: React.FC<HeaderProps> = ({
   const handleSwitchActiveCaregiver = async (caregiverId: string) => {
     const updated = await setActiveCaregiver(caregiverId);
     setActiveCaregiverState(updated);
+    onCaregiverChange?.(updated);
     setIsCaregiverDropdownOpen(false);
   };
 
@@ -230,7 +235,7 @@ export const Header: React.FC<HeaderProps> = ({
                     Cuidador ativo:{" "}
                   </span>
                   <strong className="text-[#6E3F8C] font-bold">
-                    {activeCaregiver.relationLabel} ({activeCaregiver.shortName})
+                    {activeCaregiver.relationLabel} ({activeCaregiver.displayName})
                   </strong>
                 </div>
               </div>

@@ -51,6 +51,7 @@ const navStyle: React.CSSProperties = {
   height: 64,
   width: "100%",
   maxWidth: 430,
+  boxSizing: "border-box",
   marginLeft: "auto",
   marginRight: "auto",
 };

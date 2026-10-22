@@ -34,6 +34,7 @@ import type {
   SessionState,
   AppMode,
 } from "./types";
+import { caregiverTag } from "./caregiver";
 
 // Simula delay de rede de 100ms a 250ms
 const delay = (ms = 150) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -42,8 +43,10 @@ const delay = (ms = 150) => new Promise((resolve) => setTimeout(resolve, ms));
 const patientState = { ...mockPatient };
 const timelineState = [...mockClinicalTimeline];
 const checkInsState: DailyCheckIn[] = [];
-const auditTrailState: AuditEntry[] = [...mockAuditTrail];
-const medicationLogsState: MedicationLog[] = [...mockMedicationLogs];
+const auditTrailState: AuditEntry[] = mockAuditTrail.map((e) => ({ ...e }));
+const medicationLogsState: MedicationLog[] = mockMedicationLogs.map((l) => ({
+  ...l,
+}));
 
 /** O portal do paciente demonstra a criança "pac-001". */
 const PORTAL_PATIENT_ID = mockPatient.id;
@@ -249,7 +252,7 @@ export async function toggleMedicationTaken(
     const audit: AuditEntry = {
       id: `audit-${Date.now()}`,
       action: "administrou_medicamento",
-      description: `${actor.relationLabel} (${actor.shortName}) registrou administração de ${rx.name} (${rx.dosage}).`,
+      description: `${caregiverTag(actor)} deu ${rx.name} (${rx.dosage}).`,
       performedBy: actor,
       performedAt: timeStr,
       targetId: id,
@@ -273,13 +276,32 @@ export async function toggleMedicationTaken(
       id: `evt-${Date.now()}`,
       time: timeStr,
       title: `${rx.name} administrado`,
-      description: `Registrado por ${actor.name} (${actor.relationLabel}) às ${timeStr}. Aguardando conferência cruzada.`,
+      description: `Registrado por ${caregiverTag(actor)} às ${timeStr}. Aguardando conferência cruzada.`,
       category: "Prescrição",
       tag: "Dose Confirmada",
       status: "done",
     });
   } else {
     delete takenState[id];
+
+    // A trilha é preservada: o registro pendente é marcado como desfeito e deixa de
+    // aparecer nas pendências de conferência; o log de administração é retirado.
+    for (const entry of auditTrailState) {
+      if (
+        entry.action === "administrou_medicamento" &&
+        entry.targetId === id &&
+        entry.verificationStatus === "pendente"
+      ) {
+        entry.verificationStatus = undefined;
+        entry.description = `${entry.description} (registro desfeito)`;
+      }
+    }
+    for (let i = medicationLogsState.length - 1; i >= 0; i--) {
+      const log = medicationLogsState[i]!;
+      if (log.medicationId === id && log.verificationStatus === "pendente") {
+        medicationLogsState.splice(i, 1);
+      }
+    }
   }
 
   return toMedication(rx);
@@ -288,6 +310,7 @@ export async function toggleMedicationTaken(
 /**
  * Realiza a dupla checagem (conferência cruzada) de uma medicação.
  * Outro cuidador valida que a dose confere, alterando status para "conferido".
+ * Um cuidador nunca confere o próprio registro (retorna null).
  */
 export async function verifyMedicationAction(
   medicationId: string,
@@ -303,6 +326,9 @@ export async function verifyMedicationAction(
       : mockPrimaryCaregiver.id;
 
   const verifier = findCaregiver(verifierCaregiverId ?? defaultVerifierId);
+  if (current.performedBy && current.performedBy.id === verifier.id) {
+    return null;
+  }
 
   const now = new Date();
   const timeStr = `${String(now.getHours()).padStart(2, "0")}:${String(
@@ -323,18 +349,33 @@ export async function verifyMedicationAction(
   const medName = rx?.name ?? medicationId;
 
   // Atualiza logs existentes
-  const log = medicationLogsState.find((l) => l.medicationId === medicationId);
+  const log = medicationLogsState.find(
+    (l) => l.medicationId === medicationId && l.verificationStatus === "pendente"
+  );
   if (log) {
     log.verificationStatus = "conferido";
     log.verifiedBy = verifier;
     log.verifiedAt = timeStr;
   }
 
+  // Fecha a entrada original ("deu a medicação") que estava pendente
+  for (const entry of auditTrailState) {
+    if (
+      entry.action === "administrou_medicamento" &&
+      entry.targetId === medicationId &&
+      entry.verificationStatus === "pendente"
+    ) {
+      entry.verificationStatus = "conferido";
+      entry.verifiedBy = verifier;
+      entry.verifiedAt = timeStr;
+    }
+  }
+
   // Gera entrada de auditoria
   auditTrailState.unshift({
     id: `audit-verif-${Date.now()}`,
     action: "conferiu_medicamento",
-    description: `${verifier.relationLabel} (${verifier.shortName}) conferiu e validou a dose de ${medName}.`,
+    description: `${caregiverTag(verifier)} conferiu a dose de ${medName}.`,
     performedBy: verifier,
     performedAt: timeStr,
     targetId: medicationId,
@@ -348,7 +389,7 @@ export async function verifyMedicationAction(
     id: `evt-verif-${Date.now()}`,
     time: timeStr,
     title: `${medName} conferido por ${verifier.relationLabel}`,
-    description: `Dupla checagem validada por ${verifier.name} (${verifier.relationLabel}) às ${timeStr}.`,
+    description: `Dupla checagem validada por ${caregiverTag(verifier)} às ${timeStr}.`,
     category: "Dupla Checagem",
     tag: "Conferido",
     status: "done",
@@ -356,6 +397,59 @@ export async function verifyMedicationAction(
 
   if (!rx) return null;
   return toMedication(rx);
+}
+
+/**
+ * Conferência de registros que não são medicação (ex.: temperatura/check-in).
+ * Também impede que o mesmo cuidador valide o próprio registro.
+ */
+export async function verifyAuditEntry(
+  entryId: string,
+  verifierCaregiverId?: string
+): Promise<AuditEntry | null> {
+  await delay(80);
+  const entry = auditTrailState.find((e) => e.id === entryId);
+  if (!entry || entry.verificationStatus !== "pendente") return null;
+
+  const verifier = findCaregiver(verifierCaregiverId ?? activeCaregiverId);
+  if (entry.performedBy.id === verifier.id) return null;
+
+  // Doses seguem o fluxo próprio (atualiza log, timeline e prescrição)
+  if (entry.action === "administrou_medicamento" && entry.targetId) {
+    await verifyMedicationAction(entry.targetId, verifier.id);
+    return auditTrailState.find((e) => e.id === entryId) ?? null;
+  }
+
+  const now = new Date();
+  const timeStr = `${String(now.getHours()).padStart(2, "0")}:${String(
+    now.getMinutes()
+  ).padStart(2, "0")}`;
+
+  entry.verificationStatus = "conferido";
+  entry.verifiedBy = verifier;
+  entry.verifiedAt = timeStr;
+
+  const checkIn = checkInsState.find((c) => c.id === entry.targetId);
+  if (checkIn) {
+    checkIn.verifiedBy = verifier;
+    checkIn.verifiedAt = timeStr;
+  }
+
+  auditTrailState.unshift({
+    id: `audit-verif-${Date.now()}`,
+    action: "conferiu_registro",
+    description: `${caregiverTag(verifier)} conferiu o registro de ${caregiverTag(
+      entry.performedBy
+    )} (${entry.performedAt}).`,
+    performedBy: verifier,
+    performedAt: timeStr,
+    targetId: entry.targetId,
+    verificationStatus: "conferido",
+    verifiedBy: verifier,
+    verifiedAt: timeStr,
+  });
+
+  return entry;
 }
 
 /** Retorna a trilha de auditoria completa da conta familiar. */
@@ -397,14 +491,17 @@ export async function submitCheckIn(
 
   checkInsState.unshift(newCheckIn);
 
-  // Trilha de auditoria
+  // Trilha de auditoria (entra como pendente de conferência por outro cuidador)
   auditTrailState.unshift({
     id: `audit-chk-${Date.now()}`,
     action: "registrou_sintoma",
-    description: `${actor.relationLabel} (${actor.shortName}) registrou check-in diário (temperatura: ${checkIn.temperature}°C).`,
+    description: `${caregiverTag(actor)} registrou temperatura ${checkIn.temperature.toFixed(
+      1
+    )}°C.`,
     performedBy: actor,
     performedAt: timeStr,
     targetId: newCheckIn.id,
+    verificationStatus: "pendente",
   });
 
   // Gera evento na linha do tempo
@@ -419,14 +516,65 @@ export async function submitCheckIn(
     time: timeStr,
     title: `Check-in matinal: ${moodLabels[checkIn.mood]}`,
     description: checkIn.painPart
-      ? `Dor em ${checkIn.painPart} (${checkIn.painIntensity}). Temperatura: ${checkIn.temperature}°C. Registrado por ${actor.name} (${actor.relationLabel}).`
-      : `Temperatura: ${checkIn.temperature}°C. Sono: ${checkIn.sleepQuality}. Registrado por ${actor.name} (${actor.relationLabel}).`,
+      ? `Dor em ${checkIn.painPart} (${checkIn.painIntensity}). Temperatura: ${checkIn.temperature}°C. Registrado por ${caregiverTag(actor)}.`
+      : `Temperatura: ${checkIn.temperature}°C. Sono: ${checkIn.sleepQuality}. Registrado por ${caregiverTag(actor)}.`,
     category: "Relato de Sintoma",
     tag: checkIn.mood === "bem" ? "Estável" : "Atenção",
     status: checkIn.mood === "apoio" ? "warning" : "info",
   });
 
   return newCheckIn;
+}
+
+/** Último check-in registrado nesta sessão (com autoria e conferência), se houver. */
+export async function getLatestCheckIn(): Promise<DailyCheckIn | null> {
+  await delay(20);
+  const latest = checkInsState[0];
+  return latest ? { ...latest } : null;
+}
+
+/** Conferência cruzada de um check-in por outro cuidador. */
+export async function verifyCheckIn(
+  checkInId: string,
+  verifierCaregiverId?: string
+): Promise<DailyCheckIn | null> {
+  const entry = auditTrailState.find(
+    (e) => e.targetId === checkInId && e.verificationStatus === "pendente"
+  );
+  if (!entry) return null;
+  const verified = await verifyAuditEntry(entry.id, verifierCaregiverId);
+  if (!verified) return null;
+  const checkIn = checkInsState.find((c) => c.id === checkInId);
+  return checkIn ? { ...checkIn } : null;
+}
+
+/** Registro rápido da refeição, com autoria do cuidador ativo na trilha familiar. */
+export async function registerMeal(
+  status: "tudo" | "metade" | "enjoo",
+  caregiverId?: string
+): Promise<AuditEntry> {
+  await delay(60);
+  const actor = findCaregiver(caregiverId ?? activeCaregiverId);
+  const now = new Date();
+  const timeStr = `${String(now.getHours()).padStart(2, "0")}:${String(
+    now.getMinutes()
+  ).padStart(2, "0")}`;
+  const labels = {
+    tudo: "comeu quase tudo",
+    metade: "comeu a metade",
+    enjoo: "ficou enjoada e rejeitou o prato",
+  } as const;
+
+  const entry: AuditEntry = {
+    id: `audit-meal-${Date.now()}`,
+    action: "registrou_refeicao",
+    description: `${caregiverTag(actor)} registrou refeição: ${labels[status]}.`,
+    performedBy: actor,
+    performedAt: timeStr,
+    targetId: `meal-${Date.now()}`,
+  };
+  auditTrailState.unshift(entry);
+  return entry;
 }
 
 /* ========================================================================

@@ -35,6 +35,9 @@ export const MiniCalendar: React.FC<MiniCalendarProps> = ({
 }) => {
   // Gera uma faixa de 7 dias baseada no dia selecionado ou offset
   const [weekOffset, setWeekOffset] = React.useState(0);
+  // Limites que mantêm a faixa inteira dentro do mês (dias 1–31)
+  const MIN_OFFSET = -1;
+  const MAX_OFFSET = 2;
 
   // Calcula os 7 dias da faixa atual (offset desloca em blocos de 7 dias)
   const currentWeekDays: WeekDayItem[] = React.useMemo(() => {
@@ -45,8 +48,8 @@ export const MiniCalendar: React.FC<MiniCalendarProps> = ({
       const dayNum = baseDay - 3 + i;
       // Garante intervalo válido de dias no mês (1 a 31)
       const clampedDay = Math.max(1, Math.min(31, dayNum));
-      // Mapeamento de dia da semana simulado
-      const weekdayIndex = (clampedDay + 2) % 7;
+      // Dia da semana: 1º de outubro de 2026 é quinta-feira (índice 4)
+      const weekdayIndex = (clampedDay + 3) % 7;
       return {
         day: clampedDay,
         weekday: WEEKDAY_NAMES[weekdayIndex] ?? "SEG",
@@ -85,16 +88,18 @@ export const MiniCalendar: React.FC<MiniCalendarProps> = ({
         <div className="flex items-center gap-1.5">
           <button
             type="button"
-            onClick={() => setWeekOffset((w) => w - 1)}
-            className="w-7 h-7 rounded-xl bg-[#F4F3F1] text-[#1F2340] hover:bg-[#EDE3F5] hover:text-[#6E3F8C] flex items-center justify-center transition-colors cursor-pointer"
+            onClick={() => setWeekOffset((w) => Math.max(MIN_OFFSET, w - 1))}
+            disabled={weekOffset <= MIN_OFFSET}
+            className="w-7 h-7 rounded-xl bg-[#F4F3F1] text-[#1F2340] hover:bg-[#EDE3F5] hover:text-[#6E3F8C] flex items-center justify-center transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
             aria-label="Semana anterior"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
           <button
             type="button"
-            onClick={() => setWeekOffset((w) => w + 1)}
-            className="w-7 h-7 rounded-xl bg-[#F4F3F1] text-[#1F2340] hover:bg-[#EDE3F5] hover:text-[#6E3F8C] flex items-center justify-center transition-colors cursor-pointer"
+            onClick={() => setWeekOffset((w) => Math.min(MAX_OFFSET, w + 1))}
+            disabled={weekOffset >= MAX_OFFSET}
+            className="w-7 h-7 rounded-xl bg-[#F4F3F1] text-[#1F2340] hover:bg-[#EDE3F5] hover:text-[#6E3F8C] flex items-center justify-center transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
             aria-label="Próxima semana"
           >
             <ChevronRight className="w-4 h-4" />

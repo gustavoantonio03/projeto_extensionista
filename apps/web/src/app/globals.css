@@ -7,12 +7,27 @@
   color-scheme: light;
 }
 
-body {
+*, ::before, ::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
   background-color: var(--acolher-canvas, #fff8f0);
   color: var(--acolher-ink, #1f2340);
   min-height: 100vh;
   margin: 0;
   padding: 0;
+}
+
+/* Ocultar botão flutuante e portais do Next.js DevTools */
+nextjs-portal,
+[data-nextjs-dev-tools-button],
+div[data-nextjs-toast] {
+  display: none !important;
 }
 
 /* Foco visível de acessibilidade */

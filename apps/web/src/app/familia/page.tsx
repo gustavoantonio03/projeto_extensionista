@@ -5,20 +5,65 @@ import { useRouter } from "next/navigation";
 import { Card, Button, Avatar, Badge, BottomNav, Field, Input } from "@siglo/ui";
 import { Header } from "../../components/Header";
 import { mockPatient, mockFamilyMembers } from "../../mocks/fixtures";
-import { AppMode, FamilyMember, ClinicalMessage } from "../../lib/types";
-import { getTeamGuidance } from "../../lib/data";
-import { Heart, Send, MessageCircle, Phone, Sparkles, Stethoscope, AlertTriangle } from "lucide-react";
+import {
+  AppMode,
+  FamilyMember,
+  ClinicalMessage,
+  CaregiverProfile,
+} from "../../lib/types";
+import {
+  getTeamGuidance,
+  getCaregivers,
+  getActiveCaregiver,
+  setActiveCaregiver,
+} from "../../lib/data";
+import { caregiverTag } from "../../lib/caregiver";
+import {
+  Heart,
+  Send,
+  MessageCircle,
+  Phone,
+  Sparkles,
+  Stethoscope,
+  AlertTriangle,
+  UserCheck,
+  Users,
+  Check,
+} from "lucide-react";
 
 export default function FamiliaPage() {
   const router = useRouter();
   const [mode, setMode] = React.useState<AppMode>("cuidador");
   const [family] = React.useState<FamilyMember[]>(mockFamilyMembers);
+  const [caregivers, setCaregivers] = React.useState<CaregiverProfile[]>([]);
+  const [activeCaregiver, setActiveCaregiverState] =
+    React.useState<CaregiverProfile | null>(null);
   const [teamGuidance, setTeamGuidance] = React.useState<ClinicalMessage[]>([]);
   const [newMessage, setNewMessage] = React.useState("");
+  const [feedbackMsg, setFeedbackMsg] = React.useState<string | null>(null);
+
+  const loadData = React.useCallback(async () => {
+    const [g, c, a] = await Promise.all([
+      getTeamGuidance(),
+      getCaregivers(),
+      getActiveCaregiver(),
+    ]);
+    setTeamGuidance(g);
+    setCaregivers(c);
+    setActiveCaregiverState(a);
+  }, []);
 
   React.useEffect(() => {
-    getTeamGuidance().then(setTeamGuidance);
-  }, []);
+    loadData();
+  }, [loadData]);
+
+  const handleSwitchCaregiver = async (id: string) => {
+    const updated = await setActiveCaregiver(id);
+    setActiveCaregiverState(updated);
+    setFeedbackMsg(`Turno assumido por ${caregiverTag(updated)}!`);
+    setTimeout(() => setFeedbackMsg(null), 3000);
+  };
+
   const [messages, setMessages] = React.useState([
     {
       id: "1",
@@ -43,7 +88,12 @@ export default function FamiliaPage() {
     setMessages((prev) => [
       {
         id: String(Date.now()),
-        sender: mode === "crianca" ? mockPatient.preferredName : "Mamãe Ana Paula",
+        sender:
+          mode === "crianca"
+            ? mockPatient.preferredName
+            : activeCaregiver
+            ? caregiverTag(activeCaregiver)
+            : "Mamãe Ana Paula",
         text: newMessage,
         time: "Agora",
         avatar: "/illustrations/mascote-lumi.jpg",
@@ -59,6 +109,9 @@ export default function FamiliaPage() {
         patient={mockPatient}
         mode={mode}
         onToggleMode={setMode}
+        onCaregiverChange={(cg) => {
+          setActiveCaregiverState(cg);
+        }}
         title="Rede de Família"
         subtitle="Carinho e amor de quem cuida de você"
       />
@@ -86,6 +139,101 @@ export default function FamiliaPage() {
             </p>
           </div>
         </div>
+
+        {/* Cuidadores Vinculados à Conta & Turno Ativo */}
+        <section aria-label="Cuidadores Vinculados à Conta">
+          <div className="flex items-center justify-between mb-3">
+            <div>
+              <h3 className="text-base font-bold text-[#1F2340] flex items-center gap-1.5">
+                <Users className="w-4 h-4 text-[#6E3F8C]" />
+                Cuidadores Vinculados ({caregivers.length})
+              </h3>
+              <p className="text-[11px] text-[#5B5F7A]">
+                Múltiplos cuidadores com registro individual e dupla checagem
+              </p>
+            </div>
+            {activeCaregiver && (
+              <Badge variant="success">
+                Turno: {activeCaregiver.relationLabel}
+              </Badge>
+            )}
+          </div>
+
+          {feedbackMsg && (
+            <div
+              role="status"
+              className="mb-3 p-3 rounded-2xl bg-[#E5F4EC] border border-[#2E7D5B]/30 text-xs font-bold text-[#2E7D5B] animate-in fade-in"
+            >
+              🎉 {feedbackMsg}
+            </div>
+          )}
+
+          <div className="space-y-3">
+            {caregivers.map((cg) => {
+              const isActive = activeCaregiver?.id === cg.id;
+              return (
+                <Card
+                  key={cg.id}
+                  className={`p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition-all ${
+                    isActive
+                      ? "bg-white border-[#6E3F8C] ring-2 ring-[#6E3F8C]/20 shadow-sm"
+                      : "bg-white/80 border-[#F1E4D6]"
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="relative">
+                      <Avatar
+                        fallback={cg.displayName.slice(0, 2).toUpperCase()}
+                        src={cg.avatarUrl}
+                        size="md"
+                      />
+                      {isActive && (
+                        <span
+                          className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-[#2E7D5B] text-white flex items-center justify-center border border-white"
+                          title="Cuidador ativo no turno"
+                        >
+                          <Check className="w-2.5 h-2.5 stroke-[3]" />
+                        </span>
+                      )}
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-1.5">
+                        <h4 className="font-bold text-sm text-[#1F2340]">
+                          {cg.name}
+                        </h4>
+                        {cg.isPrimary && (
+                          <Badge variant="plum" className="text-[9px] px-1.5 py-0">
+                            Principal
+                          </Badge>
+                        )}
+                      </div>
+                      <p className="text-xs text-[#5B5F7A] mt-0.5">
+                        {cg.relationLabel} ({cg.displayName}) • {cg.phone}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2 self-end sm:self-auto">
+                    {isActive ? (
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#E5F4EC] text-[#2E7D5B] text-xs font-bold border border-[#2E7D5B]/30">
+                        <UserCheck className="w-3.5 h-3.5" /> Ativo no Turno
+                      </span>
+                    ) : (
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        onClick={() => handleSwitchCaregiver(cg.id)}
+                        className="text-xs"
+                      >
+                        Assumir Turno
+                      </Button>
+                    )}
+                  </div>
+                </Card>
+              );
+            })}
+          </div>
+        </section>
 
         {/* Orientações Clínicas da Equipe de Saúde (/medico/comunicacao) */}
         {teamGuidance.length > 0 && (
