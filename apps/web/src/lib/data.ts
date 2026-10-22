@@ -63,9 +63,9 @@ function findCaregiver(id?: string): CaregiverProfile {
  * - PIN padrão de segurança parental: "1234"
  * - Cuidador padrão: Ana Paula (Mãe)
  */
-let currentAppMode: AppMode = "crianca";
+let currentAppMode: AppMode = "cuidador";
 let activeCaregiverId: string = mockPrimaryCaregiver.id;
-let isParentLocked: boolean = true;
+let isParentLocked: boolean = false;
 const PARENT_PIN = "1234";
 
 interface MedicationActionState {

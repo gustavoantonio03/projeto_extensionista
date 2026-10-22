@@ -8,6 +8,8 @@ import { MoodPicker } from "./components/MoodPicker";
 import { PainScale } from "./components/PainScale";
 import { StatCard } from "./components/StatCard";
 import { ProgressBar } from "./components/ProgressBar";
+import { MiniCalendar } from "./components/MiniCalendar";
+import { BottomNav } from "./components/BottomNav";
 
 describe("Componentes @siglo/ui (Design System Acolher)", () => {
   it("Button renderiza texto e responde ao clique", async () => {
@@ -87,5 +89,54 @@ describe("Componentes @siglo/ui (Design System Acolher)", () => {
     render(<ProgressBar value={50} max={100} label="Hidratação" showValue />);
     expect(screen.getByRole("progressbar")).toHaveAttribute("aria-valuenow", "50");
     expect(screen.getByText("50%")).toBeInTheDocument();
+  });
+
+  it("MiniCalendar renderiza faixa semanal e permite selecionar dia", async () => {
+    const user = userEvent.setup();
+    const handleSelectDay = vi.fn();
+
+    render(
+      <MiniCalendar
+        monthName="Outubro"
+        year={2026}
+        selectedDay={14}
+        onSelectDay={handleSelectDay}
+        highlightedDays={[{ day: 14, type: "remedio", label: "Dose do dia" }]}
+      />
+    );
+
+    expect(screen.getByText("Faixa Semanal Dinâmica")).toBeInTheDocument();
+    expect(screen.getByText("Dose do dia")).toBeInTheDocument();
+
+    const dayBtn = screen.getByRole("option", { name: /14/i });
+    expect(dayBtn).toHaveAttribute("aria-selected", "true");
+    await user.click(dayBtn);
+    expect(handleSelectDay).toHaveBeenCalledWith(14);
+  });
+
+  it("BottomNav exibe 5 abas somente com ícones (sem rótulos visíveis)", async () => {
+    const user = userEvent.setup();
+    const handleSelect = vi.fn();
+
+    render(
+      <BottomNav
+        currentTab="inicio"
+        mode="cuidador"
+        onSelectTab={handleSelect}
+      />
+    );
+
+    expect(screen.getAllByRole("button")).toHaveLength(5);
+    expect(screen.queryByText("Meu Dia")).not.toBeInTheDocument();
+    expect(screen.queryByText("Remédios")).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Meu Dia" })).toHaveAttribute(
+      "aria-current",
+      "page"
+    );
+    expect(screen.getByRole("button", { name: "Clínico" })).toBeInTheDocument();
+
+    const remediosTab = screen.getByRole("button", { name: /remédios/i });
+    await user.click(remediosTab);
+    expect(handleSelect).toHaveBeenCalledWith("remedios", "/remedios");
   });
 });

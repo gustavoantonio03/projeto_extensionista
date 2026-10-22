@@ -14,7 +14,7 @@ import { Header } from "../../components/Header";
 import { mockPatient } from "../../mocks/fixtures";
 import { getMedications, toggleMedicationTaken } from "../../lib/data";
 import { Medication, AppMode } from "../../lib/types";
-import { Droplet, Calendar, Plus, Moon, Footprints } from "lucide-react";
+import { GlassWater, Calendar, Moon, Footprints, Sparkles } from "lucide-react";
 
 export default function RemediosPage() {
   const router = useRouter();
@@ -22,6 +22,7 @@ export default function RemediosPage() {
   const [meds, setMeds] = React.useState<Medication[]>([]);
   const [waterCups, setWaterCups] = React.useState(5);
   const totalWaterCups = 8;
+  const [showCelebration, setShowCelebration] = React.useState(false);
 
   React.useEffect(() => {
     getMedications().then(setMeds);
@@ -31,6 +32,20 @@ export default function RemediosPage() {
     const updated = await toggleMedicationTaken(id, taken);
     if (updated) {
       setMeds((prev) => prev.map((m) => (m.id === id ? updated : m)));
+    }
+  };
+
+  const handleCupClick = (index: number) => {
+    const targetCups = index + 1;
+    // Se clicou no último copo preenchido, desmarca 1
+    if (waterCups === targetCups) {
+      setWaterCups(index);
+      return;
+    }
+    setWaterCups(targetCups);
+    if (targetCups === totalWaterCups) {
+      setShowCelebration(true);
+      setTimeout(() => setShowCelebration(false), 3500);
     }
   };
 
@@ -47,7 +62,7 @@ export default function RemediosPage() {
         subtitle="Alarmes pontuais e seguros"
       />
 
-      <div className="px-4 py-5 space-y-5">
+      <div className="px-4 py-5 pb-28 space-y-5">
         {/* Banner de Sincronização */}
         <div className="flex items-center justify-between p-4 rounded-2xl bg-[#E5F4EC] border border-[#2E7D5B]/30">
           <div className="flex items-center gap-2.5">
@@ -151,16 +166,21 @@ export default function RemediosPage() {
             Hábitos e Conforto Diário
           </h3>
           <div className="space-y-3">
-            {/* Hidratação */}
-            <Card className="p-4">
+            {/* Hidratação Cuidadosa com Copos de Água Interativos */}
+            <Card className="p-4 bg-gradient-to-br from-white to-[#F0F8FA] border-[#134E54]/20 shadow-xs">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
-                  <div className="p-2 rounded-xl bg-[#EDE6F6] text-[#6E3F8C]">
-                    <Droplet className="w-4 h-4 fill-current" />
+                  <div className="p-2 rounded-2xl bg-[#E6EFF0] text-[#134E54] shadow-2xs">
+                    <GlassWater className="w-4 h-4 stroke-[2.2]" />
                   </div>
                   <div>
-                    <h5 className="font-bold text-xs text-[#1F2340]">
-                      Hidratação Cuidadosa
+                    <h5 className="font-bold text-xs text-[#1F2340] flex items-center gap-1">
+                      <span>Hidratação Cuidadosa</span>
+                      {waterCups >= totalWaterCups && (
+                        <span className="text-emerald-600 text-[10px] font-extrabold flex items-center gap-0.5">
+                          <Sparkles className="w-3 h-3" /> Meta batida!
+                        </span>
+                      )}
                     </h5>
                     <p className="text-[11px] text-[#5B5F7A]">
                       {waterCups} de {totalWaterCups} copos tomados (
@@ -168,39 +188,62 @@ export default function RemediosPage() {
                     </p>
                   </div>
                 </div>
-                <span className="text-xs font-black text-[#6E3F8C]">
+                <span className="text-xs font-black text-[#134E54] bg-[#E6EFF0] px-2 py-0.5 rounded-full">
                   {Math.round((waterCups / totalWaterCups) * 100)}%
                 </span>
               </div>
 
-              <div className="flex items-center justify-between gap-1 my-3">
-                {Array.from({ length: totalWaterCups }).map((_, i) => (
-                  <button
-                    key={i}
-                    type="button"
-                    onClick={() => setWaterCups(i + 1)}
-                    className={`flex-1 h-9 rounded-xl flex items-center justify-center text-xs transition-all cursor-pointer ${
-                      i < waterCups
-                        ? "bg-[#6E3F8C] text-white shadow-xs"
-                        : "bg-[#F4F3F1] text-[#5B5F7A]"
-                    }`}
-                    aria-label={`Copinho ${i + 1}`}
-                  >
-                    💧
-                  </button>
-                ))}
+              {/* Faixa Interativa de Copos de Água */}
+              <div className="grid grid-cols-8 gap-1.5 my-3">
+                {Array.from({ length: totalWaterCups }).map((_, i) => {
+                  const isFilled = i < waterCups;
+                  return (
+                    <button
+                      key={i}
+                      type="button"
+                      onClick={() => handleCupClick(i)}
+                      className={`relative flex flex-col items-center justify-center py-2 px-1 rounded-2xl transition-all cursor-pointer active:scale-90 ${
+                        isFilled
+                          ? "bg-gradient-to-t from-[#134E54] to-[#2E8B9A] text-white shadow-xs scale-105"
+                          : "bg-white/80 hover:bg-[#E6EFF0] text-[#8C9BAE] border border-[#D5E4E8]"
+                      }`}
+                      aria-label={`Copo de água ${i + 1} de ${totalWaterCups} ${
+                        isFilled ? "tomado" : "pendente"
+                      }`}
+                    >
+                      <GlassWater
+                        className={`w-5 h-5 transition-transform ${
+                          isFilled ? "stroke-[2.4] fill-white/20" : "stroke-[1.8]"
+                        }`}
+                      />
+                      <span
+                        className={`text-[9px] mt-1 font-bold leading-none ${
+                          isFilled ? "text-white" : "text-[#5B5F7A]"
+                        }`}
+                      >
+                        {i + 1}
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
+
+              {showCelebration && (
+                <div className="p-2 mb-2 rounded-xl bg-[#E5F4EC] border border-[#2E7D5B]/30 text-center text-xs font-bold text-[#2E7D5B] animate-in fade-in zoom-in-95">
+                  🎉 Parabéns! Meta de 2.000 ml atingida com sucesso!
+                </div>
+              )}
 
               <Button
                 variant="secondary"
                 size="sm"
                 fullWidth
-                leftIcon={<Plus className="w-4 h-4" />}
+                leftIcon={<GlassWater className="w-4 h-4 text-[#134E54]" />}
                 onClick={() =>
-                  setWaterCups((w) => Math.min(totalWaterCups, w + 1))
+                  handleCupClick(Math.min(totalWaterCups - 1, waterCups))
                 }
               >
-                + Beber 1 copinho agora (250 ml)
+                + Beber 1 copo de água agora (250 ml)
               </Button>
             </Card>
 
@@ -230,6 +273,7 @@ export default function RemediosPage() {
 
       <BottomNav
         currentTab="remedios"
+        mode={mode}
         onSelectTab={(_id, href) => router.push(href)}
       />
     </div>

@@ -22,7 +22,7 @@ import { AppMode } from "../lib/types";
 
 export default function MeuDiaPage() {
   const router = useRouter();
-  const [mode, setMode] = React.useState<AppMode>("crianca");
+  const [mode, setMode] = React.useState<AppMode>("cuidador");
   const [selectedMood, setSelectedMood] = React.useState<MoodValue>("bem");
   const [painPart, setPainPart] = React.useState<BodyPart | undefined>();
   const [painIntensity, setPainIntensity] = React.useState<PainIntensity>("pouco");
@@ -54,7 +54,7 @@ export default function MeuDiaPage() {
         subtitle={`Bom dia, ${mockPatient.preferredName}!`}
       />
 
-      <div className="px-4 py-5 space-y-5">
+      <div className="px-4 py-5 pb-28 space-y-5">
         {/* Banner Ilustrado de Boas-Vindas */}
         <div className="relative overflow-hidden rounded-[32px] bg-gradient-to-br from-[#FAEBD6] via-[#FDE6CF] to-[#EDE3F5] p-6 border border-[#F1E4D6] shadow-sm">
           <DecorBlob
@@ -261,7 +261,7 @@ export default function MeuDiaPage() {
         </Card>
 
         {/* Botão de Gravar Check-In */}
-        <div className="pt-2 sticky bottom-20 z-20">
+        <div className="w-full mt-4 pt-2">
           <Button
             variant="primary"
             size="lg"
@@ -280,6 +280,7 @@ export default function MeuDiaPage() {
 
       <BottomNav
         currentTab="inicio"
+        mode={mode}
         onSelectTab={(_id, href) => router.push(href)}
       />
     </div>

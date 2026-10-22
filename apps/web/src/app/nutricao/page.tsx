@@ -17,7 +17,7 @@ import {
 
 export default function NutricaoPage() {
   const router = useRouter();
-  const [mode, setMode] = React.useState<AppMode>("crianca");
+  const [mode, setMode] = React.useState<AppMode>("cuidador");
   const [mealStatus, setMealStatus] = React.useState<
     "tudo" | "metade" | "enjoo" | undefined
   >();
@@ -68,7 +68,7 @@ export default function NutricaoPage() {
         subtitle="Alimentação compassiva e sem culpa"
       />
 
-      <div className="px-4 py-5 space-y-5">
+      <div className="px-4 py-5 pb-28 space-y-5">
         {/* Banner de Nutrição Compassiva */}
         <Card className="bg-[#E6EFF0] border-[#134E54]/20 p-5">
           <div className="flex items-start gap-3">
@@ -343,6 +343,7 @@ export default function NutricaoPage() {
 
       <BottomNav
         currentTab="nutricao"
+        mode={mode}
         onSelectTab={(_id, href) => router.push(href)}
       />
     </div>

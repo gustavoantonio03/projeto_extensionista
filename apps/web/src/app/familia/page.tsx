@@ -11,7 +11,7 @@ import { Heart, Send, MessageCircle, Phone, Sparkles, Stethoscope, AlertTriangle
 
 export default function FamiliaPage() {
   const router = useRouter();
-  const [mode, setMode] = React.useState<AppMode>("crianca");
+  const [mode, setMode] = React.useState<AppMode>("cuidador");
   const [family] = React.useState<FamilyMember[]>(mockFamilyMembers);
   const [teamGuidance, setTeamGuidance] = React.useState<ClinicalMessage[]>([]);
   const [newMessage, setNewMessage] = React.useState("");
@@ -63,7 +63,7 @@ export default function FamiliaPage() {
         subtitle="Carinho e amor de quem cuida de você"
       />
 
-      <div className="px-4 py-5 space-y-5">
+      <div className="px-4 py-5 pb-28 space-y-5">
         {/* Banner Ilustrado */}
         <div className="rounded-[32px] bg-gradient-to-br from-[#EDE3F5] via-[#FDE6CF] to-[#FFF8F0] p-6 border border-[#F1E4D6] flex items-center gap-4">
           <div className="w-20 h-20 rounded-full overflow-hidden shrink-0 border-2 border-white shadow-md bg-white">
@@ -255,6 +255,7 @@ export default function FamiliaPage() {
 
       <BottomNav
         currentTab="familia"
+        mode={mode}
         onSelectTab={(_id, href) => router.push(href)}
       />
     </div>

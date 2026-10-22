@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "@siglo/ui/theme.css";
+@source "../../../../packages/ui/src";
 
 /* Estilos de acessibilidade e tema Acolher */
 :root {

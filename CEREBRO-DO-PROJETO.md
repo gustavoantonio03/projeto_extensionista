@@ -220,7 +220,7 @@ Gestão completa: [[Roadmap de Sprints]] (`docs/05-sprints/roadmap-de-sprints.md
 |---|---|---|---|---|
 | [[Sprint 00 — Fundações]] | Setup | Monorepo, CI, ambientes, ADRs 0001–0004, backlog, tokens iniciais | Pipeline lint+testes+SAST | ✅ concluído |
 | [[Sprint 01 — Fundação Front-end e Design System]] | Base | Next.js em `apps/web`, [[Design System — Acolher]] (tokens + componentes React em `packages/ui`), camada de mocks | Testes unitários dos componentes; contraste AA dos tokens | ✅ concluído |
-| [[Sprint 02 — Shell, Boas-vindas e Perfis]] | Navegação | Onboarding, login simulado, seleção de criança, Modo Criança/Cuidador, header, navegação inferior, botão SOS | Teclado e leitor de tela no shell; nenhum PII em logs | 🔴 |
+| [[Sprint 02 — Shell, Boas-vindas e Perfis]] | Navegação | Onboarding, login simulado, seleção de criança, Modo Criança/Cuidador, header, navegação inferior estilo Instagram, trava parental, botão SOS | Teclado e leitor de tela no shell; nenhum PII em logs | 🟡 em andamento (Etapa 02.2) |
 | [[Sprint 03 — Meu Dia]] | Check-in | Humor por emojis, voz (simulada), mapa de dor, sintomas, temperatura, resumo do dia | Teste de tarefa "registrar como me sinto" | 🔴 |
 | [[Sprint 04 — Remédios e Agenda]] | Rotina | Próxima dose, "já tomei", lista do dia, calendário de consultas/exames, hábitos | Estados de erro/vazio; lembretes claros para adulto | 🔴 |
 | [[Sprint 05 — Alimentação e Aprender]] | Bem-estar | Registro de refeição, dicas de paladar, pílulas de conhecimento (vídeos) | Linguagem simples revisada | 🔴 |

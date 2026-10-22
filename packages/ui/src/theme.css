@@ -68,3 +68,57 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
+
+/* ===== BottomNav (Instagram-like) — CSS explícito, independente do scan do Tailwind ===== */
+.acolher-bottomnav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  width: 100%;
+  max-width: 430px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  height: 64px;
+  box-sizing: content-box;
+  padding-bottom: max(12px, env(safe-area-inset-bottom));
+  background: rgba(255, 255, 255, 0.95);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.04);
+}
+.acolher-bottomnav-btn {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  min-height: 48px;
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  color: #a8a29e;
+}
+.acolher-bottomnav-pill {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 12px;
+  border-radius: 9999px;
+  transition: all 0.2s ease;
+}
+.acolher-bottomnav-btn[aria-current="page"] .acolher-bottomnav-pill {
+  padding: 10px 20px;
+  background: #ede3f5;
+  color: #6e3f8c;
+}
+.acolher-bottomnav-btn:hover { color: #57534e; }
+.acolher-bottomnav-btn[aria-current="page"] { color: #6e3f8c; }

@@ -41,7 +41,29 @@ export default function ClinicoPage() {
         subtitle="Acompanhamento conjunto equipe e família"
       />
 
-      <div className="px-4 py-5 space-y-5">
+      {mode === "crianca" ? (
+        <div className="px-4 py-12 text-center space-y-4">
+          <div className="w-20 h-20 rounded-full bg-[#EDE3F5] text-3xl flex items-center justify-center mx-auto shadow-xs">
+            🔒
+          </div>
+          <h2 className="text-base font-bold text-[#1F2340]">
+            Área Exclusiva dos Adultos
+          </h2>
+          <p className="text-xs text-[#5B5F7A] max-w-xs mx-auto leading-relaxed">
+            Aqui ficam guardados os relatórios médicos e exames da equipe clínica.
+            Que tal voltar para o Meu Dia para registrar como você está?
+          </p>
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={() => router.push("/")}
+            className="mt-2"
+          >
+            Voltar para Meu Dia 🌱
+          </Button>
+        </div>
+      ) : (
+        <div className="px-4 py-5 pb-28 space-y-5">
         {/* Card de Identificação Clínica */}
         <Card className="p-5 border-[#134E54]/20 bg-white">
           <div className="flex items-start gap-4">
@@ -201,9 +223,11 @@ export default function ClinicoPage() {
           </span>
         </div>
       </div>
+      )}
 
       <BottomNav
         currentTab="clinico"
+        mode={mode}
         onSelectTab={(_id, href) => router.push(href)}
       />
     </div>
