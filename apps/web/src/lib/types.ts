@@ -8,6 +8,19 @@ export type UserRole = "paciente" | "cuidador" | "familia" | "clinico";
 export type AppMode = "crianca" | "cuidador";
 export type SessionRole = "crianca" | "cuidador" | "medico";
 export type LoginProfileKey = "crianca" | "mae" | "pai" | "avo" | "medico";
+export type FirebaseRole = "doctor" | "caregiver" | "patient";
+
+export interface UserDoc {
+  uid: string;
+  email: string;
+  displayName: string;
+  role: FirebaseRole;
+  relation?: string; // ex: "Mãe", "Pai", "Médico", "Paciente"
+  shortName?: string;
+  patientId?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
 
 export interface CaregiverProfile {
   id: string;
@@ -27,7 +40,10 @@ export interface SessionState {
   currentMode: AppMode;
   activeCaregiver: CaregiverProfile;
   userLabel: string;
+  firebaseUid?: string;
+  firebaseRole?: FirebaseRole;
 }
+
 
 
 export interface AuditEntry {

@@ -6,6 +6,7 @@ import { SosButton } from "@siglo/ui";
 import { LogOut } from "lucide-react";
 import { AppMode, PatientProfile, CaregiverProfile, SessionState } from "../lib/types";
 import { getSessionState, logoutSession } from "../lib/data";
+import { useAuth } from "../lib/AuthContext";
 
 export interface HeaderProps {
   patient?: PatientProfile;
@@ -22,6 +23,7 @@ export const Header: React.FC<HeaderProps> = ({
   onCaregiverChange,
 }) => {
   const router = useRouter();
+  const { userDoc, logout } = useAuth();
   const [session, setSession] = React.useState<SessionState | null>(null);
 
   React.useEffect(() => {
@@ -30,17 +32,27 @@ export const Header: React.FC<HeaderProps> = ({
       onToggleMode?.(s.currentMode);
       onCaregiverChange?.(s.activeCaregiver);
     });
-  }, [onToggleMode, onCaregiverChange]);
+  }, [userDoc, onToggleMode, onCaregiverChange]);
 
   const handleLogout = async () => {
+    await logout();
     await logoutSession();
     router.push("/login");
   };
 
-  const activeMode = session?.currentMode ?? mode ?? "cuidador";
-  const userLabel =
-    session?.userLabel ??
-    (activeMode === "crianca" ? "Criança (Clarinha)" : "Mãe (Ana)");
+  const activeMode: AppMode = userDoc
+    ? userDoc.role === "patient"
+      ? "crianca"
+      : "cuidador"
+    : session?.currentMode ?? mode ?? "cuidador";
+
+  const userLabel = userDoc
+    ? userDoc.role === "patient"
+      ? `Criança (${userDoc.shortName || userDoc.displayName})`
+      : userDoc.role === "doctor"
+      ? userDoc.displayName
+      : `${userDoc.relation || "Mãe"} (${userDoc.shortName || userDoc.displayName})`
+    : session?.userLabel ?? (activeMode === "crianca" ? "Criança (Clarinha)" : "Mãe (Ana)");
 
   return (
     <header className="sticky top-0 z-30 bg-[#FFF8F0]/95 backdrop-blur-md px-3.5 py-2.5 border-b border-[#F1E4D6]/80">

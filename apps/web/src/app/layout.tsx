@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { AppFrame } from "../components/AppFrame";
+import { AuthProvider } from "../lib/AuthContext";
 
 export const metadata: Metadata = {
   title: "OncoVida — Portal do Paciente e Cuidador",
@@ -24,7 +25,9 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased font-sans selection:bg-[#EDE3F5] selection:text-[#6E3F8C]">
-        <AppFrame>{children}</AppFrame>
+        <AuthProvider>
+          <AppFrame>{children}</AppFrame>
+        </AuthProvider>
       </body>
     </html>
   );

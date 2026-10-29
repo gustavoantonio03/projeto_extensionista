@@ -37,9 +37,12 @@ import type {
   LoginProfileKey,
   AppMode,
   HabitItem,
+  UserDoc,
 } from "./types";
 import { mockTeamUser } from "../mocks/medico-fixtures";
 import { caregiverTag } from "./caregiver";
+import { auth } from "./firebase";
+import { signOut } from "firebase/auth";
 
 // Simula delay de rede de 100ms a 250ms
 const delay = (ms = 150) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -66,17 +69,58 @@ function findCaregiver(id?: string): CaregiverProfile {
 }
 
 /**
- * Estado da sessão isolada (logins separados por dispositivo/usuário):
- * - Sem trava de PIN compartilhada: cada perfil entra pela tela `/login`.
- * - Criança (Clarinha) → modo "crianca"
- * - Cuidadores (Mãe Ana, Pai Carlos, Avó Helena) → modo "cuidador"
- * - Médico (Dr. Roberto Silva) → portal "/medico"
+ * Estado da sessão integrada ao Firebase Auth + Firestore users/{uid}:
+ * - Criança (`patient`) → modo "crianca"
+ * - Cuidador (`caregiver`) → modo "cuidador"
+ * - Médico (`doctor`) → modo "cuidador" com rota para "/medico"
  */
 let currentSessionRole: SessionRole = "cuidador";
 let currentAppMode: AppMode = "cuidador";
 let activeCaregiverId: string = mockPrimaryCaregiver.id;
+let currentFirebaseUserDoc: UserDoc | null = null;
+
+export function syncFirebaseSession(userDoc: UserDoc): void {
+  currentFirebaseUserDoc = userDoc;
+  if (userDoc.role === "patient") {
+    currentSessionRole = "crianca";
+    currentAppMode = "crianca";
+  } else if (userDoc.role === "doctor") {
+    currentSessionRole = "medico";
+    currentAppMode = "cuidador";
+  } else {
+    currentSessionRole = "cuidador";
+    currentAppMode = "cuidador";
+    // Mapeia para o cuidador correspondente se houver relação
+    if (userDoc.relation?.toLowerCase().includes("pai")) {
+      activeCaregiverId = "cg-pai";
+    } else if (userDoc.relation?.toLowerCase().includes("avó") || userDoc.relation?.toLowerCase().includes("avo")) {
+      activeCaregiverId = "cg-avo";
+    } else {
+      activeCaregiverId = "cg-mae";
+    }
+  }
+}
+
+export function clearFirebaseSession(): void {
+  currentFirebaseUserDoc = null;
+  currentSessionRole = "cuidador";
+  currentAppMode = "cuidador";
+  activeCaregiverId = mockPrimaryCaregiver.id;
+}
 
 function computeUserLabel(): string {
+  if (currentFirebaseUserDoc) {
+    if (currentFirebaseUserDoc.role === "patient") {
+      return `Criança (${currentFirebaseUserDoc.shortName || currentFirebaseUserDoc.displayName})`;
+    }
+    if (currentFirebaseUserDoc.role === "doctor") {
+      return currentFirebaseUserDoc.displayName || mockTeamUser.name;
+    }
+    const rel = currentFirebaseUserDoc.relation || "Mãe";
+    const name = currentFirebaseUserDoc.shortName || currentFirebaseUserDoc.displayName;
+    return `${rel} (${name})`;
+  }
+
   if (currentSessionRole === "crianca") {
     return `Criança (${patientState.preferredName})`;
   }
@@ -85,6 +129,7 @@ function computeUserLabel(): string {
   }
   return caregiverTag(findCaregiver(activeCaregiverId));
 }
+
 
 interface MedicationActionState {
   taken: boolean;
@@ -171,6 +216,8 @@ export async function getSessionState(): Promise<SessionState> {
     currentMode: currentAppMode,
     activeCaregiver: findCaregiver(activeCaregiverId),
     userLabel: computeUserLabel(),
+    firebaseUid: currentFirebaseUserDoc?.uid,
+    firebaseRole: currentFirebaseUserDoc?.role,
   };
 }
 
@@ -225,6 +272,12 @@ export async function loginAs(
 
 export async function logoutSession(): Promise<void> {
   await delay(40);
+  try {
+    await signOut(auth);
+  } catch (err) {
+    // Silencia caso não haja usuário Firebase ativo
+  }
+  clearFirebaseSession();
 }
 
 export async function setAppMode(
