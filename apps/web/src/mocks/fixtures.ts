@@ -9,6 +9,7 @@ import {
   CaregiverProfile,
   AuditEntry,
   MedicationLog,
+  HabitItem,
 } from "../lib/types";
 
 export const mockPrimaryCaregiver: CaregiverProfile = {
@@ -67,24 +68,15 @@ export const mockPatient: PatientProfile = {
   status: "estavel",
 };
 
+/** 3 remédios essenciais do dia (manhã, tarde, noite). */
 export const mockMedications: Medication[] = [
-  {
-    id: "med-1",
-    name: "Ondansetrona",
-    dosage: "8mg • 1 comprimido",
-    time: "14:00",
-    period: "tarde",
-    instructions: "Tomar com 1 copo de água cheinho logo após o almoço para prevenir enjoo.",
-    category: "antiemetico",
-    taken: false,
-  },
   {
     id: "med-2",
     name: "Dexametasona",
-    dosage: "4mg • 1 comprimido",
+    dosage: "1 comprimido",
     time: "08:00",
     period: "manha",
-    instructions: "Tomar junto com o café da manhã.",
+    instructions: "Com o café da manhã.",
     category: "corticoide",
     taken: true,
     takenAt: "08:05",
@@ -95,29 +87,45 @@ export const mockMedications: Medication[] = [
     verifiedAt: "08:30",
   },
   {
+    id: "med-1",
+    name: "Ondansetrona",
+    dosage: "1 comprimido",
+    time: "14:00",
+    period: "tarde",
+    instructions: "Depois do almoço, com água.",
+    category: "antiemetico",
+    taken: false,
+  },
+  {
     id: "med-3",
     name: "Capecitabina",
-    dosage: "500mg • Quimioterapia Oral",
+    dosage: "1 comprimido",
     time: "20:00",
     period: "noite",
-    instructions: "Tomar 30 minutos após o jantar com bastante água.",
+    instructions: "30 min após o jantar.",
     category: "quimio-oral",
     taken: false,
   },
+];
+
+/** 3 hábitos simples da rotina. */
+export const mockDailyHabits: HabitItem[] = [
+  { id: "agua", emoji: "🥤", label: "Beber água", detail: "8 copos", done: false },
+  { id: "caminhada", emoji: "🚶", label: "Caminhada leve", detail: "15 min", done: true },
+  { id: "sono", emoji: "🌙", label: "Dormir bem", detail: "8 h", done: true },
 ];
 
 export const mockMedicationLogs: MedicationLog[] = [
   {
     id: "log-1",
     medicationId: "rx-2",
-    medicationName: "Dexametasona 4mg",
+    medicationName: "Dexametasona",
     dosage: "1 comprimido",
     takenAt: "08:05",
     performedBy: mockPrimaryCaregiver,
     verificationStatus: "conferido",
     verifiedBy: mockSecondaryCaregiver,
     verifiedAt: "08:30",
-    notes: "Tomado com suco de maçã sem resíduo. Tolerância imediata 100%.",
   },
 ];
 
@@ -126,6 +134,7 @@ export const mockAuditTrail: AuditEntry[] = [
     id: "audit-4",
     action: "registrou_sintoma",
     description: "Avó (Helena) registrou temperatura 36.7°C.",
+    subject: "36.7°C",
     performedBy: mockTertiaryCaregiver,
     performedAt: "10:30",
     targetId: "temp-1030",
@@ -134,7 +143,8 @@ export const mockAuditTrail: AuditEntry[] = [
   {
     id: "audit-1",
     action: "conferiu_medicamento",
-    description: "Pai (Carlos Eduardo) conferiu a dose de Dexametasona 4mg.",
+    description: "Pai (Carlos Eduardo) conferiu a dose de Dexametasona.",
+    subject: "Dexametasona",
     performedBy: mockSecondaryCaregiver,
     performedAt: "08:30",
     targetId: "rx-2",
@@ -145,7 +155,8 @@ export const mockAuditTrail: AuditEntry[] = [
   {
     id: "audit-2",
     action: "administrou_medicamento",
-    description: "Mãe (Ana Paula) deu Dexametasona 4mg.",
+    description: "Mãe (Ana Paula) deu Dexametasona.",
+    subject: "Dexametasona",
     performedBy: mockPrimaryCaregiver,
     performedAt: "08:05",
     targetId: "rx-2",
@@ -157,6 +168,7 @@ export const mockAuditTrail: AuditEntry[] = [
     id: "audit-3",
     action: "registrou_sintoma",
     description: "Mãe (Ana Paula) registrou temperatura 36.5°C.",
+    subject: "36.5°C",
     performedBy: mockPrimaryCaregiver,
     performedAt: "07:45",
     targetId: "temp-0745",
@@ -169,21 +181,21 @@ export const mockAuditTrail: AuditEntry[] = [
 export const mockSuggestedMeals: SuggestedMeal[] = [
   {
     id: "meal-1",
-    title: "Sopa Suave de Abóbora e Mandioquinha",
-    description: "Com abóbora kabocha, cenoura e mandioquinha cozidas com gengibre sutil.",
-    tag: "Textura Aveludada",
+    title: "Sopa de abóbora",
+    description: "Morna e aveludada.",
+    tag: "Almoço",
     calories: 280,
-    highlight: "Fácil de engolir e hidratante",
-    imageSrc: "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80",
+    highlight: "Fácil de engolir",
+    imageSrc: "",
   },
   {
     id: "meal-2",
-    title: "Purê Cremoso com Franguinho Desfiado",
-    description: "Peito de frango cozido bem úmido com purê de batata caseiro.",
-    tag: "Proteína Fácil",
+    title: "Purê com frango desfiado",
+    description: "Úmido e sem tempero forte.",
+    tag: "Jantar",
     calories: 340,
-    highlight: "Alta proteína e sem resíduo",
-    imageSrc: "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=600&q=80",
+    highlight: "Proteína leve",
+    imageSrc: "",
   },
 ];
 

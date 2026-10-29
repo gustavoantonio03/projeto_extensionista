@@ -1,8 +1,8 @@
 ---
 titulo: Cérebro do Projeto — SIGLO · Portal do Paciente/Cuidador
 status: documento vivo (living document)
-versao: 0.4
-atualizado_em: 2026-10-19
+versao: 0.6
+atualizado_em: 2026-10-29
 aliases: [SIGLO, OncoVida, Cérebro, MOC]
 ---
 
@@ -13,11 +13,13 @@ aliases: [SIGLO, OncoVida, Cérebro, MOC]
 > Convention: `[[Wikilink]]` = página do projeto (a criar em `docs/` conforme o [[Índice de Páginas]]). O conteúdo essencial está inline neste documento; os wikilinks definem a malha de conhecimento que o time vai expandir.
 
 > [!IMPORTANT]
-> **Diretriz vigente (v0.3 — 2026-10-14): Front-end First.**
+> **Diretriz vigente (v0.6 — 2026-10-29): Front-end First & Sessões Isoladas Multidispositivo.**
 > 1. O produto em foco é o **Portal do Paciente/Cuidador** — público **infantil** (paciente pediátrico) e **adulto** (cuidador familiar e paciente adulto).
-> 2. A **Fase 1** entrega **100% do front-end** (UI/UX, componentes, rotas, estados de tela, interações) com **dados mockados**. **Nenhuma** lógica de servidor, banco ou integração real de API é implementada agora.
-> 3. Todo trabalho de back-end (Go/Python/Postgres/Keycloak) foi movido para a **Fase 2** — ver [[#5-roadmap-de-sprints]] e [[ADR-0005 — Front-end First]].
-> 4. **Rastreabilidade:** toda entrega começa com `📍 Sprint XX · Etapa XX.N — <nome>` (ver [[#5.3 Etapas padrão de cada sprint]]).
+> 2. **Sessões Isoladas Multidispositivo (Paciente vs. Cuidador vs. Médico):** A aplicação substituiu o antigo modelo de "Device Compartilhado com PIN" por **acessos físicos e logins separados (`/login`)** para a Criança, Cuidadores (Mãe, Pai, Avó) e Médico.
+> 3. **Escopo Enxuto (Remoção de Gravação de Voz):** A funcionalidade de gravação de relato por voz no check-in foi **descontinuada** para manter a interface "Meu Dia" direta, leve e focada em humor (`MoodPicker`), dor (`PainScale`) e temperatura.
+> 4. A **Fase 1** entrega **100% do front-end** (UI/UX, componentes, rotas, estados de tela, interações) com **dados mockados**. **Nenhuma** lógica de servidor, banco ou integração real de API é implementada agora.
+> 5. Todo trabalho de back-end (Go/Python/Postgres/Keycloak) foi movido para a **Fase 2** — ver [[#5-roadmap-de-sprints]] e [[ADR-0005 — Front-end First]].
+> 6. **Rastreabilidade:** toda entrega começa com `📍 Sprint XX · Etapa XX.N — <nome>` (ver [[#5.3 Etapas padrão de cada sprint]]).
 
 ---
 
@@ -39,7 +41,7 @@ aliases: [SIGLO, OncoVida, Cérebro, MOC]
 ## 1. Visão do Produto
 
 ### 1.0 Foco atual
-O SIGLO é uma plataforma de laboratório oncológico; a **primeira face entregue** é o **Portal do Paciente/Cuidador (OncoVida)**, desenhado com **foco Mobile-First** (experiência fluida de Web App estilo aplicativo nativo/Instagram, otimizada para uso em smartphone com uma mão), que acompanha a rotina de tratamento da criança: check-in de humor e sintomas, remédios e rotina com dupla checagem, alimentação compassiva, exames e rede de apoio familiar. O portal é construído **front-end first** (Fase 1) e conectado ao back-end na Fase 2.
+O SIGLO é uma plataforma de laboratório oncológico; a **primeira face entregue** é o **Portal do Paciente/Cuidador (OncoVida)**, desenhado com **foco Mobile-First** (experiência fluida de Web App estilo aplicativo nativo/Instagram, otimizada para uso em smartphone com uma mão), que acompanha a rotina de tratamento da criança: check-in rápido de humor, dor e temperatura (sem gravação de voz, descontinuada por escopo enxuto), remédios e rotina com dupla checagem, alimentação compassiva e rede de apoio familiar. O portal opera com **Sessões Isoladas Multidispositivo** (`/login`) e é construído **front-end first** (Fase 1), conectado ao back-end na Fase 2.
 
 ### 1.1 Problema
 Laboratórios oncológicos operam com processos fragmentados (planilhas, sistemas legados, WhatsApp) entre coleta, análise e emissão de laudos. Consequências: atrasos no diagnóstico, retrabalho, falta de rastreabilidade da amostra e ausência de indicadores de gestão.
@@ -47,12 +49,12 @@ Laboratórios oncológicos operam com processos fragmentados (planilhas, sistema
 
 ### 1.2 Solução
 Plataforma web modular que digitaliza o fluxo ponta a ponta do laboratório: **cadastro de pacientes → ordem e coleta de exames → rastreabilidade da amostra → análise → laudo revisado e assinado → liberação ao paciente/médico → BI para gestão**.
-A ponta visível para a família é o **Portal do Paciente/Cuidador**: Mobile-First, acolhedor e seguro para a criança, com separação estrita para os adultos, suporte a múltiplos cuidadores na mesma conta e dupla checagem de ações críticas.
+A ponta visível para a família é o **Portal do Paciente/Cuidador**: Mobile-First, acolhedor e seguro para a criança, com **logins separados por dispositivo (`/login`)**, suporte a múltiplos cuidadores na mesma conta e dupla checagem de ações críticas.
 
 ### 1.3 Objetivos de Produto
 1. **(Fase 1)** Entregar um portal **Mobile-First** acolhedor para crianças e com ferramentas de alta segurança para múltiplos adultos/cuidadores.
-2. **(Fase 1 · Proteção Infantil)** Garantir **separação estrita** entre a visão lúdica da criança e a visão clínica/gestora do adulto por meio de **trava de segurança parental (PIN)**.
-3. **(Fase 1 · Rastreabilidade Familiar)** Permitir **múltiplos cuidadores na mesma conta** da criança, registrando autor e horário de cada ação crítica (remédios, temperatura) com mecanismo de **conferência cruzada (dupla checagem)**.
+2. **(Fase 1 · Sessões Isoladas Multidispositivo)** Garantir **separação de acesso** entre a visão lúdica da criança, os perfis individuais de cuidadores (Mãe, Pai, Avó) e o portal médico por meio de **logins dedicados (`/login`)**, substituindo o antigo modelo de dispositivo híbrido com PIN.
+3. **(Fase 1 · Rastreabilidade Familiar)** Permitir **múltiplos cuidadores vinculados à conta** da criança, registrando autor e horário de cada ação crítica (remédios, temperatura) com mecanismo de **conferência cruzada (dupla checagem)**.
 4. **(Fase 1)** Validar jornadas com **dados mockados** e testes de usabilidade antes de investir no back-end.
 5. Reduzir o **turnaround time (TAT)** entre coleta e liberação do laudo. *(Fase 2)*
 6. Garantir **rastreabilidade** integral da amostra (coleta → resultado). *(Fase 2)*
@@ -62,10 +64,10 @@ A ponta visível para a família é o **Portal do Paciente/Cuidador**: Mobile-Fi
 ### 1.4 Personas
 | Persona | Necessidade principal | Onde atua | Fase |
 |---|---|---|---|
-| **Criança paciente (≈ 6–12 anos)** | Dizer como se sente com toques e emojis, entender o dia sem medo, brincar com Lumi; **sem acesso a controles clínicos sensíveis** | Portal — **Modo Criança** | **1** |
-| **Múltiplos Cuidadores Familiares (mãe, pai, avó, tia)** | Administrar remédios, registrar sintomas, conferir ações de outros cuidadores (dupla checagem) com sub-perfis autenticados | Portal — **Modo Cuidador** (protegido por PIN) | **1** |
+| **Criança paciente (≈ 6–12 anos)** | Dizer como se sente com toques e emojis, entender o dia sem medo; **acesso isolado sem controles clínicos sensíveis** | Portal — **Login Criança** (`/`) | **1** |
+| **Múltiplos Cuidadores Familiares (mãe, pai, avó)** | Administrar remédios, registrar sintomas, conferir ações de outros cuidadores (dupla checagem) com logins próprios | Portal — **Login Cuidador** (`/clinico`, `/remedios`) | **1** |
 | **Paciente adulto / adolescente** | Acompanhar o próprio tratamento com clareza e calma | Portal — Modo Cuidador | **1** |
-| Rede familiar (avós, irmãos) | Enviar carinho e acompanhar com permissões limitadas | Portal — Família | **1** |
+| Rede familiar (avós, irmãos) | Enviar carinho e acompanhar com permissões limitadas | Portal — Família (`/familia`) | **1** |
 | **Médico oncopediatra / Equipe multidisciplinar (enfermagem, nutrição)** | Priorizar pacientes por criticidade, ver histórico de sintomas, ajustar prescrição e orientar cuidadores | Portal do Médico (`/medico`) | **1B** |
 | Equipe de enfermagem (visão no portal do paciente) | Ver check-ins e alertas da família | Portal - Equipe (leitura) | 1 (UI) / 2 (dados) |
 | Patologista · Técnico/Biomédico · Recepção/Gestor | Laudos, coleta, rastreio e fila de trabalho | Módulos de laboratório | 2 |
@@ -82,17 +84,16 @@ O código é organizado por **módulo de domínio** (bounded contexts). Cada mó
 ### 2.1 Módulos do Portal (front-end · Fase 1)
 | Módulo do portal | Rota | Conteúdo | Módulo de back-end futuro |
 |---|---|---|---|
-| Boas-vindas & Perfis | `/boas-vindas`, `/entrar`, `/perfis` | Onboarding, login simulado, escolha da criança e do modo (Criança/Cuidador) | [[Módulo Identidade e Acesso]] · [[Módulo Pacientes]] |
-| Meu Dia | `/inicio` | Check-in por emojis/voz, mapa de dor, sintomas, temperatura, resumo do dia | [[Módulo Pacientes]] |
-| Remédios & Agenda | `/remedios`, `/agenda` | Próxima dose, "já tomei", calendário de consultas/exames, hábitos | [[Módulo Pacientes]] · [[Módulo Notificações]] |
-| Alimentação | `/alimentacao` | Como foi a refeição, dicas para paladar, pílulas de conhecimento | [[Módulo Pacientes]] |
-| Exames & Evolução | `/exames` | Exames agendados, resultados liberados em linguagem simples, gráficos de peso/altura | [[Módulo Exames]] · [[Módulo Laudos]] |
-| Família & Equipe | `/familia` | Rede de carinho, mensagens, equipe de cuidado, linha do tempo | [[Módulo Pacientes]] · [[Módulo Notificações]] |
-| Perfil & Acessibilidade | `/perfil` | Dados da criança, modo de uso, tamanho de texto, movimento reduzido, privacidade | [[Módulo Identidade e Acesso]] |
+| Login & Sessão Isolada | `/login` | Autenticação simulada por perfil separado: Criança (Clarinha), Mãe (Ana), Pai (Carlos) e Médico | [[Módulo Identidade e Acesso]] · [[Módulo Pacientes]] |
+| Meu Dia | `/` | Check-in rápido por emojis (`MoodPicker`), mapa de dor (`PainScale`) e temperatura *(gravação de voz descontinuada)* | [[Módulo Pacientes]] |
+| Remédios & Agenda | `/remedios` | 3 medicamentos essenciais do dia, dupla checagem, 3 hábitos simples e agenda semanal | [[Módulo Pacientes]] · [[Módulo Notificações]] |
+| Alimentação | `/nutricao` | Seletor rápido de refeição, 3 dicas curtas em pílulas e cardápio suave do dia | [[Módulo Pacientes]] |
+| Dashboard Clínico | `/clinico` | Conferência cruzada 1-toque, indicadores vitais e trilha de auditoria compacta | [[Módulo Exames]] · [[Módulo Laudos]] |
+| Família | `/familia` | Cuidadores vinculados à conta e mural de recados curtos de carinho | [[Módulo Pacientes]] · [[Módulo Notificações]] |
 | **Médico — Triagem** | `/medico` | Dashboard: pacientes monitorados, criticidade, alertas de febre/dor, filtros por leito/tratamento | [[Módulo Pacientes]] · [[Módulo Notificações]] |
 | **Médico — Visão 360** | `/medico/pacientes/[id]` | Curvas de peso/altura, histórico de humor/dor, adesão a medicamentos, intercorrências | [[Módulo Pacientes]] · [[Módulo Exames]] |
 | **Médico — Prescrição** | `/medico/prescricao` | Cadastro/ajuste de medicamentos, horários e recomendações nutricionais (alimentam `/remedios` e `/nutricao`) | [[Módulo Pacientes]] |
-| **Médico — Comunicação** | `/medico/comunicacao` | Recados clínicos, orientações aos cuidadores, respostas da enfermagem (aparecem em `/familia`) | [[Módulo Notificações]] |
+| **Médico — Comunicação** | `/medico/comunicacao` | Recados clínicos, orientações aos cuidadores, respostas da enfermagem | [[Módulo Notificações]] |
 
 Detalhes: [[Módulos do Portal]] · Arquitetura: [[Arquitetura Frontend]].
 
@@ -312,10 +313,11 @@ O portal atende **dois públicos na mesma base**: a **criança** (acolhimento, b
 |---|---|
 | Foco Mobile-First | Web App Mobile com layout vertical fluido (estilo app nativo/Instagram), alvos de toque generosos (≥ 48px, 56px em ações primárias) e bottom bar |
 | Design tokens | Tokens "Acolher" em `packages/ui`; Nunito (UI) + Fraunces (títulos); base 16px; sombras suaves e cantos arredondados |
-| Separação Estrita (PIN) | Criança NUNCA acessa ou modifica ações críticas do cuidador; transição Modo Criança → Modo Cuidador exige **trava parental com PIN simples** (ex: `1234`) |
-| Múltiplos Cuidadores | Mesma conta familiar suporta múltiplos cuidadores (Mãe, Pai, Avó), com alternância de perfil ativo e identificação visual |
+| Sessões Isoladas Multidispositivo | Transição do antigo "Device Compartilhado com PIN" para **logins separados por dispositivo (`/login`)**: Criança, Cuidadores (Mãe, Pai, Avó) e Médico entram em sessões isoladas e saem pelo botão de Logout no `Header` |
+| Escopo Enxuto (Sem Voz) | Gravação de relato por voz descontinuada na tela "Meu Dia", priorizando check-in visual direto (`MoodPicker`, `PainScale` e Temperatura) |
+| Múltiplos Cuidadores | Mesma conta familiar suporta múltiplos cuidadores (Mãe, Pai, Avó), cada um com login próprio e identificação visual no topo |
 | Rastreabilidade & Dupla Checagem | Toda ação crítica (dar medicação, registrar temperatura/sintoma) grava **quem realizou e o horário** (`performedBy`, `performedAt`) e permite **conferência cruzada** por outro cuidador (`verifiedBy`, `verifiedAt`) |
-| Dois modos | **Modo Criança**: ilustrações, mascote Lumi, emojis **sempre acompanhados de texto**, frases curtas, uma tarefa por tela · **Modo Cuidador**: detalhes clínicos, horários, histórico e atalhos |
+| Dois modos | **Sessão Criança**: ilustrações, emojis **sempre acompanhados de texto**, frases curtas, somente leitura para remédios · **Sessão Cuidador**: detalhes clínicos, horários, registro de doses e dupla checagem |
 | Linguagem | Simples, acolhedora e honesta; sem jargão para a criança; sem infantilizar o adulto; nunca culpa ("sem pressão") |
 | Acessibilidade | WCAG 2.1 AA em toda tela; navegação por teclado e leitor de tela; `prefers-reduced-motion`; texto ajustável (detalhes: [[Acessibilidade WCAG 2.1 AA]]) |
 | Carga cognitiva | Fluxos curtos, help text sempre visível (nunca só tooltip), máximo 5 itens na navegação principal |
@@ -336,7 +338,7 @@ O portal atende **dois públicos na mesma base**: a **criança** (acolhimento, b
 
 | Risco | Impacto | Mitigação |
 |---|---|---|
-| Interface infantilizar adultos ou ser complexa para crianças | Alto | Dois modos de uso com trava parental (PIN), testes com ambos os públicos (S04 e S08) |
+| Interface infantilizar adultos ou ser complexa para crianças | Alto | Sessões isoladas por dispositivo (`/login`: Criança vs. Cuidador), testes com ambos os públicos (S04 e S08) |
 | Duplicidade ou esquecimento de dose de medicação por múltiplos familiares | Crítico | Registro explícito de quem deu (`performedBy`) + dupla checagem/conferência cruzada por outro cuidador |
 | Mocks divergirem do contrato real da Fase 2 | Médio | Tipos centralizados em `lib/types.ts` + camada `lib/data`; OpenAPI derivado dos tipos em B2 |
 | Vazamento de dado de saúde (inclusive de criança) | Crítico | Só dados fictícios na Fase 1; criptografia, RBAC, auditoria e pentest na Fase 2 |
@@ -371,8 +373,10 @@ Malha de wikilinks deste cérebro. Ao criar cada página em `docs/`, marque o st
 
 | Data | Versão | Mudança |
 |---|---|---|
+| 2026-10-29 | 0.6 | **Sessões Isoladas Multidispositivo & Limpeza de Features:** Transição de "Device Compartilhado com PIN" para **Sessões Isoladas Multidispositivo (`/login`)** com logins separados para Criança, Cuidadores (Mãe, Pai) e Médico; remoção do sistema de PIN e do `PortalSwitcher` no cabeçalho (mantendo apenas identificação de quem está logado e botão de Logout); descontinuação da funcionalidade de gravação de voz no check-in (escopo enxuto) |
 | 2026-10-19 | 0.5 | **Refatoração de Perfis e Rastreabilidade Multi-Cuidador:** Foco Mobile-First (experiência Web App nativo); separação estrita Criança vs. Cuidador com trava parental (PIN `1234`); suporte a múltiplos cuidadores na mesma conta familiar (Mãe, Pai, Avó); rastreabilidade com autoria (`performedBy`, `performedAt`) e dupla checagem/conferência cruzada de medicamentos (`verifiedBy`, `verifiedAt`) |
 | 2026-10-19 | 0.4 | **Fase 1B — Front-end do Portal do Médico / Equipe Multidisciplinar** (Sprints 09–12, rotas `/medico/*`, dados mockados, sem back-end); persona Médico/Equipe no escopo da Fase 1; alternância Paciente ⇄ Médico para demonstração; back-end segue na Fase 2 |
 | 2026-10-14 | 0.3 | Foco no **Portal do Paciente/Cuidador** (público infantil + adulto); diretriz **Front-end First** ([[ADR-0005 — Front-end First]]); roadmap reorganizado em **Fase 1 (S01–S08, front-end)** e **Fase 2 (B1–B9, back-end)**; etapas padrão de sprint para rastreabilidade; [[Design System — Acolher]]; LGPD art. 14 (crianças) |
 | 2026-09-17 | 0.2 | Sprint 00 executada: monorepo estruturado, CI (lint+testes+SAST), docker-compose local, ADRs 0001–0004, backlog inicial, tokens do design system em `packages/ui`, rascunho do [[Inventário de Dados (LGPD)]] |
 | 2026-09-10 | 0.1 | Criação do cérebro: visão, arquitetura Go+Python/Next.js, módulos de domínio, roadmap de sprints 0–10, QA, LGPD e usabilidade |
+

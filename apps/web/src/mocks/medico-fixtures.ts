@@ -214,9 +214,9 @@ export function fallback360(patientId: string): Patient360 {
 }
 
 export const mockPrescriptions: PrescriptionItem[] = [
-  { id: "rx-1", patientId: "pac-001", name: "Ondansetrona", dosage: "8mg • 1 comprimido", time: "14:00", instructions: "Tomar com 1 copo de água cheinho logo após o almoço para prevenir enjoo.", category: "antiemetico", status: "ativo" },
-  { id: "rx-2", patientId: "pac-001", name: "Dexametasona", dosage: "4mg • 1 comprimido", time: "08:00", instructions: "Tomar junto com o café da manhã.", category: "corticoide", status: "ativo" },
-  { id: "rx-3", patientId: "pac-001", name: "Capecitabina", dosage: "500mg • Quimioterapia Oral", time: "20:00", instructions: "Tomar 30 minutos após o jantar com bastante água.", category: "quimio-oral", status: "ativo" },
+  { id: "rx-1", patientId: "pac-001", name: "Ondansetrona", dosage: "8mg • 1 comprimido", time: "14:00", instructions: "Depois do almoço, com água.", category: "antiemetico", status: "ativo" },
+  { id: "rx-2", patientId: "pac-001", name: "Dexametasona", dosage: "4mg • 1 comprimido", time: "08:00", instructions: "Com o café da manhã.", category: "corticoide", status: "ativo" },
+  { id: "rx-3", patientId: "pac-001", name: "Capecitabina", dosage: "500mg • 1 comprimido", time: "20:00", instructions: "30 min após o jantar.", category: "quimio-oral", status: "ativo" },
   { id: "rx-4", patientId: "pac-002", name: "Cefepima", dosage: "1g • endovenoso", time: "06:00", instructions: "Administração hospitalar conforme protocolo de febre neutropênica.", category: "suporte", status: "ativo" },
 ];
 

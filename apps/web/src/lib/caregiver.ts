@@ -1,4 +1,4 @@
-import type { CaregiverProfile, Medication } from "./types";
+import type { AuditEntry, CaregiverProfile, Medication } from "./types";
 
 const CATEGORY_LABELS: Record<Medication["category"], string> = {
   antiemetico: "Prevenir enjoo",
@@ -12,9 +12,35 @@ export function medicationCategoryLabel(category: Medication["category"]): strin
   return CATEGORY_LABELS[category];
 }
 
-/** Rótulo curto padronizado: "Mãe (Ana Paula)", "Pai (Carlos Eduardo)", "Avó (Helena)". */
+/** Rótulo curto padronizado: "Mãe (Ana)", "Pai (Carlos)", "Avó (Helena)". */
 export function caregiverTag(cg: CaregiverProfile): string {
-  return `${cg.relationLabel} (${cg.displayName})`;
+  return `${cg.relationLabel} (${cg.shortName})`;
+}
+
+/**
+ * Formata um evento da trilha em 1 linha escaneável:
+ * Ex.: "08:05 · Dexametasona dada por Mãe (✓ Pai)"
+ */
+export function formatAuditLine(entry: AuditEntry): string {
+  const actor = entry.performedBy.relationLabel;
+  const checkSuffix =
+    entry.verificationStatus === "conferido" && entry.verifiedBy
+      ? ` (✓ ${entry.verifiedBy.relationLabel})`
+      : entry.verificationStatus === "pendente"
+        ? " (pendente)"
+        : "";
+
+  const label =
+    entry.subject ??
+    (entry.action === "administrou_medicamento"
+      ? `Medicação dada por ${actor}`
+      : entry.action === "registrou_sintoma"
+        ? `Check-in por ${actor}`
+        : entry.action === "registrou_refeicao"
+          ? `Refeição por ${actor}`
+          : entry.description);
+
+  return `${entry.performedAt} · ${label}${checkSuffix}`;
 }
 
 /**
@@ -33,7 +59,7 @@ export function medicationTrailProps(
     performedByLabel: performer ? caregiverTag(performer) : undefined,
     performedAt: med.performedAt ?? med.takenAt,
     verificationStatus: med.verificationStatus,
-    verifiedByLabel: med.verifiedBy ? caregiverTag(med.verifiedBy) : undefined,
+    verifiedByLabel: med.verifiedBy ? med.verifiedBy.relationLabel : undefined,
     verifiedAt: med.verifiedAt,
     canVerify:
       med.taken &&
@@ -43,3 +69,4 @@ export function medicationTrailProps(
     canUndo: med.verificationStatus !== "conferido" && (!performer || isPerformer),
   };
 }
+

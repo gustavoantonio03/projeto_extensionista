@@ -10,6 +10,7 @@ import {
   mockSecondaryCaregiver,
   mockAuditTrail,
   mockMedicationLogs,
+  mockDailyHabits,
 } from "../mocks/fixtures";
 import {
   activePrescriptionsFor,
@@ -32,8 +33,12 @@ import type {
   AuditEntry,
   MedicationLog,
   SessionState,
+  SessionRole,
+  LoginProfileKey,
   AppMode,
+  HabitItem,
 } from "./types";
+import { mockTeamUser } from "../mocks/medico-fixtures";
 import { caregiverTag } from "./caregiver";
 
 // Simula delay de rede de 100ms a 250ms
@@ -61,15 +66,25 @@ function findCaregiver(id?: string): CaregiverProfile {
 }
 
 /**
- * Estado da sessão familiar (mockada):
- * - Modo padrão: "crianca" (com trava parental ativada)
- * - PIN padrão de segurança parental: "1234"
- * - Cuidador padrão: Ana Paula (Mãe)
+ * Estado da sessão isolada (logins separados por dispositivo/usuário):
+ * - Sem trava de PIN compartilhada: cada perfil entra pela tela `/login`.
+ * - Criança (Clarinha) → modo "crianca"
+ * - Cuidadores (Mãe Ana, Pai Carlos, Avó Helena) → modo "cuidador"
+ * - Médico (Dr. Roberto Silva) → portal "/medico"
  */
+let currentSessionRole: SessionRole = "cuidador";
 let currentAppMode: AppMode = "cuidador";
 let activeCaregiverId: string = mockPrimaryCaregiver.id;
-let isParentLocked: boolean = false;
-const PARENT_PIN = "1234";
+
+function computeUserLabel(): string {
+  if (currentSessionRole === "crianca") {
+    return `Criança (${patientState.preferredName})`;
+  }
+  if (currentSessionRole === "medico") {
+    return mockTeamUser.name;
+  }
+  return caregiverTag(findCaregiver(activeCaregiverId));
+}
 
 interface MedicationActionState {
   taken: boolean;
@@ -86,10 +101,10 @@ const takenState: Record<string, MedicationActionState> = {
   "rx-2": {
     taken: true,
     takenAt: "08:05",
-    performedBy: mockPrimaryCaregiver, // Mãe (Ana Paula)
+    performedBy: mockPrimaryCaregiver, // Mãe (Ana)
     performedAt: "08:05",
     verificationStatus: "conferido",
-    verifiedBy: mockSecondaryCaregiver, // Pai (Carlos Eduardo)
+    verifiedBy: mockSecondaryCaregiver, // Pai (Carlos)
     verifiedAt: "08:30",
   },
 };
@@ -122,7 +137,7 @@ function toMedication(rx: PrescriptionItem): Medication {
 }
 
 /* ========================================================================
- * Gestão de Sessão, Modo (Criança vs. Cuidador), PIN e Múltiplos Cuidadores
+ * Gestão de Sessão Isolada (Logins Separados: Criança, Cuidadores e Médico)
  * ======================================================================== */
 
 export async function getCaregivers(): Promise<CaregiverProfile[]> {
@@ -138,66 +153,89 @@ export async function getActiveCaregiver(): Promise<CaregiverProfile> {
 export async function setActiveCaregiver(
   caregiverId: string
 ): Promise<CaregiverProfile> {
-  await delay(50);
+  await delay(40);
   const found = mockCaregivers.find((c) => c.id === caregiverId);
   if (!found) {
     throw new Error(`Cuidador não encontrado com id ${caregiverId}`);
   }
   activeCaregiverId = caregiverId;
+  currentSessionRole = "cuidador";
+  currentAppMode = "cuidador";
   return found;
-}
-
-export async function isParentModeLocked(): Promise<boolean> {
-  await delay(20);
-  return isParentLocked;
-}
-
-export async function verifyParentPin(pin: string): Promise<boolean> {
-  await delay(120);
-  const isValid = pin.trim() === PARENT_PIN;
-  if (isValid) {
-    isParentLocked = false;
-    currentAppMode = "cuidador";
-  }
-  return isValid;
-}
-
-export async function lockParentMode(): Promise<void> {
-  await delay(30);
-  isParentLocked = true;
-  currentAppMode = "crianca";
 }
 
 export async function getSessionState(): Promise<SessionState> {
   await delay(20);
   return {
+    role: currentSessionRole,
     currentMode: currentAppMode,
     activeCaregiver: findCaregiver(activeCaregiverId),
-    isParentLocked,
+    userLabel: computeUserLabel(),
   };
 }
 
-export async function setAppMode(
-  mode: AppMode,
-  pin?: string
-): Promise<{ success: boolean; mode: AppMode }> {
-  await delay(50);
-  if (mode === "cuidador") {
-    if (isParentLocked) {
-      if (!pin || pin.trim() !== PARENT_PIN) {
-        return { success: false, mode: currentAppMode };
-      }
-      isParentLocked = false;
-    }
-    currentAppMode = "cuidador";
-    return { success: true, mode: "cuidador" };
+/**
+ * Realiza login mockado em sessão isolada e retorna a rota de destino.
+ */
+export async function loginAs(
+  profile: LoginProfileKey
+): Promise<{ session: SessionState; redirectTo: string }> {
+  await delay(80);
+  switch (profile) {
+    case "crianca":
+      currentSessionRole = "crianca";
+      currentAppMode = "crianca";
+      return {
+        session: await getSessionState(),
+        redirectTo: "/",
+      };
+    case "mae":
+      currentSessionRole = "cuidador";
+      currentAppMode = "cuidador";
+      activeCaregiverId = "cg-mae";
+      return {
+        session: await getSessionState(),
+        redirectTo: "/clinico",
+      };
+    case "pai":
+      currentSessionRole = "cuidador";
+      currentAppMode = "cuidador";
+      activeCaregiverId = "cg-pai";
+      return {
+        session: await getSessionState(),
+        redirectTo: "/clinico",
+      };
+    case "avo":
+      currentSessionRole = "cuidador";
+      currentAppMode = "cuidador";
+      activeCaregiverId = "cg-avo";
+      return {
+        session: await getSessionState(),
+        redirectTo: "/clinico",
+      };
+    case "medico":
+      currentSessionRole = "medico";
+      currentAppMode = "cuidador";
+      return {
+        session: await getSessionState(),
+        redirectTo: "/medico",
+      };
   }
-
-  // Ao alternar para o Modo Criança, bloqueia a trava parental para segurança
-  currentAppMode = "crianca";
-  isParentLocked = true;
-  return { success: true, mode: "crianca" };
 }
+
+export async function logoutSession(): Promise<void> {
+  await delay(40);
+}
+
+export async function setAppMode(
+  mode: AppMode
+): Promise<{ success: boolean; mode: AppMode }> {
+  await delay(30);
+  currentAppMode = mode;
+  currentSessionRole = mode === "crianca" ? "crianca" : "cuidador";
+  return { success: true, mode: currentAppMode };
+}
+
 
 /* ========================================================================
  * Perfil do Paciente e Prescrições / Medicamentos com Dupla Checagem
@@ -252,6 +290,7 @@ export async function toggleMedicationTaken(
     const audit: AuditEntry = {
       id: `audit-${Date.now()}`,
       action: "administrou_medicamento",
+      subject: `${rx.name} dada por ${actor.relationLabel}`,
       description: `${caregiverTag(actor)} deu ${rx.name} (${rx.dosage}).`,
       performedBy: actor,
       performedAt: timeStr,
@@ -495,6 +534,7 @@ export async function submitCheckIn(
   auditTrailState.unshift({
     id: `audit-chk-${Date.now()}`,
     action: "registrou_sintoma",
+    subject: `Temperatura ${checkIn.temperature.toFixed(1)}°C por ${actor.relationLabel}`,
     description: `${caregiverTag(actor)} registrou temperatura ${checkIn.temperature.toFixed(
       1
     )}°C.`,
@@ -562,12 +602,13 @@ export async function registerMeal(
   const labels = {
     tudo: "comeu quase tudo",
     metade: "comeu a metade",
-    enjoo: "ficou enjoada e rejeitou o prato",
+    enjoo: "ficou enjoada",
   } as const;
 
   const entry: AuditEntry = {
     id: `audit-meal-${Date.now()}`,
     action: "registrou_refeicao",
+    subject: `Refeição (${labels[status]}) por ${actor.relationLabel}`,
     description: `${caregiverTag(actor)} registrou refeição: ${labels[status]}.`,
     performedBy: actor,
     performedAt: timeStr,
@@ -578,8 +619,13 @@ export async function registerMeal(
 }
 
 /* ========================================================================
- * Nutrição, Comunicação e Consultas
+ * Nutrição, Hábitos, Comunicação e Consultas
  * ======================================================================== */
+
+export async function getDailyHabits(): Promise<HabitItem[]> {
+  await delay(30);
+  return mockDailyHabits.map((h) => ({ ...h }));
+}
 
 export async function getSuggestedMeals(): Promise<SuggestedMeal[]> {
   await delay();

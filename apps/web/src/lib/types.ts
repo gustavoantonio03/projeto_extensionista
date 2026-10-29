@@ -6,12 +6,14 @@
 
 export type UserRole = "paciente" | "cuidador" | "familia" | "clinico";
 export type AppMode = "crianca" | "cuidador";
+export type SessionRole = "crianca" | "cuidador" | "medico";
+export type LoginProfileKey = "crianca" | "mae" | "pai" | "avo" | "medico";
 
 export interface CaregiverProfile {
   id: string;
   name: string;
   shortName: string;
-  /** Nome exibido nos selos de rastreabilidade, ex: "Ana Paula" → "Mãe (Ana Paula)". */
+  /** Nome exibido nos selos de rastreabilidade, ex: "Ana Paula" → "Mãe (Ana)". */
   displayName: string;
   relation: "mae" | "pai" | "avo" | "avo_m" | "tio" | "outro";
   relationLabel: string; // ex: "Mãe", "Pai", "Avó"
@@ -21,10 +23,12 @@ export interface CaregiverProfile {
 }
 
 export interface SessionState {
+  role: SessionRole;
   currentMode: AppMode;
   activeCaregiver: CaregiverProfile;
-  isParentLocked: boolean;
+  userLabel: string;
 }
+
 
 export interface AuditEntry {
   id: string;
@@ -35,6 +39,8 @@ export interface AuditEntry {
     | "conferiu_medicamento"
     | "conferiu_registro";
   description: string;
+  /** Objeto curto da ação para a trilha compacta, ex: "Dexametasona", "36.7°C", "comeu a metade". */
+  subject?: string;
   performedBy: CaregiverProfile;
   performedAt: string; // ex: "08:05" ou ISO
   targetId?: string;
@@ -112,6 +118,14 @@ export interface SuggestedMeal {
   calories: number;
   highlight: string;
   imageSrc: string;
+}
+
+export interface HabitItem {
+  id: string;
+  emoji: string;
+  label: string;
+  detail: string;
+  done: boolean;
 }
 
 export interface MealLog {

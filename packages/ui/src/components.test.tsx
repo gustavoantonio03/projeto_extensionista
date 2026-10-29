@@ -141,7 +141,7 @@ describe("Componentes @siglo/ui (Design System Acolher)", () => {
     expect(handleSelect).toHaveBeenCalledWith("remedios", "/remedios");
   });
 
-  it("MedicationCard renderiza selo de rastreabilidade e botão de conferência cruzada", async () => {
+  it("MedicationCard renderiza linha única de rastreabilidade e botão de conferência cruzada", async () => {
     const user = userEvent.setup();
     const handleVerify = vi.fn();
     const handleToggle = vi.fn();
@@ -155,7 +155,7 @@ describe("Componentes @siglo/ui (Design System Acolher)", () => {
         instructions="Tomar com água"
         taken={true}
         onToggleTaken={handleToggle}
-        performedByLabel="Mãe (Ana Paula)"
+        performedByLabel="Mãe (Ana)"
         performedAt="08:05"
         verificationStatus="pendente"
         canVerify={true}
@@ -163,7 +163,7 @@ describe("Componentes @siglo/ui (Design System Acolher)", () => {
       />
     );
 
-    expect(screen.getByText(/Mãe \(Ana Paula\) deu a medicação às 08:05/i)).toBeInTheDocument();
+    expect(screen.getByText(/08:05 por Mãe \(Ana\)/i)).toBeInTheDocument();
     const verifyBtn = screen.getByRole("button", { name: /conferir \/ confirmar registro/i });
     expect(verifyBtn).toBeInTheDocument();
     await user.click(verifyBtn);
