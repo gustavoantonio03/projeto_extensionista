@@ -1,65 +1,78 @@
-# Roadmap de Sprints
+# Roadmap de Sprints e Histórico de Evolução — SIGLO
 
-> Fonte: [[Cérebro do Projeto — SIGLO]] §5 · Decisão: [[ADR-0005 — Front-end First]] · Atualizado: 2026-10-14
+> Fonte: [[Cérebro do Projeto — SIGLO]] · Decisão: [[ADR-0005 — Front-end First]] · Atualizado em: 2026-10-29
 
-## Recorte
+## 1. Recorte Geral
 
-- **Fase 1 — Front-end (Sprints 01 → 08):** Portal do Paciente/Cuidador 100% finalizado no front-end, com mocks.
-- **Fase 1B — Front-end (Sprints 09 → 12):** Portal do Médico / Equipe Multidisciplinar (`/medico/*`), com mocks.
-- **Fase 2 — Back-end e integração (B1 → B9):** tudo que envolve servidor, banco, IdP, integrações e BI.
+- **Fase 1 — Front-end (Sprints 01 → 08):** Portal do Paciente/Cuidador (`OncoVida`) 100% finalizado no front-end com dados mockados.
+- **Fase 1B — Front-end (Sprints 09 → 12):** Portal do Médico / Equipe Multidisciplinar (`/medico/*`) com dados mockados.
+- **Fase 2 — Back-end e Integração (Sprints B1 → B9):** Servidor, banco de dados (PostgreSQL/Prisma), autenticação real, integrações e BI.
 
-**O front-end está "finalizado" quando o Sprint 12 fechar** com: todas as rotas do §2.1 do cérebro
-implementadas (paciente + médico), estados loading/vazio/erro, WCAG 2.1 AA verificado, E2E das jornadas críticas verde e
-teste de usabilidade com famílias e equipe clínica realizado.
+---
 
-## Etapas padrão (rastreabilidade)
+## 2. Etapas Padrão de Rastreabilidade
 
-Toda entrega é identificada como `📍 Sprint XX · Etapa XX.N — nome`.
+Toda entrega é identificada como `📍 Sprint XX · Etapa XX.N — nome`:
 
 | Etapa | Nome | O que acontece |
 |---|---|---|
-| XX.1 | Refinamento | Histórias, critérios de aceite, ajustes no cérebro/backlog |
-| XX.2 | Implementação | Componentes `@siglo/ui`, telas `apps/web`, mocks |
-| XX.3 | QA & Acessibilidade | Lint, typecheck, testes, contraste, teclado, leitor de tela |
-| XX.4 | Review & Documentação | Demo, status no cérebro e no doc do sprint |
+| `XX.1` | Refinamento | Histórias, critérios de aceite e ajustes nas regras de negócio |
+| `XX.2` | Implementação | Componentes `@siglo/ui`, telas `apps/web` e camada `lib/data` |
+| `XX.3` | QA & Acessibilidade | Lint, typecheck, testes unitários, contraste e navegação |
+| `XX.4` | Review & Polimento | Limpeza visual, validação de build e atualização documental |
 
-## Fase 1 — Front-end
+---
 
-| Sprint | Nome | Histórias (backlog) | Status |
+## 3. Fase 1 — Front-end do Portal Paciente/Cuidador
+
+| Sprint | Nome | Entregas Principais | Status |
 |---|---|---|---|
-| 00 | Fundações | F-1…F-6 | ✅ concluído |
-| 01 | Fundação Front-end e Design System | FE-01…FE-06 | ✅ concluído |
-| 02 | Shell, Boas-vindas e Perfis | FE-07…FE-12 | 🔴 |
-| 03 | Meu Dia | FE-13…FE-17 | 🔴 |
-| 04 | Remédios e Agenda | FE-18…FE-22 | 🔴 |
-| 05 | Alimentação e Aprender | FE-23…FE-26 | 🔴 |
-| 06 | Exames e Evolução | FE-27…FE-31 | 🔴 |
-| 07 | Família e Equipe | FE-32…FE-36 | 🔴 |
-| 08 | Qualidade e Entrega do Front-end | FE-37…FE-42 | 🔴 |
+| **00** | Fundações | Monorepo, CI, ADRs 0001–0004, backlog inicial e tokens base | ✅ Concluído |
+| **01** | Fundação Front-end e Design System | Next.js em `apps/web`, Design System "Acolher" (`@siglo/ui`) e mocks tipados | ✅ Concluído |
+| **02** | Shell Mobile-First, Login Isolado e Dupla Checagem | Casca Mobile-First (`430px`), `BottomNav` fixa estilo Instagram (somente ícones e cápsula ativa), tela `/login` com sessões isoladas (Criança, Mãe, Pai, Médico), rastreabilidade e conferência cruzada (`MedicationCard` em 1 linha) e polimento visual das 5 abas | ✅ Concluído (Etapas 02.1–02.5) |
+| **03** | Meu Dia | Check-in rápido de humor (`MoodPicker`), mapa de dor (`PainScale`) e temperatura *(gravação de voz descontinuada por escopo enxuto)* | ✅ Entregue no protótipo |
+| **04** | Remédios e Agenda | 3 medicamentos essenciais do dia com dupla checagem, 3 hábitos simples + copos de água e `MiniCalendar` | ✅ Entregue no protótipo |
+| **05** | Alimentação | Registro rápido da refeição sem culpa, 3 dicas curtas em pílulas e cardápio suave do dia | ✅ Entregue no protótipo |
+| **06** | Dashboard Clínico (Cuidador) | Conferência cruzada 1-toque, 4 indicadores vitais e trilha de auditoria compacta em 1 linha | ✅ Entregue no protótipo |
+| **07** | Família | 3 cuidadores vinculados à conta e mural com 2 recados curtos de carinho | ✅ Entregue no protótipo |
+| **08** | Qualidade e Entrega do Front-end | E2E (Playwright + axe), revisão WCAG 2.1 AA e testes de usabilidade | 🔴 Pendente |
 
-> **Nota de status (2026-10-19):** as 5 telas principais do portal (Meu Dia, Remédios, Nutrição, Família, Clínico) foram entregues na Etapa 01.2. Itens ainda **pendentes** dos Sprints 02–08: onboarding/login simulado, `/exames`, `/perfil`, E2E Playwright+axe e teste de usabilidade. Os sprints permanecem abertos até concluir esses itens.
+---
 
-## Fase 1B — Front-end do Portal do Médico / Equipe
+## 4. Fase 1B — Front-end do Portal do Médico / Equipe
 
-| Sprint | Nome | Histórias (backlog) | Status |
+| Sprint | Nome | Entregas Principais | Status |
 |---|---|---|---|
-| 09 | Shell Médico e Triagem | MD-01…MD-07 | ✅ implementado (telas + mocks) |
-| 10 | Visão 360 do Paciente | MD-08…MD-13 | ✅ implementado (telas + mocks) |
-| 11 | Prescrição e Rotina | MD-14…MD-18 | ✅ implementado (telas + mocks) |
-| 12 | Comunicação e Entrega Front-end Médico | MD-19…MD-23 | ✅ implementado (telas + mocks) |
+| **09** | Shell Médico e Triagem | Rota `/medico`, `MedicoShell`, lista de pacientes por criticidade, KPIs e componentes clínicos (`SeverityBadge`, `LineChart`, `Tabs`, `Select`) | ✅ Concluído |
+| **10** | Visão 360 do Paciente | `/medico/pacientes/[id]`: curvas de peso/altura, histórico de humor/dor, adesão medicamentosa e intercorrências | ✅ Concluído |
+| **11** | Prescrição e Rotina | `/medico/prescricao`: cadastro/ajuste/suspensão de medicamentos e recomendações nutricionais integrados aos mocks do paciente | ✅ Concluído |
+| **12** | Comunicação e QA Médico | `/medico/comunicacao`: recados clínicos e orientações aos cuidadores; validação de typecheck/testes/build | ✅ Concluído |
 
-> **Nota de status (2026-10-19):** Todas as rotas do Portal do Médico (`/medico`, `/medico/pacientes/[id]`, `/medico/prescricao`, `/medico/comunicacao`) foram implementadas, integradas bidirecionalmente com os dados do paciente (`/remedios`, `/nutricao`, `/familia`), validadas com testes unitários no `@siglo/ui` e build de produção do `@siglo/web` sem erros.
+---
 
-## Fase 2 — Back-end (fase futura)
+## 5. Fase 2 — Back-end e Integração (Planejamento Futuro)
 
-| Sprint | Foco | Origem v0.2 |
+| Sprint | Foco |
+|---|---|
+| **B1** | Identidade e Acesso (Autenticação real para sessões isoladas Criança, Cuidadores e Médico + RBAC + Auditoria v1) |
+| **B2** | Banco de Dados (`Patient`, `Caregiver`, `Prescription`, `MedicationLog`, `DailyCheckIn`) + OpenAPI derivado de `apps/web/src/lib/types.ts` |
+| **B3** | Exames: catálogo, ordem de serviço e coleta |
+| **B4** | Rastreabilidade de amostras (QR/código de barras, storage S3 e HL7/FHIR) |
+| **B5** | Laudos: emissão estruturada e dupla revisão |
+| **B6** | Laudos: assinatura digital, liberação e notificações |
+| **B7** | Integração Portal ↔ API (substituição de `apps/web/src/lib/data.ts` mock por API real) |
+| **B8** | BI & Analytics (ETL e dashboards gerenciais com dados pseudonimizados) |
+| **B9** | Hardening LGPD, pentest, UAT e Go-Live |
+
+---
+
+## 6. Changelog Histórico do Projeto
+
+| Data | Versão | Mudança |
 |---|---|---|
-| B1 | Identidade e Acesso (Keycloak/RBAC/auditoria) | S01 |
-| B2 | Pacientes + OpenAPI derivado de `apps/web/src/lib/types.ts` | S02 |
-| B3 | Exames: fluxo | S03 |
-| B4 | Rastreabilidade | S04 |
-| B5 | Laudos: emissão (+ telas internas do laboratório) | S05 |
-| B6 | Laudos: liberação + Notificações — MVP clínico | S06 |
-| B7 | Integração Portal ↔ API | S07 |
-| B8 | BI | S08 |
-| B9 | Hardening LGPD + UAT e Go-live | S09–S10 |
+| 2026-10-29 | 0.7 | **Otimização para Grafo MOC:** Transformação do `CEREBRO-DO-PROJETO.md` em índice enxuto e modularização em `docs/01-visao/regras-de-negocio.md`, `docs/02-arquitetura/stack-tecnica.md` e `docs/03-planejamento/fase2-backend.md`. |
+| 2026-10-29 | 0.6 | **Sessões Isoladas Multidispositivo & Limpeza de Features:** Transição de "Device Compartilhado com PIN" para **Sessões Isoladas Multidispositivo (`/login`)**; remoção de PIN e `PortalSwitcher` no cabeçalho; descontinuação da gravação de voz no check-in. |
+| 2026-10-26 | 0.5b | **Polimento Final de UX/UI (Etapa 02.4):** `MedicationCard` condensado em 1 linha, redução a 3 medicamentos e 3 hábitos, trilha de auditoria compacta em `/clinico` e limpeza visual nas 5 abas. |
+| 2026-10-19 | 0.5 | **Refatoração Mobile-First e Rastreabilidade Multi-Cuidador:** Múltiplos cuidadores na conta familiar (Mãe, Pai, Avó), autoria (`performedBy`, `performedAt`) e dupla checagem (`verifiedBy`, `verifiedAt`). |
+| 2026-10-19 | 0.4 | **Fase 1B — Portal do Médico (`/medico/*`):** Sprints 09–12 concluídos com mocks. |
+| 2026-10-14 | 0.3 | Diretriz **Front-end First** (`ADR-0005`), Design System "Acolher" e conformidade LGPD Art. 14. |
