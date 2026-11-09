@@ -12,6 +12,8 @@
     "lint": "npm run lint --workspaces --if-present",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
+    "test:e2e": "npm run test:e2e -w @siglo/web",
+    "test:e2e:ui": "npm run test:e2e:ui -w @siglo/web",
     "ui:test": "npm run test -w @siglo/ui",
     "ui:typecheck": "npm run typecheck -w @siglo/ui"
   }

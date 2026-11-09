@@ -41,3 +41,10 @@ services/bi/htmlcov/
 
 # Dados locais de infra
 infra/data/
+
+# Playwright E2E
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+

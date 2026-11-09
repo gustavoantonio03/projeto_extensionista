@@ -309,7 +309,9 @@ export default function LoginPage() {
 
               <button
                 type="button"
-                title="Preencher no formulário"
+                title={`Preencher dados de ${acc.label}`}
+                aria-label={`Preencher ${acc.label}`}
+                data-testid={`fill-${acc.email.split("@")[0]}`}
                 onClick={() => handleQuickFill(acc.email)}
                 className="px-2 py-1 text-[10px] font-semibold text-[#6E3F8C] bg-[#EDE3F5] hover:bg-[#E2D3EE] rounded-lg transition-colors cursor-pointer shrink-0"
               >
