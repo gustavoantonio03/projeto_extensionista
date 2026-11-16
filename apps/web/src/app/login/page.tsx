@@ -122,11 +122,12 @@ export default function LoginPage() {
       const target = redirectTo || getRouteForRole(userDoc?.role || account.role);
       router.push(target);
     } catch (err: any) {
-      // Se falhar porque ainda não foi feito seed, sugere clicar no botão de seed
-      console.warn("Conta ainda não existe no Firebase Auth. Sugerindo seed...", err);
-      setErrorMsg(
-        `A conta ${account.email} ainda não foi criada no Firebase. Clique em "Criar Usuários de Teste (Seed)" abaixo.`
-      );
+      console.warn("Falha no login direto:", err);
+      let msg = err?.message || "Erro ao autenticar usuário de teste.";
+      if (err?.code === "auth/user-not-found" || err?.code === "auth/invalid-credential") {
+        msg = `A conta ${account.email} ainda não foi criada no Firebase. Clique em "Criar Usuários de Teste (Seed)" abaixo.`;
+      }
+      setErrorMsg(msg);
       setLoading(false);
     }
   };
@@ -282,6 +283,7 @@ export default function LoginPage() {
             >
               <button
                 type="button"
+                data-testid={`quick-login-${acc.email.split("@")[0]}`}
                 onClick={() => handleDirectQuickLogin(acc)}
                 disabled={loading || seeding}
                 className="flex items-center gap-2.5 min-w-0 text-left flex-1 cursor-pointer group"

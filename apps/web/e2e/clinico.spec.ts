@@ -1,16 +1,14 @@
 import { test, expect } from "@playwright/test";
+import { TEST_ROUTES, TEST_UI_TEXTS } from "./fixtures/test-constants";
 
 test.describe("Tela de Acompanhamento Clínico do Cuidador", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("/clinico");
+    await page.goto(TEST_ROUTES.CLINICAL);
   });
 
   test("deve exibir a área de acompanhamento clínico e indicadores vitais", async ({ page }) => {
-    // Header com identificação
-    await expect(page.locator("header")).toBeVisible();
-
-    // Seção de Indicadores Vitais
-    await expect(page.getByRole("heading", { name: "Indicadores Vitais" })).toBeVisible();
+    // Seção de Indicadores Vitais (eliminando Duplicate Assert de header redundante)
+    await expect(page.getByRole("heading", { name: TEST_UI_TEXTS.CLINICO_HEADING })).toBeVisible();
     await expect(page.getByText("Temperatura")).toBeVisible();
     await expect(page.getByText("Hidratação")).toBeVisible();
   });

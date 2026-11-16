@@ -147,6 +147,7 @@ export default function RemediosPage() {
               <button
                 key={h.id}
                 type="button"
+                aria-pressed={h.done}
                 onClick={() => toggleHabit(h.id)}
                 className={`w-full p-3 rounded-2xl border flex items-center justify-between text-left transition-all cursor-pointer ${
                   h.done

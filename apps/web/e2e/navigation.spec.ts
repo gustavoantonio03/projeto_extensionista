@@ -1,16 +1,20 @@
 import { test, expect } from "@playwright/test";
+import { TEST_ROUTES } from "./fixtures/test-constants";
 
 test.describe("Navegação Mobile (BottomNav e Header)", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("/");
+    await page.goto(TEST_ROUTES.HOME, { waitUntil: "domcontentloaded" });
+    // Aguarda a hidratação do React para garantir que os handlers onClick estejam anexados
+    await page.waitForFunction(() => {
+      const btn = document.querySelector('nav[aria-label="Navegação Principal do Aplicativo"] button');
+      return btn && Object.keys(btn).some((k) => k.startsWith("__reactProps") || k.startsWith("__reactFiber"));
+    });
   });
 
-  test("deve exibir o Header com logo OncoVida e identificação do usuário", async ({ page }) => {
+  test("deve exibir o Header com identificação do app e botão de logout", async ({ page }) => {
     const header = page.locator("header");
-    await expect(header).toBeVisible();
     await expect(header.getByText("OncoVida")).toBeVisible();
 
-    // Botão Sair deve estar presente
     const logoutBtn = header.getByRole("button", { name: "Sair da conta" });
     await expect(logoutBtn).toBeVisible();
   });
@@ -32,36 +36,54 @@ test.describe("Navegação Mobile (BottomNav e Header)", () => {
     expect(innerText).toBe("");
   });
 
-  test("deve navegar corretamente entre as 5 abas através da barra inferior", async ({ page }) => {
+  // Testes individuais de navegação para isolar falhas (eliminando o Eager Test)
+  test("deve navegar para a aba Remédios", async ({ page }) => {
     const nav = page.getByRole("navigation", { name: "Navegação Principal do Aplicativo" });
-
-    // 1. Aba Remédios
     const remediosBtn = nav.getByRole("button", { name: "Remédios" });
     await remediosBtn.click();
-    await expect(page).toHaveURL(/\/remedios/);
-    await expect(remediosBtn).toHaveAttribute("aria-current", "page");
 
-    // 2. Aba Nutrição
+    await expect(page).toHaveURL(new RegExp(TEST_ROUTES.MEDICATIONS));
+    await expect(remediosBtn).toHaveAttribute("aria-current", "page");
+  });
+
+  test("deve navegar para a aba Nutrição", async ({ page }) => {
+    const nav = page.getByRole("navigation", { name: "Navegação Principal do Aplicativo" });
     const nutricaoBtn = nav.getByRole("button", { name: "Nutrição" });
     await nutricaoBtn.click();
-    await expect(page).toHaveURL(/\/nutricao/);
-    await expect(nutricaoBtn).toHaveAttribute("aria-current", "page");
 
-    // 3. Aba Família
+    await expect(page).toHaveURL(new RegExp(TEST_ROUTES.NUTRITION));
+    await expect(nutricaoBtn).toHaveAttribute("aria-current", "page");
+  });
+
+  test("deve navegar para a aba Família", async ({ page }) => {
+    const nav = page.getByRole("navigation", { name: "Navegação Principal do Aplicativo" });
     const familiaBtn = nav.getByRole("button", { name: "Família" });
     await familiaBtn.click();
-    await expect(page).toHaveURL(/\/familia/);
-    await expect(familiaBtn).toHaveAttribute("aria-current", "page");
 
-    // 4. Aba Clínico
+    await expect(page).toHaveURL(new RegExp(TEST_ROUTES.FAMILY));
+    await expect(familiaBtn).toHaveAttribute("aria-current", "page");
+  });
+
+  test("deve navegar para a aba Clínico", async ({ page }) => {
+    const nav = page.getByRole("navigation", { name: "Navegação Principal do Aplicativo" });
     const clinicoBtn = nav.getByRole("button", { name: "Clínico" });
     await clinicoBtn.click();
-    await expect(page).toHaveURL(/\/clinico/);
-    await expect(clinicoBtn).toHaveAttribute("aria-current", "page");
 
-    // 5. Retornar para Meu Dia (Início)
+    await expect(page).toHaveURL(new RegExp(TEST_ROUTES.CLINICAL));
+    await expect(clinicoBtn).toHaveAttribute("aria-current", "page");
+  });
+
+  test("deve retornar para a aba Meu Dia (Início)", async ({ page }) => {
+    // Navega primeiro para uma aba secundária para validar o retorno
+    await page.goto(TEST_ROUTES.MEDICATIONS, { waitUntil: "domcontentloaded" });
+    await page.waitForFunction(() => {
+      const btn = document.querySelector('nav[aria-label="Navegação Principal do Aplicativo"] button');
+      return btn && Object.keys(btn).some((k) => k.startsWith("__reactProps") || k.startsWith("__reactFiber"));
+    });
+    const nav = page.getByRole("navigation", { name: "Navegação Principal do Aplicativo" });
     const inicioBtn = nav.getByRole("button", { name: "Meu Dia" });
     await inicioBtn.click();
+
     await expect(page).toHaveURL(/http:\/\/[^/]+\/?$/);
     await expect(inicioBtn).toHaveAttribute("aria-current", "page");
   });

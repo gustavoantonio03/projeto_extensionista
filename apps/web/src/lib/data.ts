@@ -1,42 +1,24 @@
 import {
   mockPatient,
-  mockSuggestedMeals,
-  mockClinicalTimeline,
-  mockFamilyMembers,
-  mockCareTeam,
-  mockAppointments,
   mockCaregivers,
   mockPrimaryCaregiver,
   mockSecondaryCaregiver,
   mockAuditTrail,
   mockMedicationLogs,
-  mockDailyHabits,
 } from "../mocks/fixtures";
 import {
   activePrescriptionsFor,
-  nutritionFor,
-  teamMessagesFor,
 } from "./medico-data";
 import type {
-  PatientProfile,
   Medication,
-  SuggestedMeal,
-  ClinicalEvent,
-  FamilyMember,
-  CareTeamMember,
-  Appointment,
   DailyCheckIn,
-  NutritionRecommendation,
-  ClinicalMessage,
   PrescriptionItem,
   CaregiverProfile,
   AuditEntry,
   MedicationLog,
   SessionState,
   SessionRole,
-  LoginProfileKey,
   AppMode,
-  HabitItem,
   UserDoc,
 } from "./types";
 import { mockTeamUser } from "../mocks/medico-fixtures";
@@ -49,7 +31,6 @@ const delay = (ms = 150) => new Promise((resolve) => setTimeout(resolve, ms));
 
 // Armazenamento em memória para interações do protótipo
 const patientState = { ...mockPatient };
-const timelineState = [...mockClinicalTimeline];
 const checkInsState: DailyCheckIn[] = [];
 const auditTrailState: AuditEntry[] = mockAuditTrail.map((e) => ({ ...e }));
 const medicationLogsState: MedicationLog[] = mockMedicationLogs.map((l) => ({
@@ -221,55 +202,6 @@ export async function getSessionState(): Promise<SessionState> {
   };
 }
 
-/**
- * Realiza login mockado em sessão isolada e retorna a rota de destino.
- */
-export async function loginAs(
-  profile: LoginProfileKey
-): Promise<{ session: SessionState; redirectTo: string }> {
-  await delay(80);
-  switch (profile) {
-    case "crianca":
-      currentSessionRole = "crianca";
-      currentAppMode = "crianca";
-      return {
-        session: await getSessionState(),
-        redirectTo: "/",
-      };
-    case "mae":
-      currentSessionRole = "cuidador";
-      currentAppMode = "cuidador";
-      activeCaregiverId = "cg-mae";
-      return {
-        session: await getSessionState(),
-        redirectTo: "/clinico",
-      };
-    case "pai":
-      currentSessionRole = "cuidador";
-      currentAppMode = "cuidador";
-      activeCaregiverId = "cg-pai";
-      return {
-        session: await getSessionState(),
-        redirectTo: "/clinico",
-      };
-    case "avo":
-      currentSessionRole = "cuidador";
-      currentAppMode = "cuidador";
-      activeCaregiverId = "cg-avo";
-      return {
-        session: await getSessionState(),
-        redirectTo: "/clinico",
-      };
-    case "medico":
-      currentSessionRole = "medico";
-      currentAppMode = "cuidador";
-      return {
-        session: await getSessionState(),
-        redirectTo: "/medico",
-      };
-  }
-}
-
 export async function logoutSession(): Promise<void> {
   await delay(40);
   try {
@@ -278,25 +210,6 @@ export async function logoutSession(): Promise<void> {
     // Silencia caso não haja usuário Firebase ativo
   }
   clearFirebaseSession();
-}
-
-export async function setAppMode(
-  mode: AppMode
-): Promise<{ success: boolean; mode: AppMode }> {
-  await delay(30);
-  currentAppMode = mode;
-  currentSessionRole = mode === "crianca" ? "crianca" : "cuidador";
-  return { success: true, mode: currentAppMode };
-}
-
-
-/* ========================================================================
- * Perfil do Paciente e Prescrições / Medicamentos com Dupla Checagem
- * ======================================================================== */
-
-export async function getPatientProfile(): Promise<PatientProfile> {
-  await delay();
-  return { ...patientState };
 }
 
 /** Medicamentos do dia = prescrições ATIVAS feitas pelo médico (/medico/prescricao). */
@@ -361,17 +274,6 @@ export async function toggleMedicationTaken(
       takenAt: timeStr,
       performedBy: actor,
       verificationStatus: "pendente",
-    });
-
-    // Se marcado como tomado, adiciona na timeline clínica
-    timelineState.unshift({
-      id: `evt-${Date.now()}`,
-      time: timeStr,
-      title: `${rx.name} administrado`,
-      description: `Registrado por ${caregiverTag(actor)} às ${timeStr}. Aguardando conferência cruzada.`,
-      category: "Prescrição",
-      tag: "Dose Confirmada",
-      status: "done",
     });
   } else {
     delete takenState[id];
@@ -476,17 +378,6 @@ export async function verifyMedicationAction(
     verifiedAt: timeStr,
   });
 
-  // Timeline clínica
-  timelineState.unshift({
-    id: `evt-verif-${Date.now()}`,
-    time: timeStr,
-    title: `${medName} conferido por ${verifier.relationLabel}`,
-    description: `Dupla checagem validada por ${caregiverTag(verifier)} às ${timeStr}.`,
-    category: "Dupla Checagem",
-    tag: "Conferido",
-    status: "done",
-  });
-
   if (!rx) return null;
   return toMedication(rx);
 }
@@ -550,11 +441,6 @@ export async function getAuditTrail(): Promise<AuditEntry[]> {
   return [...auditTrailState];
 }
 
-/** Retorna o histórico de logs de administração de medicamentos. */
-export async function getMedicationLogs(): Promise<MedicationLog[]> {
-  await delay(40);
-  return [...medicationLogsState];
-}
 
 /* ========================================================================
  * Check-in Diário com Autoria do Cuidador
@@ -597,33 +483,7 @@ export async function submitCheckIn(
     verificationStatus: "pendente",
   });
 
-  // Gera evento na linha do tempo
-  const moodLabels = {
-    bem: "Disposição boa",
-    "mais-ou-menos": "Sentindo um pouco de moleza/sono",
-    apoio: "Necessita de apoio e carinho (dor ou tristeza)",
-  };
-
-  timelineState.unshift({
-    id: `evt-chk-${Date.now()}`,
-    time: timeStr,
-    title: `Check-in matinal: ${moodLabels[checkIn.mood]}`,
-    description: checkIn.painPart
-      ? `Dor em ${checkIn.painPart} (${checkIn.painIntensity}). Temperatura: ${checkIn.temperature}°C. Registrado por ${caregiverTag(actor)}.`
-      : `Temperatura: ${checkIn.temperature}°C. Sono: ${checkIn.sleepQuality}. Registrado por ${caregiverTag(actor)}.`,
-    category: "Relato de Sintoma",
-    tag: checkIn.mood === "bem" ? "Estável" : "Atenção",
-    status: checkIn.mood === "apoio" ? "warning" : "info",
-  });
-
   return newCheckIn;
-}
-
-/** Último check-in registrado nesta sessão (com autoria e conferência), se houver. */
-export async function getLatestCheckIn(): Promise<DailyCheckIn | null> {
-  await delay(20);
-  const latest = checkInsState[0];
-  return latest ? { ...latest } : null;
 }
 
 /** Conferência cruzada de um check-in por outro cuidador. */
@@ -669,50 +529,4 @@ export async function registerMeal(
   };
   auditTrailState.unshift(entry);
   return entry;
-}
-
-/* ========================================================================
- * Nutrição, Hábitos, Comunicação e Consultas
- * ======================================================================== */
-
-export async function getDailyHabits(): Promise<HabitItem[]> {
-  await delay(30);
-  return mockDailyHabits.map((h) => ({ ...h }));
-}
-
-export async function getSuggestedMeals(): Promise<SuggestedMeal[]> {
-  await delay();
-  return [...mockSuggestedMeals];
-}
-
-/** Recomendações nutricionais registradas pela equipe (/medico/prescricao). */
-export async function getNutritionRecommendations(): Promise<NutritionRecommendation[]> {
-  await delay(80);
-  return nutritionFor(PORTAL_PATIENT_ID);
-}
-
-/** Orientações enviadas pela equipe aos cuidadores (/medico/comunicacao). */
-export async function getTeamGuidance(): Promise<ClinicalMessage[]> {
-  await delay(80);
-  return teamMessagesFor(PORTAL_PATIENT_ID);
-}
-
-export async function getClinicalTimeline(): Promise<ClinicalEvent[]> {
-  await delay();
-  return [...timelineState];
-}
-
-export async function getFamilyMembers(): Promise<FamilyMember[]> {
-  await delay();
-  return [...mockFamilyMembers];
-}
-
-export async function getCareTeam(): Promise<CareTeamMember[]> {
-  await delay();
-  return [...mockCareTeam];
-}
-
-export async function getAppointments(): Promise<Appointment[]> {
-  await delay();
-  return [...mockAppointments];
 }

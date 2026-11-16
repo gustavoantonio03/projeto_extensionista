@@ -4,7 +4,7 @@ import * as React from "react";
 import { useRouter } from "next/navigation";
 import { SosButton } from "@siglo/ui";
 import { LogOut } from "lucide-react";
-import { AppMode, PatientProfile, CaregiverProfile, SessionState } from "../lib/types";
+import { AppMode, CaregiverProfile, PatientProfile, SessionState } from "../lib/types";
 import { getSessionState, logoutSession } from "../lib/data";
 import { useAuth } from "../lib/AuthContext";
 
@@ -12,8 +12,6 @@ export interface HeaderProps {
   patient?: PatientProfile;
   mode?: AppMode;
   onToggleMode?: (mode: AppMode) => void;
-  title?: string;
-  subtitle?: string;
   onCaregiverChange?: (caregiver: CaregiverProfile) => void;
 }
 

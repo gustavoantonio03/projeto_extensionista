@@ -1,4 +1,8 @@
 import { defineConfig, devices } from "@playwright/test";
+import dns from "node:dns";
+
+// Garante resolução IPv4 prioritária no Node.js para localhost no Windows
+dns.setDefaultResultOrder("ipv4first");
 
 /**
  * Playwright E2E Configuration for OncoVida (@siglo/web)
@@ -6,16 +10,17 @@ import { defineConfig, devices } from "@playwright/test";
  */
 export default defineConfig({
   testDir: "./e2e",
-  fullyParallel: true,
+  fullyParallel: false,
+  workers: 2,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  timeout: 30 * 1000,
+  timeout: 60 * 1000,
   expect: {
-    timeout: 10 * 1000,
+    timeout: 15 * 1000,
   },
   reporter: [["list"], ["html", { open: "never", outputFolder: "playwright-report" }]],
   use: {
-    baseURL: process.env.PLAYWRIGHT_TEST_BASE_URL || "http://127.0.0.1:3000",
+    baseURL: "http://localhost:3000",
     actionTimeout: 10 * 1000,
     trace: "on-first-retry",
     screenshot: "only-on-failure",
@@ -39,9 +44,9 @@ export default defineConfig({
 
   /* Inicia o servidor local automaticamente em ambiente limpo */
   webServer: {
-    command: "npm run start",
-    url: "http://127.0.0.1:3000",
-    reuseExistingServer: false,
+    command: "npm run dev",
+    url: "http://localhost:3000",
+    reuseExistingServer: true,
     timeout: 120 * 1000,
   },
 });

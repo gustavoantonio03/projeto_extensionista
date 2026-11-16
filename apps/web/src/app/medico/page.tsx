@@ -194,7 +194,7 @@ function PatientRow({ p }: { p: MonitoredPatient }) {
       <th scope="row" className="px-4 py-3 font-normal">
         <Link
           href={`/medico/pacientes/${p.id}`}
-          className="font-extrabold text-[#1F2340] hover:text-[#6E3F8C] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6E3F8C] rounded"
+          className="block relative z-10 font-extrabold text-[#1F2340] hover:text-[#6E3F8C] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6E3F8C] rounded"
         >
           {p.name}
         </Link>

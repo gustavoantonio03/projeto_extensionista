@@ -1,11 +1,6 @@
 import {
   PatientProfile,
-  Medication,
   SuggestedMeal,
-  ClinicalEvent,
-  FamilyMember,
-  CareTeamMember,
-  Appointment,
   CaregiverProfile,
   AuditEntry,
   MedicationLog,
@@ -68,45 +63,6 @@ export const mockPatient: PatientProfile = {
   status: "estavel",
 };
 
-/** 3 remédios essenciais do dia (manhã, tarde, noite). */
-export const mockMedications: Medication[] = [
-  {
-    id: "med-2",
-    name: "Dexametasona",
-    dosage: "1 comprimido",
-    time: "08:00",
-    period: "manha",
-    instructions: "Com o café da manhã.",
-    category: "corticoide",
-    taken: true,
-    takenAt: "08:05",
-    performedBy: mockPrimaryCaregiver,
-    performedAt: "08:05",
-    verificationStatus: "conferido",
-    verifiedBy: mockSecondaryCaregiver,
-    verifiedAt: "08:30",
-  },
-  {
-    id: "med-1",
-    name: "Ondansetrona",
-    dosage: "1 comprimido",
-    time: "14:00",
-    period: "tarde",
-    instructions: "Depois do almoço, com água.",
-    category: "antiemetico",
-    taken: false,
-  },
-  {
-    id: "med-3",
-    name: "Capecitabina",
-    dosage: "1 comprimido",
-    time: "20:00",
-    period: "noite",
-    instructions: "30 min após o jantar.",
-    category: "quimio-oral",
-    taken: false,
-  },
-];
 
 /** 3 hábitos simples da rotina. */
 export const mockDailyHabits: HabitItem[] = [
@@ -196,118 +152,5 @@ export const mockSuggestedMeals: SuggestedMeal[] = [
     calories: 340,
     highlight: "Proteína leve",
     imageSrc: "",
-  },
-];
-
-export const mockClinicalTimeline: ClinicalEvent[] = [
-  {
-    id: "evt-1",
-    time: "14:00",
-    title: "Ondansetrona 8mg administrada",
-    description: "Prevenção de êmese tardia. Confirmado pelo cuidador familiar.",
-    category: "Prescrição",
-    tag: "Pontual",
-    status: "done",
-  },
-  {
-    id: "evt-2",
-    time: "12:40",
-    title: "Náusea leve relatada pela criança",
-    description: "Check-in por emoji/voz: 'Senti a boca amarga, mas a água com gotinhas de limão ajudou'.",
-    category: "Relato de Sintoma",
-    tag: "Grau 1",
-    status: "warning",
-  },
-  {
-    id: "evt-3",
-    time: "12:15",
-    title: "Almoço: Aceitação de 50% do prato",
-    description: "Comeu metade do purê com frango desfiado. Boa tolerância gástrica imediata.",
-    category: "Aporte Nutricional",
-    tag: "Almoço",
-    status: "done",
-  },
-  {
-    id: "evt-4",
-    time: "08:05",
-    title: "Dexametasona 4mg ingerida",
-    description: "Criança bem disposta, brincou com blocos de montar.",
-    category: "Início da Rotina",
-    tag: "Disposição Boa",
-    status: "done",
-  },
-];
-
-export const mockFamilyMembers: FamilyMember[] = [
-  {
-    id: "fam-1",
-    name: "Ana Paula",
-    relation: "Mãe (Cuidadora Principal)",
-    avatarUrl: "/illustrations/onboarding-cuidado.jpg",
-    phone: "(11) 98111-2233",
-    isEmergencyContact: true,
-    lastMessage: "Clarinha acabou de tomar o lanche da tarde!",
-  },
-  {
-    id: "fam-2",
-    name: "Carlos Eduardo",
-    relation: "Pai",
-    avatarUrl: "/illustrations/onboarding-familia.jpg",
-    phone: "(11) 98222-3344",
-    isEmergencyContact: true,
-    lastMessage: "Estou a caminho da farmácia para pegar o colírio.",
-  },
-  {
-    id: "fam-3",
-    name: "Vovó Marlene",
-    relation: "Avó",
-    avatarUrl: "/illustrations/onboarding-familia.jpg",
-    phone: "(11) 98333-4455",
-    isEmergencyContact: false,
-    lastMessage: "Mandei um áudio de historinha pra ela ouvir antes de dormir! ❤️",
-  },
-];
-
-export const mockCareTeam: CareTeamMember[] = [
-  {
-    id: "nurse-1",
-    name: "Enfermeira Clara Mendes",
-    role: "Navegadora Oncológica Pediátrica",
-    avatarUrl: "/illustrations/equipe-cuidado.jpg",
-    phone: "(11) 98765-4321",
-    whatsapp: "5511987654321",
-    status: "online",
-  },
-  {
-    id: "doc-1",
-    name: "Dr. Roberto Silveira",
-    role: "Oncologista Pediátrico",
-    avatarUrl: "/illustrations/equipe-cuidado.jpg",
-    phone: "(11) 3456-7890",
-    whatsapp: "551134567890",
-    status: "plantao",
-  },
-];
-
-export const mockAppointments: Appointment[] = [
-  {
-    id: "app-1",
-    title: "Consulta Médica Presencial - Retorno de Ciclo",
-    doctorName: "Dr. Roberto Silveira",
-    specialty: "Oncologia Pediátrica",
-    date: "2026-10-24",
-    time: "09:30",
-    location: "Centro Oncológico Integrado - Consultório 304",
-    notes: "Trazer exames de hemograma da semana.",
-  },
-  {
-    id: "app-2",
-    title: "Hemograma Completo + Plaquetas",
-    doctorName: "Laboratório SIGLO",
-    specialty: "Coleta Laboratorial",
-    date: "2026-10-22",
-    time: "08:00",
-    location: "Unidade Kids - Coleta Humanizada",
-    notes: "Jejum leve de 3 horas.",
   },
 ];

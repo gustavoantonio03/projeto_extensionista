@@ -4,10 +4,8 @@
  * e servirão de base para o OpenAPI em packages/contracts na Fase 2 (Sprint B2).
  */
 
-export type UserRole = "paciente" | "cuidador" | "familia" | "clinico";
 export type AppMode = "crianca" | "cuidador";
 export type SessionRole = "crianca" | "cuidador" | "medico";
-export type LoginProfileKey = "crianca" | "mae" | "pai" | "avo" | "medico";
 export type FirebaseRole = "doctor" | "caregiver" | "patient";
 
 export interface UserDoc {
@@ -144,54 +142,6 @@ export interface HabitItem {
   done: boolean;
 }
 
-export interface MealLog {
-  id: string;
-  mealType: "cafe" | "almoco" | "lanche" | "jantar";
-  acceptance: "tudo" | "metade" | "pouco" | "rejeicao";
-  symptoms: string[];
-  notes?: string;
-}
-
-export interface ClinicalEvent {
-  id: string;
-  time: string;
-  title: string;
-  description: string;
-  category: string;
-  tag?: string;
-  status: "done" | "warning" | "info";
-}
-
-export interface FamilyMember {
-  id: string;
-  name: string;
-  relation: string;
-  avatarUrl: string;
-  phone: string;
-  isEmergencyContact: boolean;
-  lastMessage?: string;
-}
-
-export interface CareTeamMember {
-  id: string;
-  name: string;
-  role: string;
-  avatarUrl: string;
-  phone: string;
-  whatsapp: string;
-  status: "online" | "plantao" | "offline";
-}
-
-export interface Appointment {
-  id: string;
-  title: string;
-  doctorName: string;
-  specialty: string;
-  date: string;
-  time: string;
-  location: string;
-  notes?: string;
-}
 
 /* ========================================================================
  * Portal do Médico / Equipe Multidisciplinar (Fase 1B) — apenas mocks.
