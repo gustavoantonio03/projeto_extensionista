@@ -12,7 +12,6 @@ import {
   ShieldAlert,
   LogOut,
 } from "lucide-react";
-import { PortalSwitcher } from "../PortalSwitcher";
 import { mockTeamUser } from "../../mocks/medico-fixtures";
 import { useAuth, getRouteForRole } from "../../lib/AuthContext";
 import { logoutSession } from "../../lib/data";
@@ -130,8 +129,7 @@ export function MedicoShell({ title, subtitle, children, actions }: {
         </nav>
 
         <div className="hidden md:block mt-auto space-y-3">
-          <PortalSwitcher current="medico" className="flex-col" />
-          <div className="flex items-center justify-between gap-2 p-3 rounded-2xl bg-[#FFF8F0] border border-[#F1E4D6]">
+          <div className="flex items-center justify-between gap-2 p-3 rounded-2xl bg-[#FFF8F0] border border-[#F1E4D6] shadow-2xs">
             <div className="flex items-center gap-2.5 min-w-0">
               <Avatar fallback="RS" size="sm" alt={doctorName} />
               <div className="min-w-0">
@@ -143,7 +141,7 @@ export function MedicoShell({ title, subtitle, children, actions }: {
               type="button"
               onClick={handleLogout}
               data-testid="doctor-logout-desktop"
-              className="p-1.5 rounded-xl text-[#6E3F8C] hover:bg-[#EDE3F5] transition-colors cursor-pointer shrink-0"
+              className="p-2 rounded-xl text-[#6E3F8C] bg-white border border-[#E8DFC8] hover:bg-[#EDE3F5] transition-colors cursor-pointer shrink-0"
               aria-label="Sair da conta médica"
               title="Sair da conta"
             >
@@ -154,9 +152,6 @@ export function MedicoShell({ title, subtitle, children, actions }: {
             <ShieldCheck className="w-3.5 h-3.5 mt-0.5 shrink-0 text-[#2E7D5B]" aria-hidden="true" />
             Dados fictícios de demonstração. Sigilo médico e LGPD (art. 11 e 14).
           </p>
-        </div>
-        <div className="md:hidden w-full">
-          <PortalSwitcher current="medico" />
         </div>
       </aside>
 

@@ -27,9 +27,11 @@ import {
   CheckCheck,
 } from "lucide-react";
 import { AppMode, CaregiverProfile, DailyCheckIn } from "../lib/types";
+import { useAuth } from "../lib/AuthContext";
 
 export default function MeuDiaPage() {
   const router = useRouter();
+  const { userDoc } = useAuth();
   const [mode, setMode] = React.useState<AppMode>("cuidador");
   const [activeCaregiver, setActiveCaregiver] =
     React.useState<CaregiverProfile | null>(null);
@@ -46,6 +48,25 @@ export default function MeuDiaPage() {
 
   const readOnly = mode === "crianca";
 
+  // Determina dinamicamente a autoria do check-in com base no usuário logado via AuthContext
+  const currentAuthorLabel = React.useMemo(() => {
+    if (userDoc) {
+      if (userDoc.role === "patient") {
+        return `Criança (${userDoc.shortName || userDoc.displayName || "Clarinha"})`;
+      }
+      if (userDoc.role === "doctor") {
+        return `Médico (${userDoc.shortName || userDoc.displayName || "Dr. Roberto"})`;
+      }
+      return `${userDoc.relation || "Mãe"} (${userDoc.shortName || userDoc.displayName || "Ana"})`;
+    }
+    // Fallback gracioso para sessões mockadas locais
+    return activeCaregiver
+      ? caregiverTag(activeCaregiver)
+      : mode === "crianca"
+      ? "Criança (Clarinha)"
+      : "Mãe (Ana)";
+  }, [userDoc, activeCaregiver, mode]);
+
   const handleSaveCheckIn = async () => {
     const saved = await submitCheckIn(
       {
@@ -55,12 +76,13 @@ export default function MeuDiaPage() {
         tasteSymptoms: [],
         temperature,
         sleepQuality: "otimo",
+        authorLabel: currentAuthorLabel,
       },
       activeCaregiver?.id
     );
     setLastCheckIn(saved);
     setIsSaved(true);
-    setTimeout(() => setIsSaved(false), 3000);
+    setTimeout(() => setIsSaved(false), 4000);
   };
 
   const handleVerifyCheckIn = async () => {
@@ -87,9 +109,9 @@ export default function MeuDiaPage() {
         onCaregiverChange={setActiveCaregiver}
       />
 
-      <div className="px-4 py-4 pb-28 space-y-4">
+      <div className="px-4 py-4 pb-28 space-y-4 max-w-md mx-auto">
         {/* Saudação enxuta */}
-        <div className="rounded-3xl bg-gradient-to-br from-[#FAEBD6] via-[#FDE6CF] to-[#EDE3F5] p-4 border border-[#F1E4D6] flex items-center gap-3">
+        <div className="rounded-3xl bg-gradient-to-br from-[#FAEBD6] via-[#FDE6CF] to-[#EDE3F5] p-4 border border-[#F1E4D6] flex items-center gap-3 shadow-xs">
           <img
             src="/illustrations/onboarding-cuidado.jpg"
             alt={mockPatient.preferredName}
@@ -178,15 +200,22 @@ export default function MeuDiaPage() {
           {isSaved ? "Gravado com Sucesso! ❤️" : "Gravar Como Me Sinto Hoje"}
         </Button>
 
-        {/* Linha única de rastreabilidade do check-in */}
-        {lastCheckIn && checkInPerformer && (
-          <div className="space-y-2" data-testid="checkin-trail">
-            <p className="text-xs font-bold text-[#1F2340] bg-[#E5F4EC] border border-[#2E7D5B]/25 rounded-xl px-3 py-2 leading-snug">
-              ✅ {lastCheckIn.performedAt} por {caregiverTag(checkInPerformer)} (
-              {lastCheckIn.temperature.toFixed(1)}°C)
-              {lastCheckIn.verifiedBy
-                ? ` · ✓ ${lastCheckIn.verifiedBy.relationLabel}`
-                : ""}
+        {/* Linha única de rastreabilidade dinâmica do check-in */}
+        {lastCheckIn && (
+          <div className="space-y-2 animate-in fade-in duration-200" data-testid="checkin-trail">
+            <p className="text-xs font-bold text-[#1F2340] bg-[#E5F4EC] border border-[#2E7D5B]/25 rounded-xl px-3 py-2 leading-snug flex items-center justify-between flex-wrap gap-1 shadow-2xs">
+              <span>
+                ✅ {lastCheckIn.performedAt} por{" "}
+                <span className="text-[#2E7D5B] font-extrabold">
+                  {lastCheckIn.authorLabel || (checkInPerformer ? caregiverTag(checkInPerformer) : "Cuidador")}
+                </span>{" "}
+                ({lastCheckIn.temperature.toFixed(1)}°C)
+              </span>
+              {lastCheckIn.verifiedBy && (
+                <span className="text-[11px] text-[#2E7D5B] font-semibold">
+                  ✓ {lastCheckIn.verifiedBy.relationLabel}
+                </span>
+              )}
             </p>
 
             {canVerifyCheckIn && (

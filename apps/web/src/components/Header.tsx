@@ -54,7 +54,7 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <header className="sticky top-0 z-30 bg-[#FFF8F0]/95 backdrop-blur-md px-3.5 py-2.5 border-b border-[#F1E4D6]/80">
-      <div className="flex items-center justify-between gap-2">
+      <div className="flex items-center justify-between gap-2 max-w-md mx-auto">
         {/* Identidade do App */}
         <div className="flex items-center gap-1.5 shrink-0">
           <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#6E3F8C] to-[#B04A26] flex items-center justify-center text-white text-sm shadow-2xs">
@@ -80,6 +80,7 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             type="button"
             onClick={handleLogout}
+            data-testid="header-logout"
             className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl text-[11px] font-bold text-[#6E3F8C] bg-[#EDE3F5] hover:bg-[#E2D3EE] transition-colors cursor-pointer shrink-0"
             aria-label="Sair da conta"
           >

@@ -102,6 +102,7 @@ export interface DailyCheckIn {
   voiceNoteUrl?: string;
   notes?: string;
   performedBy?: CaregiverProfile;
+  authorLabel?: string;
   performedAt?: string;
   verifiedBy?: CaregiverProfile;
   verifiedAt?: string;
@@ -118,6 +119,7 @@ export interface Medication {
   taken: boolean;
   takenAt?: string;
   performedBy?: CaregiverProfile;
+  authorLabel?: string;
   performedAt?: string;
   verificationStatus?: "pendente" | "conferido";
   verifiedBy?: CaregiverProfile;

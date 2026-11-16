@@ -22,6 +22,7 @@ import {
   AuditEntry,
   CaregiverProfile,
 } from "../../lib/types";
+import { useAuth } from "../../lib/AuthContext";
 import {
   CheckCheck,
   Hourglass,
@@ -32,6 +33,7 @@ import {
 
 export default function ClinicoPage() {
   const router = useRouter();
+  const { userDoc } = useAuth();
   const [mode, setMode] = React.useState<AppMode>("cuidador");
   const [activeCaregiver, setActiveCaregiver] =
     React.useState<CaregiverProfile | null>(null);
@@ -72,11 +74,17 @@ export default function ClinicoPage() {
     )
     .slice(0, 4);
 
+  const effectiveMode: AppMode = userDoc
+    ? userDoc.role === "patient"
+      ? "crianca"
+      : "cuidador"
+    : mode;
+
   return (
     <div className="min-h-screen bg-[#FFF8F0]">
       <Header
         patient={mockPatient}
-        mode={mode}
+        mode={effectiveMode}
         onToggleMode={setMode}
         onCaregiverChange={(cg) => {
           setActiveCaregiver(cg);
@@ -84,16 +92,16 @@ export default function ClinicoPage() {
         }}
       />
 
-      {mode === "crianca" ? (
-        <div className="px-4 py-12 text-center space-y-3">
-          <div className="w-16 h-16 rounded-full bg-[#EDE3F5] text-2xl flex items-center justify-center mx-auto">
+      {effectiveMode === "crianca" ? (
+        <div className="px-4 py-16 text-center space-y-4 max-w-md mx-auto">
+          <div className="w-16 h-16 rounded-full bg-[#EDE3F5] text-2xl flex items-center justify-center mx-auto shadow-2xs">
             🔒
           </div>
           <h2 className="text-base font-bold text-[#1F2340]">
             Área Exclusiva dos Cuidadores
           </h2>
           <p className="text-xs text-[#5B5F7A] max-w-xs mx-auto">
-            Peça a um adulto para desbloquear ou volte para o Meu Dia.
+            Esta área contém registros clínicos detalhados. Peça a um adulto responsável ou volte para o seu espaço.
           </p>
           <Button
             variant="primary"
@@ -104,7 +112,7 @@ export default function ClinicoPage() {
           </Button>
         </div>
       ) : (
-        <div className="px-4 py-4 pb-28 space-y-5">
+        <div className="px-4 py-4 pb-28 space-y-5 max-w-md mx-auto">
           {/* 1. Conferência Cruzada (1 toque) */}
           <section aria-label="Conferência Cruzada">
             {pendingEntries.length > 0 ? (

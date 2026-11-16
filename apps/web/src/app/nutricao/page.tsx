@@ -8,6 +8,7 @@ import { mockPatient, mockSuggestedMeals } from "../../mocks/fixtures";
 import { AppMode, AuditEntry } from "../../lib/types";
 import { registerMeal } from "../../lib/data";
 import { caregiverTag } from "../../lib/caregiver";
+import { useAuth } from "../../lib/AuthContext";
 
 type MealStatus = "tudo" | "metade" | "enjoo";
 
@@ -64,10 +65,17 @@ const TIPS = [
 
 export default function NutricaoPage() {
   const router = useRouter();
+  const { userDoc } = useAuth();
   const [mode, setMode] = React.useState<AppMode>("cuidador");
   const [mealStatus, setMealStatus] = React.useState<MealStatus | undefined>();
   const [mealEntry, setMealEntry] = React.useState<AuditEntry | null>(null);
   const [selectedTip, setSelectedTip] = React.useState<string>("metalico");
+
+  const effectiveMode: AppMode = userDoc
+    ? userDoc.role === "patient"
+      ? "crianca"
+      : "cuidador"
+    : mode;
 
   const handleSelectMealStatus = async (status: MealStatus) => {
     setMealStatus(status);
@@ -80,11 +88,11 @@ export default function NutricaoPage() {
     <div className="min-h-screen bg-[#FFF8F0]">
       <Header
         patient={mockPatient}
-        mode={mode}
+        mode={effectiveMode}
         onToggleMode={setMode}
       />
 
-      <div className="px-4 py-4 pb-28 space-y-5">
+      <div className="px-4 py-4 pb-28 space-y-5 max-w-md mx-auto">
         {/* 1. Seletor rápido da refeição */}
         <section>
           <h2 className="text-base font-extrabold text-[#1F2340] mb-2">

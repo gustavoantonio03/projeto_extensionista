@@ -12,6 +12,7 @@ import {
   setActiveCaregiver,
 } from "../../lib/data";
 import { caregiverTag } from "../../lib/caregiver";
+import { useAuth } from "../../lib/AuthContext";
 import {
   Heart,
   Send,
@@ -22,6 +23,7 @@ import {
 
 export default function FamiliaPage() {
   const router = useRouter();
+  const { userDoc } = useAuth();
   const [mode, setMode] = React.useState<AppMode>("cuidador");
   const [caregivers, setCaregivers] = React.useState<CaregiverProfile[]>([]);
   const [activeCaregiver, setActiveCaregiverState] =
@@ -63,16 +65,23 @@ export default function FamiliaPage() {
     e.preventDefault();
     if (!newMessage.trim()) return;
 
+    const dynamicSender = userDoc
+      ? userDoc.role === "patient"
+        ? (userDoc.shortName || mockPatient.preferredName)
+        : userDoc.role === "doctor"
+        ? userDoc.displayName
+        : `${userDoc.relation || "Mãe"} (${userDoc.shortName || userDoc.displayName})`
+      : mode === "crianca"
+      ? mockPatient.preferredName
+      : activeCaregiver
+      ? caregiverTag(activeCaregiver)
+      : "Mãe (Ana)";
+
     setMessages((prev) =>
       [
         {
           id: String(Date.now()),
-          sender:
-            mode === "crianca"
-              ? mockPatient.preferredName
-              : activeCaregiver
-                ? caregiverTag(activeCaregiver)
-                : "Mãe (Ana)",
+          sender: dynamicSender,
           text: newMessage.trim(),
         },
         ...prev,
@@ -81,16 +90,22 @@ export default function FamiliaPage() {
     setNewMessage("");
   };
 
+  const effectiveMode: AppMode = userDoc
+    ? userDoc.role === "patient"
+      ? "crianca"
+      : "cuidador"
+    : mode;
+
   return (
     <div className="min-h-screen bg-[#FFF8F0]">
       <Header
         patient={mockPatient}
-        mode={mode}
+        mode={effectiveMode}
         onToggleMode={setMode}
         onCaregiverChange={(cg) => setActiveCaregiverState(cg)}
       />
 
-      <div className="px-4 py-4 pb-28 space-y-5">
+      <div className="px-4 py-4 pb-28 space-y-5 max-w-md mx-auto">
         {/* 1. Cuidadores da Conta (Mãe, Pai, Avó) e Troca de Turno */}
         <section aria-label="Cuidadores da Conta">
           <div className="flex items-center justify-between mb-2.5">

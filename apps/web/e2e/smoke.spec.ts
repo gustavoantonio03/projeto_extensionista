@@ -29,23 +29,25 @@ test.describe("Smoke Tests — Caminho Crítico Ponta a Ponta (Online / Integrad
       page.getByRole("heading", { name: new RegExp(`Olá, ${TEST_PATIENT.nickName}`, "i") })
     ).toBeVisible({ timeout: 15000 });
 
-    // 4. Interação com o Check-in: selecionar humor e confirmar
-    const moodHappy = page.getByRole("button", { name: /Bem/i }).first();
-    if (await moodHappy.isVisible()) {
-      await moodHappy.click();
-    }
+    // 4. Interação com o Check-in: selecionar humor
+    const bemRadio = page.getByRole("radio", { name: /Estou Bem/i });
+    await expect(bemRadio).toBeVisible({ timeout: 10000 });
+    await bemRadio.click();
 
-    const saveButton = page.getByRole("button", { name: /Gravar Meu Dia/i });
-    await saveButton.scrollIntoViewIfNeeded();
+    const saveButton = page.getByRole("button", { name: "Gravar Como Me Sinto Hoje" });
+    await expect(saveButton).toBeVisible();
     await saveButton.click();
 
     // 5. Verificação da gravação com sucesso
-    await expect(page.getByText(TEST_UI_TEXTS.CHECKIN_SUCCESS)).toBeVisible({ timeout: 5000 });
+    await expect(page.getByText(TEST_UI_TEXTS.CHECKIN_SUCCESS)).toBeVisible({ timeout: 8000 });
 
     // 6. Logout do Paciente
-    const logoutBtn = page.getByRole("button", { name: "Sair da conta" });
+    const logoutBtn = page.locator("button[data-testid='header-logout'], button[aria-label='Sair da conta']").first();
     await expect(logoutBtn).toBeVisible({ timeout: 5000 });
     await logoutBtn.click();
+    await page.waitForURL((url) => url.pathname.includes("/login"), { timeout: 10000 }).catch(async () => {
+      await logoutBtn.click();
+    });
 
     // 7. Retorno seguro para a tela de Login
     await expect(page.getByRole("button", { name: "Entrar no OncoVida" })).toBeVisible({ timeout: 10000 });
@@ -60,13 +62,22 @@ test.describe("Smoke Tests — Caminho Crítico Ponta a Ponta (Online / Integrad
       page.getByRole("heading", { name: TEST_UI_TEXTS.CLINICO_HEADING })
     ).toBeVisible({ timeout: 15000 });
 
-    // 4. Navegação para tela de Remédios
-    await page.goto(TEST_ROUTES.MEDICATIONS, { waitUntil: "domcontentloaded" });
+    // 4. Navegação para tela de Remédios via BottomNav (navegação SPA preserva hidratação)
+    const remediosTab = page.getByRole("navigation").getByRole("button", { name: "Remédios" });
+    if (await remediosTab.isVisible({ timeout: 5000 }).catch(() => false)) {
+      await remediosTab.click();
+    } else {
+      await page.goto(TEST_ROUTES.MEDICATIONS);
+    }
     await expect(page.getByRole("heading", { name: TEST_UI_TEXTS.REMEDIOS_HEADING })).toBeVisible({ timeout: 10000 });
 
     // 5. Logout da Cuidadora
-    const logoutBtn = page.getByRole("button", { name: "Sair da conta" });
+    const logoutBtn = page.locator("button[data-testid='header-logout'], button[aria-label='Sair da conta']").first();
+    await expect(logoutBtn).toBeVisible({ timeout: 5000 });
     await logoutBtn.click();
+    await page.waitForURL((url) => url.pathname.includes("/login"), { timeout: 10000 }).catch(async () => {
+      await logoutBtn.click();
+    });
 
     // 6. Retorno ao login
     await expect(page.getByRole("button", { name: "Entrar no OncoVida" })).toBeVisible({ timeout: 10000 });

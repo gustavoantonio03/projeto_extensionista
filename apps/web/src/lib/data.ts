@@ -458,12 +458,14 @@ export async function submitCheckIn(
   ).padStart(2, "0")}`;
 
   const actor = findCaregiver(caregiverId ?? activeCaregiverId);
+  const authorLabel = checkIn.authorLabel || (actor ? caregiverTag(actor) : "Cuidador");
 
   const newCheckIn: DailyCheckIn = {
     ...checkIn,
     id: `chk-${Date.now()}`,
     date: dateStr,
     performedBy: actor,
+    authorLabel,
     performedAt: timeStr,
   };
 
@@ -473,8 +475,8 @@ export async function submitCheckIn(
   auditTrailState.unshift({
     id: `audit-chk-${Date.now()}`,
     action: "registrou_sintoma",
-    subject: `Temperatura ${checkIn.temperature.toFixed(1)}°C por ${actor.relationLabel}`,
-    description: `${caregiverTag(actor)} registrou temperatura ${checkIn.temperature.toFixed(
+    subject: `Temperatura ${checkIn.temperature.toFixed(1)}°C por ${authorLabel}`,
+    description: `${authorLabel} registrou temperatura ${checkIn.temperature.toFixed(
       1
     )}°C.`,
     performedBy: actor,

@@ -15,10 +15,12 @@ import { mockPatient, mockDailyHabits } from "../../mocks/fixtures";
 import { useMedicationTrail } from "../../lib/useMedicationTrail";
 import { medicationTrailProps } from "../../lib/caregiver";
 import { AppMode, HabitItem } from "../../lib/types";
-import { GlassWater, Check } from "lucide-react";
+import { useAuth } from "../../lib/AuthContext";
+import { GlassWater, Check, ShieldAlert } from "lucide-react";
 
 export default function RemediosPage() {
   const router = useRouter();
+  const { userDoc } = useAuth();
   const [mode, setMode] = React.useState<AppMode>("cuidador");
   const { meds, activeCaregiver, setActiveCaregiver, toggle, verify } =
     useMedicationTrail();
@@ -26,6 +28,13 @@ export default function RemediosPage() {
   const [waterCups, setWaterCups] = React.useState(5);
   const totalWaterCups = 8;
   const [habits, setHabits] = React.useState<HabitItem[]>(mockDailyHabits);
+
+  const effectiveMode: AppMode = userDoc
+    ? userDoc.role === "patient"
+      ? "crianca"
+      : "cuidador"
+    : mode;
+  const readOnly = effectiveMode === "crianca";
 
   const handleCupClick = (index: number) => {
     const targetCups = index + 1;
@@ -47,18 +56,23 @@ export default function RemediosPage() {
     );
   };
 
-  const readOnly = mode === "crianca";
-
   return (
     <div className="min-h-screen bg-[#FFF8F0]">
       <Header
         patient={mockPatient}
-        mode={mode}
+        mode={effectiveMode}
         onToggleMode={setMode}
         onCaregiverChange={setActiveCaregiver}
       />
 
-      <div className="px-4 py-4 pb-28 space-y-5">
+      <div className="px-4 py-4 pb-28 space-y-5 max-w-md mx-auto">
+        {readOnly && (
+          <div className="p-3 rounded-2xl bg-[#EDE3F5] border border-[#6E3F8C]/20 text-xs font-bold text-[#6E3F8C] flex items-center gap-2">
+            <ShieldAlert className="w-4 h-4 shrink-0 text-[#6E3F8C]" />
+            <span>Modo visualização da criança · Cuidadores registram as doses de medicação</span>
+          </div>
+        )}
+
         {/* 1. Medicamentos de Hoje (3 essenciais: manhã, tarde e noite) */}
         <section>
           <div className="flex items-center justify-between mb-2.5">
