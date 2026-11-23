@@ -1,3 +1,9 @@
+Alunos: 
+* Gustavo Antônio da Silva Santos
+* José Edson Teixeira Galdino
+* Arthur de Oliveira Leite
+* Ricardo Filipe Melo França
+  
 # SIGLO — Sistema Integrado de Gestão de Laboratório Oncológico
 
 > Plataforma web modular que digitaliza o fluxo ponta a ponta do laboratório:
