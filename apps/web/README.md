@@ -23,7 +23,7 @@ Acesse em seu navegador: [http://localhost:3000](http://localhost:3000)
 
 | Rota | Tela | Público & Funcionalidades |
 |---|---|---|
-| `/` | **Meu Dia** | Check-in matinal por humor (`MoodPicker`), entrada de voz, mapa de dor (`PainScale`), temperatura axilar, paladar e alerta automático de acolhimento. |
+| `/` | **Meu Dia** | Check-In matinal por humor (`MoodPicker`), entrada de voz, mapa de dor (`PainScale`), temperatura axilar, paladar e alerta automático de acolhimento. |
 | `/remedios` | **Remédios & Rotina** | Dose próxima com botão "Já tomei!", lista de medicamentos do dia, agenda mensal (`MiniCalendar`), hidratação interativa e conforto diário. |
 | `/nutricao` | **Nutrição & Paladar** | Registro compassivo da refeição (sem culpa), pratos suaves sugeridos, dicas práticas para paladar alterado e pílulas de conhecimento em vídeo. |
 | `/familia` | **Rede de Família** | Guardiões conectados com status em tempo real, mural de mensagens de carinho e atalhos rápidos de chamada/WhatsApp. |
