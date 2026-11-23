@@ -1,4 +1,4 @@
-#SIGLO — Sistema Integrado de Gestão de Laboratório Oncológico
+# SIGLO — Sistema Integrado de Gestão de Laboratório Oncológico
 
 > Plataforma web modular que digitaliza o fluxo ponta a ponta do laboratório:
 > **pacientes → exames → rastreabilidade → laudo assinado → BI**.
